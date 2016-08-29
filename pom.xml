@@ -29,19 +29,19 @@
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
        
-       <!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
+       <!-- https://mvnrepository.com/artifact/com.h2database/h2 
 		<dependency>
 		    <groupId>com.h2database</groupId>
 		    <artifactId>h2</artifactId>
 		    <version>1.4.192</version>
-		</dependency>
+		</dependency> -->
        
-        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java 
+        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java  -->
 		<dependency>
 		    <groupId>mysql</groupId>
 		    <artifactId>mysql-connector-java</artifactId>
 		    <version>5.1.6</version>
-		</dependency> -->
+		</dependency>
 		
 		
 		<!-- For web applicaiton views and other  -->
