@@ -8,19 +8,19 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class IndexController {
-    @RequestMapping("/")
+   /* @RequestMapping("/")
     String index(){
     	System.out.println("inside index");
         return "index";
-    }
+    }*/
     
-    @RequestMapping("/home")
+    @RequestMapping({"/home","/"})
     String home(){
     	System.out.println("inside home");
         return "home";
     }
     
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    @RequestMapping(value = {"/login"}, method = RequestMethod.GET)
 	public ModelAndView login(@RequestParam(value = "error", required = false) String error,
 		@RequestParam(value = "logout", required = false) String logout) {
     	System.out.println("inside login");

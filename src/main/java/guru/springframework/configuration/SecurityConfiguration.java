@@ -11,17 +11,17 @@ import guru.springframework.services.UserDetailService;
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-
 	@Autowired
 	UserDetailService userService;
 	
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.authorizeRequests().antMatchers("/").permitAll()
-        		.and().authorizeRequests().antMatchers("/console/**").permitAll()
-        		.and().authorizeRequests().anyRequest().authenticated()
+        httpSecurity.authorizeRequests()
+        		.antMatchers("/login","/console/**").permitAll()
+        		.anyRequest().authenticated()
         		.and().formLogin().loginPage("/login").defaultSuccessUrl("/home",true).usernameParameter("username").passwordParameter("password").successForwardUrl("/home")
-    	        .and().logout().logoutSuccessUrl("/login?logout")
+    	        .and().logout().logoutUrl("/logout").logoutSuccessUrl("/login?logout")
+    	        .and().authorizeRequests().anyRequest().authenticated()
                 ;
 
         httpSecurity.csrf().disable();
