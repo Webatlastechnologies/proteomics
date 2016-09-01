@@ -23,9 +23,9 @@ public class SpringBootWebApplication {
 	public CommandLineRunner demo(UserRepository userRepository) {
 		return (args) -> {
 			
-			userRepository.save(new User("Vishal1","Khatri1","vishalsarkar20501@gmail.com","vishal1","vishal1","ADMIN"));
+			/*userRepository.save(new User("Vishal1","Khatri1","vishalsarkar20501@gmail.com","vishal1","vishal1","ADMIN"));
 			userRepository.save(new User("Vishal2","Khatri2","vishalsarkar20502@gmail.com","vishal2","vishal2","ADMIN"));
-			userRepository.save(new User("Vishal3","Khatri3","vishalsarkar20503@gmail.com","vishal3","vishal3","ADMIN"));
+			userRepository.save(new User("Vishal3","Khatri3","vishalsarkar20503@gmail.com","vishal3","vishal3","ADMIN"));*/
 			
 			// fetch all customers
 			log.info("Persons found with findAll():");
