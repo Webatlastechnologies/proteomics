@@ -1,10 +1,15 @@
 package guru.springframework.domain;
 
 
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class User {
@@ -20,14 +25,38 @@ public class User {
 		this.password = password;
 		this.role = role;
 	}
-
-	private long id;
+	
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long user_id;
+	
 	private String firstName;
 	private String lastName;
 	private String email;
 	private String username;
 	private String password;
 	private String role;
+	
+	@ManyToOne
+	@JoinColumn(name="lab_id")
+	private Lab lab;
+	
+	@OneToMany(mappedBy="user")
+	private Set<LabDatabase> labDatabases;
+	
+	@OneToMany(mappedBy="user")
+	private Set<Project> projects;
+	
+	public Lab getLab() {
+		return lab;
+	}
+
+	public void setLab(Lab lab) {
+		this.lab = lab;
+	}
+	
+	
 	
 	public String getFirstName() {
 		return firstName;
@@ -47,18 +76,9 @@ public class User {
 
 	@Override
 	public String toString() {
-		return String.format("Person[id=%d, firstName='%s', lastName='%s']", id, firstName, lastName);
+		return String.format("Person[id=%d, firstName='%s', lastName='%s']", user_id, firstName, lastName);
 	}
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
 
 	public String getEmail() {
 		return email;
@@ -91,5 +111,23 @@ public class User {
 	public void setUsername(String username) {
 		this.username = username;
 	}
+
+	public long getUser_id() {
+		return user_id;
+	}
+
+	public void setUser_id(long user_id) {
+		this.user_id = user_id;
+	}
+
+	public Set<LabDatabase> getLabDatabases() {
+		return labDatabases;
+	}
+
+	public void setLabDatabases(Set<LabDatabase> labDatabases) {
+		this.labDatabases = labDatabases;
+	}
+
+	
 
 }
