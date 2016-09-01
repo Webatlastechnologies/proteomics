@@ -1,5 +1,12 @@
 html {height: 100%;}
-.outer-login{ display: table;height: 100%;position: absolute; width: 100%;}
+.outer-login{ display: table;height: 100%;position: absolute; width: 100%;/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f5f6f6+0,dbdce2+21,b8bac6+49,dddfe3+80,f5f6f6+100;Grey+Pipe */
+background: #f5f6f6; /* Old browsers */
+background: -moz-linear-gradient(top, #f5f6f6 0%, #dbdce2 21%, #b8bac6 49%, #dddfe3 80%, #f5f6f6 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top, #f5f6f6 0%,#dbdce2 21%,#b8bac6 49%,#dddfe3 80%,#f5f6f6 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom, #f5f6f6 0%,#dbdce2 21%,#b8bac6 49%,#dddfe3 80%,#f5f6f6 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f6f6', endColorstr='#f5f6f6',GradientType=0 ); /* IE6-9 */
+
+}
 .inner-login{display: table-cell;vertical-align: middle;width: 100%;overflow: hidden;}
 /*body.login::after {
     background: rgba(0, 0, 0, 0.6) none repeat scroll 0 0;
@@ -35,14 +42,15 @@ body.login {
 }
 .report-header{    padding-bottom: 8px;}
 .singnin-btn{ 
-    background: #535C9E none repeat scroll 0 0;
+    background: #76b3ef none repeat scroll 0 0;
+    border: medium none;
     color: #fff;
+    cursor: pointer;
     display: block;
     font-size: 20px;
-    margin-top: 25px;
+    margin-top: 15px;
     padding: 15px;
     width: 100%;
-    cursor: pointer;
 }
 .remember{font-size: 16px;
           font-weight: normal;}
@@ -222,7 +230,7 @@ header.navbar{height: 53px; margin-bottom: 0;}
     font-size: 12px;
 }
 
-#login-container{
+#login-container, #signup-container{
     -moz-animation-name: dropHeader;
     -moz-animation-iteration-count: 1;
     -moz-animation-timing-function: ease-out;
@@ -350,11 +358,18 @@ header.navbar{height: 53px; margin-bottom: 0;}
     font-size: 13px;
 
 }
+#signup-container{
+     position: relative;
+    margin: 10px auto;
+    width: 500px;
+    z-index: 1;
+ perspective: 1000;
+}
 #login-container {
     position: relative;
     margin: 10px auto;
     width: 500px;
-    height:400px;;
+    height:350px;;
     z-index: 1;
 }
 #login-container {
@@ -376,7 +391,7 @@ header.navbar{height: 53px; margin-bottom: 0;}
 
 }
 .face {
-
+border: 1px solid #bbbbbb;
     width: 100%;
     height: 100%;
     padding: 30px;
@@ -385,12 +400,14 @@ header.navbar{height: 53px; margin-bottom: 0;}
 .flip .front.face{
     transform: translateX(-1500px) skew(-50deg);
     transition: all 1.2s ease 0s;
+    
 }
 .flip .face.back{
     transform: translateX(0px);
-    transform:translateY(-399px);
+    transform:translateY(-345px);
     transition: all 1.2s ease 0s;
     visibility:visible;
+    height: 320px;
 
 }
 a {
@@ -402,6 +419,7 @@ a {
 .shadow .front.face {
 
     transition: all 1.2s ease 0s;
+     border-radius: 0;
 }
 .face.back {
     display: block;
@@ -411,7 +429,6 @@ a {
     box-sizing: border-box;
     transition: all 1.2s ease 0s;
     padding: 30px;
-    border-radius: 10px;
     text-align: center;
     background-color: #fff;
     z-index: 99;
@@ -530,3 +547,4 @@ a{outline: 0 !important}
 .navbar-nav-custom .caret {
     color: #fff;
 }
+.signup{margin: 5px; text-align: left}
