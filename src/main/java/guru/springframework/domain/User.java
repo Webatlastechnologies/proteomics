@@ -3,6 +3,7 @@ package guru.springframework.domain;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -12,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class User {
@@ -40,14 +43,17 @@ public class User {
 	private String password;
 	private String role;
 	
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="lab_id")
+	@JsonIgnore
 	private Lab lab;
 	
 	@OneToMany(mappedBy="user")
+	@JsonIgnore
 	private Set<LabDatabase> labDatabases;
 	
 	@OneToMany(mappedBy="user")
+	@JsonIgnore
 	private Set<Project> projects;
 	
 	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "users")

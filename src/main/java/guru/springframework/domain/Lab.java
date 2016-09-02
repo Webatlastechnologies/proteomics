@@ -8,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Lab {
 
@@ -24,9 +26,11 @@ public class Lab {
 	private boolean approved; 
 	
 	@OneToMany(mappedBy="lab")
+	@JsonIgnore
 	private Set<User> users;
 	
 	@OneToMany(mappedBy="lab")
+	@JsonIgnore
 	private Set<LabDatabase> labDatabases;
 	
 	
