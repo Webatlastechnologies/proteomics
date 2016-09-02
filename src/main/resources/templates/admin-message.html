@@ -1,0 +1,88 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title></title>
+    <link rel="stylesheet" href="css/kendo.common.min.css" />
+    <link rel="stylesheet" href="css/kendo.default.min.css"/>
+    <link rel="stylesheet" href="css/kendo.default.mobile.min.css" />
+    <script src="js/jquery.min.js" ></script>
+    <script src="js/kendo.all.min.js" ></script>
+</head>
+<body>
+        <div id="example">
+            <div id="grid"></div>
+
+            <script  th:inline="javascript">
+            /*<![CDATA[*/
+                       
+                $(document).ready(function () {
+                    var crudServiceBaseUrl = "message",
+                        dataSource = new kendo.data.DataSource({
+                            transport: {
+                                read:  {
+                                    url: crudServiceBaseUrl + "/read",
+                                    dataType: "json",
+                                    type: "post"
+                                },
+                                update: {
+                                    url: crudServiceBaseUrl + "/update",
+                                    dataType: "json",
+                                    type: "post"
+                                },
+                                destroy: {
+                                    url: crudServiceBaseUrl + "/delete",
+                                    dataType: "json",
+                                    type: "post"
+                                },
+                                create: {
+                                    url: crudServiceBaseUrl + "/save",
+                                    dataType: "json",
+                                    type: "post"
+                                },
+                                /* parameterMap: function(options, operation) {
+                                    if (operation !== "read" && options.models) {
+                                        return kendo.stringify(options.models);
+                                    }
+                                } */
+                            },
+                           /*  schema: {
+                            	data: "_embedded.siteUpdateMessages",
+                                total: "page.totalElements"
+                              }, */
+                            batch: false,
+                            serverPaging: false,
+                            schema: {
+                                model: {
+                                    id: "updateId",
+                                    fields: {
+                                    	updateId: {editable:false},
+                                    	updateText: { type :"text",editable:true },
+                                    	updateDate : {editable:false}
+                                    }
+                                }
+                            }
+                        });
+
+                    $("#grid").kendoGrid({
+                        dataSource: dataSource,
+                        navigatable: true,
+                        pageable: true,
+                        height: 550,
+                        toolbar: ["create", "save", "cancel"],
+                        columns: [
+                            { field: "updateId", title: "updateId"},
+                            { field: "updateText", title: "updateText"},
+                            { field: 'updateDate',
+                                title: 'Date',
+                              },
+                            { command: "destroy", title: "&nbsp;", width: 150 }],
+                        editable: true
+                    });
+                });
+            
+                /*]]>*/
+            </script>
+        </div>
+
+
+</body>
+</html>

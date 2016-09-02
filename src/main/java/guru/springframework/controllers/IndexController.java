@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 import guru.springframework.domain.User;
+import guru.springframework.repositories.SiteUpdateMessageRepository;
 import guru.springframework.repositories.UserRepository;
 
 @Controller
@@ -18,10 +18,13 @@ public class IndexController {
 
 	@Autowired
 	UserRepository userRepository;
+	@Autowired
+	SiteUpdateMessageRepository messageRepository;
 	
 	@RequestMapping({"/home","/"})
-    String home(){
+    String home(Model model){
     	System.out.println("inside home");
+    	model.addAttribute("messages",messageRepository.findAll());
         return "home";
     }
     
