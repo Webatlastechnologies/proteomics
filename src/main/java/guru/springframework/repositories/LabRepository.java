@@ -9,5 +9,7 @@ import guru.springframework.domain.Lab;
 public interface LabRepository extends CrudRepository<Lab, Long> {
 	
 	List<Lab> findAll() ;
+	
+	List<Lab> findByApproved(boolean approved);
 
 }

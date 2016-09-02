@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import guru.springframework.domain.Lab;
 import guru.springframework.domain.User;
 import guru.springframework.repositories.LabRepository;
 import guru.springframework.repositories.SiteUpdateMessageRepository;
@@ -48,7 +49,7 @@ public class IndexController {
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String registration(Model model) {
         model.addAttribute("userForm", new User());
-        model.addAttribute("labs", labRepository.findAll());
+        model.addAttribute("labs", labRepository.findByApproved(true));
         return "register";
     }
 
@@ -59,6 +60,21 @@ public class IndexController {
         model.addAttribute("msg","Registered Successfully");
         return "login";
     }
+    
+    @RequestMapping(value = "/lab-register", method = RequestMethod.GET)
+    public String labRegistration(Model model) {
+        model.addAttribute("labForm", new Lab());
+        return "laboratory-request";
+    }
+
+    @RequestMapping(value = "/lab-register", method = RequestMethod.POST)
+    public String labRegistration(@ModelAttribute("labForm") Lab lab, BindingResult bindingResult, Model model) {
+        labRepository.save(lab);
+        model.addAttribute("msg","Registered Successfully");
+        return "login";
+    }
+    
+    
 
 	public UserRepository getUserRepository() {
 		return userRepository;
