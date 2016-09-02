@@ -3,8 +3,13 @@ package guru.springframework.controllers;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingErrorProcessor;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,18 +38,9 @@ public class MessageController {
 	public @ResponseBody List<SiteUpdateMessage> read(){
 		return messageRepository.findAll();
 	}
-	
 	 @RequestMapping(value = "/update", method = RequestMethod.POST)
-	    public @ResponseBody SiteUpdateMessage update(@RequestParam String updateText,@RequestParam long updateId) {
-		 SiteUpdateMessage msg=messageRepository.findOne(updateId);
-		 msg.setUpdateText(updateText);
-		 	messageRepository.save(msg);
-	        return msg;
-	    }
-	 @RequestMapping(value = "/save", method = RequestMethod.POST)
-	    public @ResponseBody SiteUpdateMessage update(@RequestParam String updateText) {
-		 	SiteUpdateMessage msg=new SiteUpdateMessage();
-		 	msg.setUpdateText(updateText);
+	    //public @ResponseBody SiteUpdateMessage update(@RequestParam String updateText) {
+		 public @ResponseBody SiteUpdateMessage update(@Valid @ModelAttribute SiteUpdateMessage msg, BindingResult errors) {
 		 	msg.setUpdateDate(GregorianCalendar.getInstance().getTime());
 			 messageRepository.save(msg);
 	        return msg;
