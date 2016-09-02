@@ -43,7 +43,7 @@ public class User {
 	private String password;
 	private String role;
 	
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne(cascade=CascadeType.MERGE)
 	@JoinColumn(name="lab_id")
 	@JsonIgnore
 	private Lab lab;

@@ -39,6 +39,9 @@ public class UserController {
 	
 	 @RequestMapping(value = "/update", method = RequestMethod.POST)
 		 public @ResponseBody User update(@Valid @ModelAttribute User user, BindingResult errors) {
+		 	if(user.getUser_id()!=0){
+		 		user.setLab(userRepository.findOne(user.getUser_id()).getLab());
+		 	}
 			 userRepository.save(user);
 	        return user;
 	    }

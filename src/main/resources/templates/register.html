@@ -38,7 +38,6 @@
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
                                             <input type="text" th:field="*{username}" id="login-email" name="Username" placeholder="Username" class="form-control"> </input>
-
                                         </div>
                                     </div>
                                 </div>
@@ -90,7 +89,12 @@
                                     <div class="col-xs-12">
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-flask fa-fw"></i></span>
-                                            <input type="text" id="login-password" name="laboratory" placeholder="Enter laboratory's title" class="form-control"></input>                                          
+                                            <!-- <input type="text" id="login-password" name="laboratory" placeholder="Enter laboratory's title" class="form-control"></input>   -->
+                                            <select class="form-control" th:field="*{lab.lab_id}">
+											  <option th:each="lab : ${labs}" 
+											          th:value="${lab.lab_id}" 
+											          th:text="${lab.labName}">	</option>
+											</select>                                        
                                         </div>
                                           <a href="laboratory-request.html" class="link pull-left">Can't find your laboratory in the list?</a>
                                     </div>

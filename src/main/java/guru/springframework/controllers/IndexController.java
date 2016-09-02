@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import guru.springframework.domain.User;
+import guru.springframework.repositories.LabRepository;
 import guru.springframework.repositories.SiteUpdateMessageRepository;
 import guru.springframework.repositories.UserRepository;
 
@@ -20,6 +21,9 @@ public class IndexController {
 	UserRepository userRepository;
 	@Autowired
 	SiteUpdateMessageRepository messageRepository;
+	@Autowired
+	LabRepository labRepository;
+	
 	
 	@RequestMapping({"/home","/"})
     String home(Model model){
@@ -44,6 +48,7 @@ public class IndexController {
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String registration(Model model) {
         model.addAttribute("userForm", new User());
+        model.addAttribute("labs", labRepository.findAll());
         return "register";
     }
 
