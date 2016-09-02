@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- main header html contecnt start -->
 <html class="no-js">
     <head xmlns:th="http://www.thymeleaf.org">
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width"></meta>
@@ -25,7 +24,7 @@
     <body>
         <!-- Page Container -->
         <div id="page-container">
-
+			<div th:replace="fragments/header :: header">
             <header class="navbar navbar-inverse">
                 <!-- Mobile Navigation, Shows up  on smaller screens -->
                 <ul class="navbar-nav-custom pull-right hidden-md hidden-lg">
@@ -108,6 +107,8 @@
                             </nav>
                         </div>
                     </div>
+                    
+            </div>
 <!-- main header html contecnt end -->
             <!-- Inner Container -->
             <div id="inner-container">
@@ -173,9 +174,9 @@
                 </div>
                 <!-- END Page Content -->
                 <!-- Footer -->
-                <div class="container-fluid" id="footer">
+                <div class="container-fluid" id="footer"  th:replace="fragments/footer :: footer">
                     <span class="col-sm-6 text-left">
-                        Version: 4.0
+                        Version: 4.0 static
 
                         | Logged in as: ip2test
 

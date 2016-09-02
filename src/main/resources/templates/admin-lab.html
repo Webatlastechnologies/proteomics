@@ -66,7 +66,7 @@
             /*<![CDATA[*/
                        
                 $(document).ready(function () {
-                    var crudServiceBaseUrl = "message",
+                    var crudServiceBaseUrl = "lab",
                         dataSource = new kendo.data.DataSource({
                             transport: {
                                 read:  {
@@ -103,11 +103,17 @@
                             serverPaging: false,
                             schema: {
                                 model: {
-                                    id: "updateId",
+                                    id: "lab_id",
                                     fields: {
-                                    	updateId: {editable:false},
-                                    	updateText: { type :"text",editable:true },
-                                    	updateDate : {editable:false}
+                                    	lab_id: {editable:false},
+                                    	labUrl: { type :"text",editable:true },
+                                    	labName: { type :"text",editable:true },
+                                    	requestorEmail: { type :"text",editable:true },
+                                    	labHeadFirstName: { type :"text",editable:true },
+                                    	labHeadLastName: { type :"text",editable:true },
+                                    	labHeadEmail: { type :"text",editable:true },
+                                    	approved: { type :"text",editable:true },
+                                    	
                                     }
                                 }
                             }
@@ -120,11 +126,14 @@
                         height: 550,
                         toolbar: ["create", "save", "cancel"],
                         columns: [
-                            { field: "updateId", title: "updateId"},
-                            { field: "updateText", title: "updateText"},
-                            { field: 'updateDate',
-                                title: 'Date',
-                              },
+                            { field: "lab_id", title: "Lab id"},
+                            { field: "labUrl", title: "Lab URL"},
+                            { field: "labName", title: "Lab Name"},
+                            { field: "requestorEmail", title: "Requestor Email"},
+                            { field: "labHeadFirstName", title: "Head first name"},
+                            { field: "labHeadLastName", title: "Head last name"},
+                            { field: "labHeadEmail", title: "Head Email"},
+                            { field: "approved", title: "Approved"},
                             { command: "destroy", title: "&nbsp;", width: 150 }],
                         editable: true
                     });

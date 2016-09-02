@@ -15,6 +15,14 @@ public class Lab {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long lab_id;
 	
+	private String labUrl;
+	private String labName;
+	private String requestorEmail;
+	private String labHeadFirstName;
+	private String labHeadLastName;
+	private String labHeadEmail;
+	private boolean approved; 
+	
 	@OneToMany(mappedBy="lab")
 	private Set<User> users;
 	
@@ -44,6 +52,62 @@ public class Lab {
 
 	public void setUsers(Set<User> users) {
 		this.users = users;
+	}
+
+	public String getLabUrl() {
+		return labUrl;
+	}
+
+	public void setLabUrl(String labUrl) {
+		this.labUrl = labUrl;
+	}
+
+	public String getLabName() {
+		return labName;
+	}
+
+	public void setLabName(String labName) {
+		this.labName = labName;
+	}
+
+	public String getRequestorEmail() {
+		return requestorEmail;
+	}
+
+	public void setRequestorEmail(String requestorEmail) {
+		this.requestorEmail = requestorEmail;
+	}
+
+	public String getLabHeadFirstName() {
+		return labHeadFirstName;
+	}
+
+	public void setLabHeadFirstName(String labHeadFirstName) {
+		this.labHeadFirstName = labHeadFirstName;
+	}
+
+	public String getLabHeadLastName() {
+		return labHeadLastName;
+	}
+
+	public void setLabHeadLastName(String labHeadLastName) {
+		this.labHeadLastName = labHeadLastName;
+	}
+
+	public String getLabHeadEmail() {
+		return labHeadEmail;
+	}
+
+	public void setLabHeadEmail(String labHeadEmail) {
+		this.labHeadEmail = labHeadEmail;
+	}
+
+	public boolean isApproved() {
+		return approved;
+	}
+
+	public void setApproved(boolean approved) {
+		this.approved = approved;
 	}
 
 	
