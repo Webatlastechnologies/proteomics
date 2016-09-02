@@ -82,13 +82,14 @@
                                             <li class="">
                                                 <a title="Edit Profile" href="profile">Edit Profile</a>
                                             </li>  
-                                             <li class="">
+                                            
+                                             <li class="" sec:authorize="hasRole('ROLE_ADMIN')">
                                                 <a title="Site Updates" href="message">Site Updates</a>
                                             </li>  
-                                             <li class="">
+                                             <li class="" sec:authorize="hasRole('ROLE_ADMIN')">
                                                 <a title="Lab" href="lab">Lab</a>
                                             </li>   
-                                            <li class="">
+                                            <li class="" sec:authorize="hasRole('ROLE_ADMIN')">
                                                 <a title="Users" href="user">Users</a>
                                             </li>                                             
                                         </ul>

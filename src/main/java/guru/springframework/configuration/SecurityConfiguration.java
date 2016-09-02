@@ -18,6 +18,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeRequests()
         		.antMatchers("/login","/console/**","/register","/lab-register").permitAll()
+        		.antMatchers("/message","/lab","/user").hasRole("ADMIN")
         		.anyRequest().authenticated()
         		.and().formLogin().loginPage("/login").defaultSuccessUrl("/home",true).usernameParameter("username").passwordParameter("password").successForwardUrl("/home")
     	        .and().logout().logoutUrl("/logout").logoutSuccessUrl("/login?logout")
