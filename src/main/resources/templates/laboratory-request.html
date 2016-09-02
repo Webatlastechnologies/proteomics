@@ -31,18 +31,39 @@
                         <div class="front face">
                             <form id="login-form" action="#" th:action="@{/register}" th:object="${userForm}" method="post" class="form-horizontal login-form">
 
-                                <h4 class="text-center">Create Account</h4>
+                                <h4 class="text-center">Request Laboratory Creation</h4>
 
                                  <div class="form-group">
                                     <div class="col-xs-12">
                                         <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
-                                            <input type="text" th:field="*{username}" id="login-email" name="Username" placeholder="Username" class="form-control"> </input>
+                                            <span class="input-group-addon"><i class="fa fa-globe fa-fw"></i></span>
+                                            <input type="text" th:field="*{}" id="login-email" name="Laboratory URL" placeholder="Laboratory URL" class="form-control"> </input>
 
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <div class="col-xs-12">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-flask fa-fw"></i></span>
+                                            <input type="text" th:field="*{}" id="login-email" name="Laboratory Name" placeholder="Laboratory Name" class="form-control"> </input>
+
+                                        </div>
+                                    </div>
+                                </div>
+                               
+                                <div class="form-group">
+                                    <div class="col-xs-12">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
+                                            <input type="text" id="login-email" th:field="*{email}"  name="" placeholder="Email" class="form-control"> </input>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <h5 class="pull-left">Laboratory Head </h3>
+                               <div class="form-group">
                                     <div class="col-xs-12">
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
@@ -69,43 +90,12 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="col-xs-12">
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-lock fa-fw"></i></span>
-                                            <input type="password" id="login-password" th:field="*{password}"  name="password" placeholder="Password" class="form-control"></input>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <div class="col-xs-12">
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
-                                            <input type="password" id="login-password" name="Confirm password" placeholder="Confirm Password.." class="form-control"></input>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-xs-12">
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-flask fa-fw"></i></span>
-                                            <input type="text" id="login-password" name="laboratory" placeholder="Enter laboratory's title" class="form-control"></input>                                          
-                                        </div>
-                                          <a href="laboratory-request.html" class="link pull-left">Can't find your laboratory in the list?</a>
-                                    </div>
-                                </div>
                                 <div class="clearfix">
 
-                                    <button type="submit" class="singnin-btn">Create</button>
+                                    <button type="submit" class="singnin-btn send ">Send</button>
+                                    <button type="submit" class="singnin-btn cancel ">Cancel</button>
                                 </div>
-                                <div class="clearfix">
-                                    <div class="signup">
-                                        <span>Already have an account ?</span>
-                                        <a  class="" href="login.html"> Login</a>
-                                    </div>
-
-                                </div>
+                               
 
                             </form>
                         </div>

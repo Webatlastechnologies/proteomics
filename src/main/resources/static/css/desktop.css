@@ -41,6 +41,8 @@ body.login {
     padding: 0 15px;
 }
 .report-header{    padding-bottom: 8px;}
+.singnin-btn:hover{ 
+    background: #6face3 none repeat scroll 0 0;}
 .singnin-btn{ 
     background: #76b3ef none repeat scroll 0 0;
     border: medium none;
@@ -559,4 +561,15 @@ a{outline: 0 !important}
 }
 .menu-container .nav.navbar-nav > li > a {
     color: #fff;
+}
+.singnin-btn.cancel,.singnin-btn.send {
+     margin:5px;
+    width: 45%;
+    display: inline-block;
+}
+.singnin-btn.cancel {
+ background: #ddd;
+}
+.singnin-btn.cancel:hover {
+    background: #cccccc none repeat scroll 0 0;
 }
