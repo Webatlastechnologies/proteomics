@@ -66,10 +66,10 @@ body.login {
 .incident-tabel{
     text-align: center;
 }
-header.navbar{height: 53px; margin-bottom: 0;}
+header.navbar{height: 65px; margin-bottom: 0;}
 .navbar .navbar-brand{
     padding: 0 !important;
-    height: 53px;
+    height: 65px;
 }
 
 #nav-info > li:first-child{ font-size: 20px;}
@@ -80,22 +80,18 @@ header.navbar{height: 53px; margin-bottom: 0;}
     line-height: 38px;
 }
 #nav-info a:hover{text-decoration: none;}
-.navbar-brand > img {
-    display: block;
-    height: 55px;
-    margin-left: 13px;
-    margin-top: 0;
-    width: 85px;
-}
+
 .red {
     color: #d9534f;
     font-weight: bold;
 }
-.sub_header{    background-color: #ececec;
-                border-bottom: 1px solid #ddd;
-                list-style: outside none none;
-                margin: -20px -20px 20px;
-                padding: 0;}
+.sub_header {
+    background-color: #76b3ef;
+    border-bottom: 1px solid #ddd;
+    list-style: outside none none;
+    margin: 0;
+    padding: 0;
+}
 .search_box {
     background: #fff none repeat scroll 0 0;
     float: right;
@@ -458,8 +454,14 @@ a {
     width: 100%;
 }
 .navbar.navbar-inverse {
-    background: #535c9e none repeat scroll 0 0;
+/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#eeeeee+69,cccccc+100 */
+background: #eeeeee; /* Old browsers */
+background: -moz-linear-gradient(top, #eeeeee 69%, #cccccc 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top, #eeeeee 69%,#cccccc 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom, #eeeeee 69%,#cccccc 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#cccccc',GradientType=0 ); /* IE6-9 */
        border-radius: 0;
+       border: none;
 }
 header.navbar .navbar-brand {
     margin: 0;
@@ -467,7 +469,7 @@ header.navbar .navbar-brand {
     padding-top: 8px;
 }
 .navbar .navbar-brand {
-    height: 53px;
+    height: 65px;
     padding: 0 !important;
 }
 .navbar .navbar-brand {
@@ -485,19 +487,19 @@ header.navbar .navbar-brand {
     border-right-color: #fff;
 }
 .navbar .divider-vertical {
-    height: 53px;
+    height: 65px;
 }
 .navbar .divider-vertical {
     border-style: solid;
     border-width: 1px;
-    height: 53px;
+    height: 65px;
 }
 .navbar-nav-custom > li {
     line-height: 33px;
 }
 .navbar-nav-custom > li {
     float: left;
-    line-height: 20px;
+    line-height: 46px;
 }
 .navbar-nav-custom > li > a {
     color: #999;
@@ -545,6 +547,16 @@ a{outline: 0 !important}
     margin-bottom: 30px;
 }
 .navbar-nav-custom .caret {
-    color: #fff;
+    color: #000;
+}
+.dropdown-user i {
+    color: #000;
+    vertical-align: middle;
 }
 .signup{margin: 5px; text-align: left}
+.menu-container {
+    background: #76b3ef none repeat scroll 0 0;
+}
+.menu-container .nav.navbar-nav > li > a {
+    color: #fff;
+}
