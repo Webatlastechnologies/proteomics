@@ -23,6 +23,30 @@
 	    <link rel="stylesheet" href="../static/css/kendo.default.min.css" th:href="@{css/kendo.default.min.css}"></link>
 	    <!-- <link rel="stylesheet" href="../static/css/kendo.default.mobile.min.css" th:href="@{css/kendo.default.mobile.min.css}"></link> -->
 	    <script src="../static/js/kendo.all.min.js" th:src="@{js/kendo.all.min.js}"></script>
+	    <style>
+	    	#grid .k-grid-header
+			{
+			   padding: 0 !important;
+			}
+			
+			#grid .k-grid-content
+			{
+			   overflow-y: visible;
+			}
+			.db-custom-table-header {
+				text-align: left;
+			    font-size: 12px;
+			    font-weight: bold;
+			    background: #d7e9f5;
+			}
+			.k-grid  .k-grid-header  .k-header  .k-link {
+			    height: auto;
+			}
+			  
+			.k-grid  .k-grid-header  .k-header {
+			    white-space: normal;
+			}
+	    </style>
     </head>
     <body>
         <!-- Page Container -->
@@ -127,7 +151,17 @@
                             </ol>
                         </div>
                     </div>
-                    <!-- END Navigation info -->
+					<div class="row">
+						<div class="col-sm-12">
+							<div id="button" style="float: right">
+								<a href="/ip2/addDatabase.html"> <span
+									class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add
+									new datatbase
+								</a>
+							</div>
+						</div>
+					</div>
+				<!-- END Navigation info -->
                     <!-- Datatables -->
                     <div class="row">
                         <div class="col-md-12 push">
@@ -190,15 +224,15 @@
                         model: {
                             id: "database_id",
                             fields: {
-                            	sourceName: {from: 'source.sourceName', editable:false},
-                            	releasedDate: { type :"date",editable:true },
-                            	uploadedDate: { type :"date",editable:true },
-                            	sizeInKb: { type :"int",editable:true },
-                            	proteinNum: { type :"int",editable:true },
-                            	filePath: { type :"text",editable:true },
-                            	uploadedBy: { type :"text",editable:true },
-                            	deleteDB: { type :"text",editable:true },
-                            	description: { type :"text",editable:true }
+                            	sourceName: {from: 'source.sourceName'},
+                            	releasedDate: { type :"date" },
+                            	uploadedDate: { type :"date" },
+                            	sizeInKb: { type :"int" },
+                            	proteinNum: { type :"int" },
+                            	filePath: { type :"text" },
+                            	uploadedBy: { type :"text" },
+                            	deleteDB: { type :"text" },
+                            	description: { type :"text" }
                             	
                             }
                         }
@@ -210,21 +244,79 @@
                 navigatable: true,
                 pageable: true,
                 height: 550,
-                toolbar: ["create", "save", "cancel"],
-                columns: [
-                    { field: "sourceName", title: "DB Source"},
-                    { field: "releasedDate", title: "Released Date"},
-                    { field: "uploadedDate", title: "Uploaded Date"},
-                    { field: "sizeInKb", title: "Size (KB)"},
-                    { field: "proteinNum", title: "Protein Num"},
-                    { field: "filePath", title: "File Name (download - right click to save) "},
-                    { field: "uploadedBy", title: "Uploaded By"},
-                    { field: "deleteDB", title: "Delete"},
-                    { field: "description", title: "Description"},
-                    { command: "destroy", title: "&nbsp;", width: 150 }],
-                editable: true
-            });
-            });
-        </script>
+                columns: 
+						[
+							{
+								field : "sourceName",
+								title : "DB Source",
+								headerAttributes : {
+									"class" : "db-custom-table-header",
+								}
+							},
+							{
+								field : "releasedDate",
+								title : "Released Date",
+								headerAttributes : {
+									"class" : "db-custom-table-header",
+								}
+							},
+							{
+								field : "uploadedDate",
+								title : "Uploaded Date",
+								headerAttributes : {
+									"class" : "db-custom-table-header",
+								}
+							},
+							{
+								field : "sizeInKb",
+								title : "Size (KB)",
+								headerAttributes : {
+									"class" : "db-custom-table-header",
+								}
+							},
+							{
+								field : "proteinNum",
+								title : "Protein Num",
+								headerAttributes : {
+									"class" : "db-custom-table-header",
+								}
+							},
+							{
+								field : "filePath",
+								title : "File Name (download - right click to save) ",
+								headerAttributes : {
+									"class" : "db-custom-table-header",
+								}
+							},
+							{
+								field : "uploadedBy",
+								title : "Uploaded By",
+								headerAttributes : {
+									"class" : "db-custom-table-header",
+								}
+							},
+							{
+								field : "deleteDB",
+								title : "Delete",
+								headerAttributes : {
+									"class" : "db-custom-table-header",
+								}
+							},
+							{
+								field : "description",
+								title : "Description",
+								headerAttributes : {
+									"class" : "db-custom-table-header",
+								}
+							},
+							{
+								command : "destroy",
+								title : "&nbsp;",
+								width : 0
+							} ],
+					editable : false
+				});
+			});
+		</script>
     </body>
 </html>
