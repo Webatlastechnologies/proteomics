@@ -62,7 +62,7 @@ public class IndexController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String registration(@ModelAttribute("userForm") User user, BindingResult bindingResult, Model model) {
-    	user.setRole("USER");
+    	user.setRole("ROLE_USER");
         userRepository.save(user);
         try {
 			utils.sendEmail(user.getEmail(),"Registration Successfull",String.format("Dear %s, Thank you for registration!",user.getFirstName()));
