@@ -88,6 +88,14 @@
 			<artifactId>h2</artifactId>
 			<!-- <scope>	1.4.187</scope> -->
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/it.ozimov/spring-boot-email-core -->
+		<dependency>
+		    <groupId>it.ozimov</groupId>
+		    <artifactId>spring-boot-email-core</artifactId>
+		    <version>0.3.4</version>
+		</dependency>
+
+		
     </dependencies>
 
     <build>

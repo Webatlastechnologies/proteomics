@@ -1,6 +1,9 @@
 package guru.springframework.controllers;
 
+import javax.mail.internet.AddressException;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,6 +17,7 @@ import guru.springframework.domain.User;
 import guru.springframework.repositories.LabRepository;
 import guru.springframework.repositories.SiteUpdateMessageRepository;
 import guru.springframework.repositories.UserRepository;
+import guru.springframework.services.Utils;
 
 @Controller
 public class IndexController {
@@ -24,7 +28,10 @@ public class IndexController {
 	SiteUpdateMessageRepository messageRepository;
 	@Autowired
 	LabRepository labRepository;
-	
+	@Autowired
+	Utils utils;
+	@Value("${admin.email}")
+	private String adminEmail;
 	
 	@RequestMapping({"/home","/"})
     String home(Model model){
@@ -38,10 +45,10 @@ public class IndexController {
 		@RequestParam(value = "logout", required = false) String logout,Model model) {
     	System.out.println("inside login");
 	  if (error != null) {
-		model.addAttribute("error", "Invalid username and password!");
+		model.addAttribute("danger", "Invalid username and password!");
 	  }
 	  if (logout != null) {
-		model.addAttribute("msg", "You've been logged out successfully.");
+		model.addAttribute("info", "You've been logged out successfully.");
 	  }
 	  return "login";
 	}
@@ -57,7 +64,12 @@ public class IndexController {
     public String registration(@ModelAttribute("userForm") User user, BindingResult bindingResult, Model model) {
     	user.setRole("USER");
         userRepository.save(user);
-        model.addAttribute("msg","Registered Successfully");
+        try {
+			utils.sendEmail(user.getEmail(),"Registration Successfull",String.format("Dear %s, Thank you for registration!",user.getFirstName()));
+		} catch (AddressException e) {
+			model.addAttribute("danger",String.format("Error occured. Contact %s",adminEmail));
+		}
+        model.addAttribute("info","Thank you for registration!");
         return "login";
     }
     
@@ -70,7 +82,13 @@ public class IndexController {
     @RequestMapping(value = "/lab-register", method = RequestMethod.POST)
     public String labRegistration(@ModelAttribute("labForm") Lab lab, BindingResult bindingResult, Model model) {
         labRepository.save(lab);
-        model.addAttribute("msg","Registered Successfully");
+        try {
+			utils.sendEmail(lab.getRequestorEmail(),"Request Submitted",String.format("Your lab \"%s\" addition request has been submitted successfully",lab.getLabName()));
+			utils.sendEmail(adminEmail,"Lab Add Request Received",String.format("You Received a lab \"%s\" addition request.",lab.getLabName()));
+        } catch (AddressException e) {
+        	model.addAttribute("danger",String.format("Error occured. Contact %s",adminEmail));
+		}
+        model.addAttribute("info",String.format("Lab \"%s\" request submitted successfully",lab.getLabName()));
         return "login";
     }
     

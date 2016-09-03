@@ -2,6 +2,7 @@ package guru.springframework.controllers;
 
 import java.util.List;
 
+import javax.mail.internet.AddressException;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import guru.springframework.domain.Lab;
 import guru.springframework.repositories.LabRepository;
 import guru.springframework.repositories.SiteUpdateMessageRepository;
+import guru.springframework.services.Utils;
 
 @Controller
 @RequestMapping("/lab")
@@ -26,6 +28,9 @@ public class LabController {
 	
 	@Autowired
 	SiteUpdateMessageRepository messageRepository;
+	
+	@Autowired
+	Utils utils;
 	
 	@RequestMapping({"/",""})
 	public String get(){
@@ -38,7 +43,13 @@ public class LabController {
 	}
 	 @RequestMapping(value = "/update", method = RequestMethod.POST)
 		 public @ResponseBody Lab update(@Valid @ModelAttribute Lab lab, BindingResult errors) {
-		 //	msg.setUpdateDate(GregorianCalendar.getInstance().getTime());
+		 	if(lab.isApproved()){
+		 		try {
+					utils.sendEmail(lab.getRequestorEmail(), "Lab add request approved", "Your Lab add request approved. Kindly Register yourself!");
+				} catch (AddressException e) {
+					e.printStackTrace();
+				}
+		 	}
 			 labRepository.save(lab);
 	        return lab;
 	    }

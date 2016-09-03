@@ -30,9 +30,11 @@
                     <div id="f1_card" class="shadow">
                         <div class="front face">
                             <form id="login-form" action="login" method="post" class="form-horizontal login-form">
-
+								<div class="alert alert-danger" th:if="${danger != null}"><span th:text="${danger}"></span></div>
+								<div class="alert alert-info" th:if="${info != null}"><span th:text="${info}"></span></div>
+								<div class="alert alert-success" th:if="${success != null}"><span th:text="${success}"></span></div>
                                 <h4 class="text-center">LOG IN</h4>
-
+		
                                 <div class="form-group">
                                     <div class="col-xs-12">
                                         <div class="input-group">

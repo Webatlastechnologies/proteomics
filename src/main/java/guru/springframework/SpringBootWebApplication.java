@@ -6,11 +6,15 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 import guru.springframework.domain.User;
 import guru.springframework.repositories.UserRepository;
 
 @SpringBootApplication
+@ComponentScan(basePackages = {"guru.springframework","it.ozimov.springboot"})
+@EnableAsync
 public class SpringBootWebApplication {
 
 	private static final Logger log = LoggerFactory.getLogger(SpringBootWebApplication.class);
