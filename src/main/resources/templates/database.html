@@ -15,10 +15,14 @@
 
 
         <!-- Bootstrap.js -->
-        <link rel="stylesheet" type="text/css" href="css/dataTables.bootstrap.min.css" th:href="@{css/dataTables.bootstrap.min.css}"> </link>
-        <script type="text/javascript"  src="js/jquery.dataTables.min.js" th:src="@{js/jquery.dataTables.min.js}"></script>
-        <script type="text/javascript"  src="js/dataTables.bootstrap.min.js" th:src="@{js/dataTables.bootstrap.min.js}"></script>
-
+        <link rel="stylesheet" type="text/css" href="../static/css/dataTables.bootstrap.min.css" th:href="@{css/dataTables.bootstrap.min.css}"> </link>
+        <script type="text/javascript"  src="../static/js/jquery.dataTables.min.js" th:src="@{js/jquery.dataTables.min.js}"></script>
+        <script type="text/javascript"  src="../static/js/dataTables.bootstrap.min.js" th:src="@{js/dataTables.bootstrap.min.js}"></script>
+		
+		<link rel="stylesheet" href="../static/css/kendo.common.min.css" th:href="@{css/kendo.common.min.css}"></link>
+	    <link rel="stylesheet" href="../static/css/kendo.default.min.css" th:href="@{css/kendo.default.min.css}"></link>
+	    <!-- <link rel="stylesheet" href="../static/css/kendo.default.mobile.min.css" th:href="@{css/kendo.default.mobile.min.css}"></link> -->
+	    <script src="../static/js/kendo.all.min.js" th:src="@{js/kendo.all.min.js}"></script>
     </head>
     <body>
         <!-- Page Container -->
@@ -127,46 +131,7 @@
                     <!-- Datatables -->
                     <div class="row">
                         <div class="col-md-12 push">
-                            <table id="example-datatables2" class="table table-striped table-bordered table-hover incident-tabel">
-                                <thead>
-                                    <tr>
-                                        <th class="text-center">DB Source </th>
-                                        <th class="text-center">Released Date</th>
-                                        <th class="text-center">Uploaded Date</th>                                        
-                                        <th class="text-center">Size (KB) </th>
-                                        <th class="text-center">Protein Num</th>
-                                        <th class="text-center">File Name (download - right click to save) </th>
-                                        <th class="text-center">Uploaded By</th>
-                                        <th class="text-center">Delete</th>
-                                        <th class="text-center">Description</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>                                    
-                                        <td>4xProteomesforKen</td>                                        
-                                        <td>2013-02-16</td>      
-                                        <td class="text-center ">2013-02-16 10:51:49.0</td>
-                                        <td class="text-center ">89665</td>
-                                        <td class="text-center ">154682</td>
-                                        <td class="text-center ">4xProteomesforKen 4xProteomes forKen Ver1_02-16-2013 reversed fasta<a href=""> <i class="fa fa-download"></i></a></td>                                        
-                                        <td class="text-center "> kenhsu</td>                                        
-                                        <td class="text-center "> <a href=""><i class="fa fa-trash fa-2x"></i></a></td>                                        
-                                        <td class="text-center ">This mixed database consists of proteomes from:  Anolis carolinensis (Anole lizard, 18,612 proteins) Oryzias latipes (Japanese rice fish, 24,618 proteins) Xenopus laevis (African clawed frog, 15,970) Taeniopygia guttata (Zebra finch, 18,141 proteins) </td>                                        
-                                    </tr>
-                                    <tr>                                    
-                                        <td>5yproetien</td>                                        
-                                        <td>2013-02-20</td>      
-                                        <td class="text-center ">2013-02-23 5:50:40.0</td>
-                                        <td class="text-center ">123456</td>
-                                        <td class="text-center ">987654</td>
-                                        <td class="text-center ">4xProteomesforKen 4xProteomes forKen Ver1_02-16-2013 reversed fasta<a href=""> <i class="fa fa-download"></i></a></td>                                        
-                                        <td class="text-center "> venshu</td>                                        
-                                        <td class="text-center "> <a href=""><i class="fa fa-trash fa-2x"></i></a></td>                                        
-                                        <td class="text-center ">This mixed database consists of proteomes from:  Anolis carolinensis (Anole lizard, 18,612 proteins) Oryzias latipes (Japanese rice fish, 24,618 proteins) Xenopus laevis (African clawed frog, 15,970) Taeniopygia guttata (Zebra finch, 18,141 proteins) </td>                                        
-                                    </tr>
-
-                                </tbody>
-                            </table>
+                             <div id="grid"> </div>
                         </div>
                     </div>
                     <!-- END Datatables in the grid -->
@@ -195,10 +160,70 @@
         <script>
             $(function () {
                 /* Initialize Datatables */
-                $('#example-datatables').dataTable({columnDefs: [{orderable: false, targets: [0]}]});
+                /*$('#example-datatables').dataTable({columnDefs: [{orderable: false, targets: [0]}]});
                 $('#example-datatables2').dataTable();
                 $('#example-datatables3').dataTable();
-                $('.dataTables_filter input').attr('placeholder', 'Search');
+                $('.dataTables_filter input').attr('placeholder', 'Search');*/
+                
+            	var crudServiceBaseUrl = "database",
+                dataSource = new kendo.data.DataSource({
+                    transport: {
+                        read:  {
+                            url: crudServiceBaseUrl + "/read",
+                            dataType: "json",
+                            type: "get"
+                        },
+                        destroy: {
+                            url: crudServiceBaseUrl + "/delete",
+                            dataType: "json",
+                            type: "delete"
+                        },
+                        create: {
+                            url: crudServiceBaseUrl + "/add",
+                            dataType: "json",
+                            type: "post"
+                        },
+                    },
+                    batch: false,
+                    serverPaging: false,
+                    schema: {
+                        model: {
+                            id: "database_id",
+                            fields: {
+                            	sourceName: {from: 'source.sourceName', editable:false},
+                            	releasedDate: { type :"date",editable:true },
+                            	uploadedDate: { type :"date",editable:true },
+                            	sizeInKb: { type :"int",editable:true },
+                            	proteinNum: { type :"int",editable:true },
+                            	filePath: { type :"text",editable:true },
+                            	uploadedBy: { type :"text",editable:true },
+                            	deleteDB: { type :"text",editable:true },
+                            	description: { type :"text",editable:true }
+                            	
+                            }
+                        }
+                    }
+                });
+
+            $("#grid").kendoGrid({
+                dataSource: dataSource,
+                navigatable: true,
+                pageable: true,
+                height: 550,
+                toolbar: ["create", "save", "cancel"],
+                columns: [
+                    { field: "sourceName", title: "DB Source"},
+                    { field: "releasedDate", title: "Released Date"},
+                    { field: "uploadedDate", title: "Uploaded Date"},
+                    { field: "sizeInKb", title: "Size (KB)"},
+                    { field: "proteinNum", title: "Protein Num"},
+                    { field: "filePath", title: "File Name (download - right click to save) "},
+                    { field: "uploadedBy", title: "Uploaded By"},
+                    { field: "deleteDB", title: "Delete"},
+                    { field: "description", title: "Description"},
+                    { command: "destroy", title: "&nbsp;", width: 150 }],
+                editable: true
+            });
             });
         </script>
     </body>
