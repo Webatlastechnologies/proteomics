@@ -20,7 +20,7 @@ public class LabDatabaseController {
 	@Autowired
 	DatabaseRepository databaseRepository;
 
-	@RequestMapping(value = "getDetails", method = RequestMethod.GET)
+	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String getDetails() {
 		return "database";
 	}
