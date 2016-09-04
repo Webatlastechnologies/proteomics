@@ -11,8 +11,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -75,9 +78,10 @@ public class LabDatabaseController {
 
 	@RequestMapping(value = "/database/delete", method = RequestMethod.DELETE)
 	@ResponseBody
-	public String delete(@RequestParam long updateId) {
-		LabDatabase labDatabase = databaseRepository.findOne(updateId);
-		databaseRepository.delete(labDatabase);
+	public String delete(HttpServletRequest request, Principal principal) {
+		/*long database_id = Long.valueOf(requestMap.get("database_id"));
+		LabDatabase labDatabase = databaseRepository.findOne(database_id);
+		databaseRepository.delete(labDatabase);*/
 		System.out.println("inside database delete");
 		return "success";
 	}
