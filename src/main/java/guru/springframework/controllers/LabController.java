@@ -55,8 +55,8 @@ public class LabController {
 	    }
 
 	 @RequestMapping(value = "/delete", method = RequestMethod.POST)
-	    public @ResponseBody String update(@RequestParam long updateId) {
-		 Lab msg=labRepository.findOne(updateId);
+	    public @ResponseBody String update(@RequestParam long lab_id) {
+		 Lab msg=labRepository.findOne(lab_id);
 		 	labRepository.delete(msg);
 	        return "";
 	    }
