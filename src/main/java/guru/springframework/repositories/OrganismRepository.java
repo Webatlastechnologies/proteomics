@@ -6,5 +6,5 @@ import guru.springframework.domain.Organism;
 
 
 public interface OrganismRepository extends CrudRepository<Organism, Integer>{
-
+	Organism findByOrganismName(String organismName);
 }

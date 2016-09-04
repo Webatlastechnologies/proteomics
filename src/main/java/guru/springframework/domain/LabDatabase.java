@@ -139,4 +139,52 @@ public class LabDatabase {
 	public long getSizeInKb() {
 		return sizeInKb;
 	}
+
+	public void setOrganism(Organism organism) {
+		this.organism = organism;
+	}
+
+	public void setSource(Source source) {
+		this.source = source;
+	}
+
+	public void setReleasedDate(Date releasedDate) {
+		this.releasedDate = releasedDate;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setGenRevSeq(YesNo genRevSeq) {
+		this.genRevSeq = genRevSeq;
+	}
+
+	public void setAddConProtein(YesNo addConProtein) {
+		this.addConProtein = addConProtein;
+	}
+
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
+
+	public void setUploadedDate(Date uploadedDate) {
+		this.uploadedDate = uploadedDate;
+	}
+
+	public void setUploadedBy(String uploadedBy) {
+		this.uploadedBy = uploadedBy;
+	}
+
+	public void setProteinNum(long proteinNum) {
+		this.proteinNum = proteinNum;
+	}
+
+	public void setSizeInKb(long sizeInKb) {
+		this.sizeInKb = sizeInKb;
+	}
 }

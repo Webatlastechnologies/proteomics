@@ -159,7 +159,7 @@
 							<form namespace="/" id="addDatabaseAction"
 								name="addDatabaseAction"
 								onsubmit="return validateForm_addDatabaseAction();"
-								action="/ip2/addDatabaseAction.html" method="post"
+								action="database/add" method="post"
 								enctype="multipart/form-data" class="form-horizontal">
 								<input type="hidden" name="upload_file_name" value=""></input>
 								<input
@@ -886,10 +886,10 @@
 											</div>
 										</div>
 										<div class="form-group">
-											&nbsp;&nbsp;&nbsp;&nbsp;<input type="button"
+											&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit"
 												value="&nbsp;&nbsp;Submit" class="btn btn-primary"
 												style="background-color: #76b3ef;"
-												onclick="onSubmitPage();"></input> &nbsp;<input
+												></input> &nbsp;<input
 												type="button" value="Cancel" onclick="history.back()"
 												class="btn btn-default"></input>
 										</div>

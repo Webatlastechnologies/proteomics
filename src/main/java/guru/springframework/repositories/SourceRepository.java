@@ -6,6 +6,6 @@ import guru.springframework.domain.Source;
 
 
 public interface SourceRepository extends CrudRepository<Source, Integer>{
-
+	Source findBySourceName(String sourceName);
 }
 	
