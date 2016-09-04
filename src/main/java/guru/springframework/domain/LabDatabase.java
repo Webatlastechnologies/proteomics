@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 
 @Entity
 public class LabDatabase {
@@ -75,6 +76,14 @@ public class LabDatabase {
 	
 	@Column(name="FILE_SIZE")
 	private long sizeInKb;
+	
+	private boolean deletedb;
+	
+	@Transient
+	private String releaseDateStr;
+	
+	@Transient
+	private String uploadDateStr;
 
 	public Lab getLab() {
 		return lab;
@@ -186,5 +195,29 @@ public class LabDatabase {
 
 	public void setSizeInKb(long sizeInKb) {
 		this.sizeInKb = sizeInKb;
+	}
+
+	public boolean isDeletedb() {
+		return deletedb;
+	}
+
+	public void setDeletedb(boolean deletedb) {
+		this.deletedb = deletedb;
+	}
+
+	public String getReleaseDateStr() {
+		return releaseDateStr;
+	}
+
+	public void setReleaseDateStr(String releaseDateStr) {
+		this.releaseDateStr = releaseDateStr;
+	}
+
+	public String getUploadDateStr() {
+		return uploadDateStr;
+	}
+
+	public void setUploadDateStr(String uploadDateStr) {
+		this.uploadDateStr = uploadDateStr;
 	}
 }

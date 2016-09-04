@@ -193,11 +193,25 @@
 
         <script>
             $(function () {
-                /* Initialize Datatables */
-                /*$('#example-datatables').dataTable({columnDefs: [{orderable: false, targets: [0]}]});
-                $('#example-datatables2').dataTable();
-                $('#example-datatables3').dataTable();
-                $('.dataTables_filter input').attr('placeholder', 'Search');*/
+                function convertMilliSToDate(timeInMs){
+                	var dateVal = new Date(timeInMs);
+                	return dateVal;
+                }
+                function getReleaseDate(dateVal){
+                	var yearVal=dateVal.getFullYear()
+                	var monthVal=dateVal.getMonth()+1
+                	var dayVal=dateVal.getDate();
+                	return yearVal + "-" + monthVal + "-" + dayVal;
+                }
+                function getUploadedDate(dateVal){
+                	var yearVal=dateVal.getFullYear()
+                	var monthVal=dateVal.getMonth()+1
+                	var dayVal=dateVal.getDate();
+                	var hourVal=dateVal.getHours();
+                	var minVal=dateVal.getMinutes();
+                	var secVal=dateVal.getSeconds();
+                	return yearVal + "-" + monthVal + "-" + dayVal + " "+hourVal + ":"+ minVal + ":"+secVal +".0";
+                }
                 
             	var crudServiceBaseUrl = "database",
                 dataSource = new kendo.data.DataSource({
@@ -225,13 +239,13 @@
                             id: "database_id",
                             fields: {
                             	sourceName: {from: 'source.sourceName'},
-                            	releasedDate: { type :"date" },
-                            	uploadedDate: { type :"date" },
+                            	releaseDateStr: { type :"text" },
+                            	uploadDateStr: { type :"text" },
                             	sizeInKb: { type :"int" },
                             	proteinNum: { type :"int" },
                             	filePath: { type :"text" },
                             	uploadedBy: { type :"text" },
-                            	deleteDB: { type :"text" },
+                            	deletedb: { type :"text" },
                             	description: { type :"text" }
                             	
                             }
@@ -252,16 +266,16 @@
 								headerAttributes : {
 									"class" : "db-custom-table-header",
 								}
-							},
+							}, 
 							{
-								field : "releasedDate",
+								field : "releaseDateStr",
 								title : "Released Date",
 								headerAttributes : {
 									"class" : "db-custom-table-header",
 								}
 							},
 							{
-								field : "uploadedDate",
+								field : "uploadDateStr",
 								title : "Uploaded Date",
 								headerAttributes : {
 									"class" : "db-custom-table-header",
@@ -296,7 +310,7 @@
 								}
 							},
 							{
-								field : "deleteDB",
+								field : "deletedb",
 								title : "Delete",
 								headerAttributes : {
 									"class" : "db-custom-table-header",
@@ -314,7 +328,7 @@
 								title : "&nbsp;",
 								width : 0
 							} ],
-					editable : false
+					editable : true
 				});
 			});
 		</script>

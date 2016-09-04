@@ -63,7 +63,14 @@ public class LabDatabaseController {
 	@ResponseBody
 	public List<LabDatabase> read() {
 		System.out.println("inside database read");
-		return databaseRepository.findAll();
+		List<LabDatabase> labDatabaseList = databaseRepository.findAll();
+		if(labDatabaseList != null){
+			for(LabDatabase labDatabase : labDatabaseList){
+				labDatabase.setReleaseDateStr(getReleaseDate(labDatabase.getReleasedDate()));
+				labDatabase.setUploadDateStr(getUploadedDate(labDatabase.getReleasedDate()));
+			}
+		}
+		return labDatabaseList;
 	}
 
 	@RequestMapping(value = "/database/delete", method = RequestMethod.DELETE)
@@ -134,18 +141,19 @@ public class LabDatabaseController {
 		String year = requestMap.get("year");
 		String month = requestMap.get("month");
 		String date = requestMap.get("date");
+		try{
+			labDatabase.setReleasedDate(getDate(year, month, date));
+		}catch(ParseException e){
+			e.printStackTrace();
+		}
 		
-		labDatabase.setReleasedDate(getSQLDate(year, month, date));
 		labDatabase.setSizeInKb(0);
 		labDatabase.setUploadedBy(userName);
 		year = requestMap.get("year");
 		
 		Calendar calendar = Calendar.getInstance();
-		year =  calendar.get(Calendar.YEAR) + "";
-		month = (calendar.get(Calendar.MONTH) + 1) + "";
-		date = calendar.get(Calendar.DATE) + "";
 		
-		labDatabase.setUploadedDate(getSQLDate(year, month, date));
+		labDatabase.setUploadedDate(calendar.getTime());
 		labDatabase.setVersion(requestMap.get("version"));
 		
 		databaseRepository.save(labDatabase);
@@ -154,7 +162,7 @@ public class LabDatabaseController {
 		return new ModelAndView("redirect:/database");
 	}
 	
-	public java.sql.Date getSQLDate(String year, String month, String date){
+	public Date getDate(String year, String month, String date) throws ParseException{
 		
 		if(month.length() == 1){
 			month = "0"+month;
@@ -164,6 +172,40 @@ public class LabDatabaseController {
 			date = "0"+date;
 		}
 		String dateStr = year + "-"+ month+ "-"+date;
-		return java.sql.Date.valueOf(dateStr);
+		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		return  formatter.parse(dateStr);
+	}
+	
+	public String getReleaseDate(Date date){
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(date.getTime());
+		String year =  calendar.get(Calendar.YEAR) + "";
+		String month = (calendar.get(Calendar.MONTH) + 1) + "";
+		String dateStr = calendar.get(Calendar.DATE) + "";
+		if(month.length() == 1){
+			month = "0"+month;
+		}
+		if(dateStr.length() == 1){
+			dateStr = "0"+dateStr;
+		}
+		return year + "-" + month + "-"+ dateStr;
+	}
+	
+	public String getUploadedDate(Date date){
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(date.getTime());
+		String year =  calendar.get(Calendar.YEAR) + "";
+		String month = (calendar.get(Calendar.MONTH) + 1) + "";
+		if(month.length() == 1){
+			month = "0"+month;
+		}
+		String dateStr = calendar.get(Calendar.DATE) + "";
+		if(dateStr.length() == 1){
+			dateStr = "0"+dateStr;
+		}
+		String hours = calendar.get(Calendar.HOUR) + "";
+		String minutes = calendar.get(Calendar.MINUTE) + "";
+		String seconds = calendar.get(Calendar.SECOND) + "";
+		return year + "-" + month + "-"+ dateStr + " "+ hours + ":" + minutes + ":" + seconds + ".0";
 	}
 }
