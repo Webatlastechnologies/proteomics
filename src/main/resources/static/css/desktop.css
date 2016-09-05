@@ -606,6 +606,14 @@ a{outline: 0 !important}
     margin: 0 auto;
     width: 65%;
 }
+.edit-profile {
+    margin: 0 auto;
+    width: 50%;
+}
 .col-sm-4.text-left.control-label {
     text-align: left;
+}
+.push .edit-profile .panel-heading {
+    background: #76b3ef none repeat scroll 0 0;
+    border-color: #337ab7;
 }
