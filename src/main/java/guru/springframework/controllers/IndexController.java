@@ -4,6 +4,9 @@ import javax.mail.internet.AddressException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jdbc.core.metadata.GenericTableMetaDataProvider;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -62,6 +65,27 @@ public class IndexController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String registration(@ModelAttribute("userForm") User user, BindingResult bindingResult, Model model) {
+    	user.setRole("ROLE_USER");
+        userRepository.save(user);
+        try {
+			utils.sendEmail(user.getEmail(),"Registration Successfull",String.format("Dear %s, Thank you for registration!",user.getFirstName()));
+		} catch (AddressException e) {
+			model.addAttribute("danger",String.format("Error occured. Contact %s",adminEmail));
+		}
+        model.addAttribute("info","Thank you for registration!");
+        return "login";
+    }
+    
+    @RequestMapping(value = "/profile", method = RequestMethod.GET)
+    public String profile(Model model) {
+    	 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+         String name = auth.getName(); //get logged in username
+        model.addAttribute("userForm", userRepository.findByUsernameOrEmail(name, name));
+        return "editprofile";
+    }
+
+    @RequestMapping(value = "/profile", method = RequestMethod.POST)
+    public String profile(@ModelAttribute("userForm") User user, BindingResult bindingResult, Model model) {
     	user.setRole("ROLE_USER");
         userRepository.save(user);
         try {

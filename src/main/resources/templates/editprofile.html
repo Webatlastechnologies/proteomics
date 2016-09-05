@@ -4,9 +4,9 @@
     <head xmlns:th="http://www.thymeleaf.org">
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width"></meta>
         <title>IP</title>
-        <link href="../static/css/desktop.css" th:href="@{css/desktop.css}" rel="stylesheet"></link>
-        <link href="../static/css/responsive.css" th:href="@{css/responsive.css}" rel="stylesheet"></link>
-        <link rel="stylesheet" type="text/css" href="../static/css/font-awesome.min.css" th:href="@{css/font-awesome.min.css}"></link>
+        <link href="css/desktop.css" th:href="@{css/desktop.css}" rel="stylesheet"></link>
+        <link href="css/responsive.css" th:href="@{css/responsive.css}" rel="stylesheet"></link>
+        <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css" th:href="@{css/font-awesome.min.css}"></link>
         <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
               th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}"
               rel="stylesheet" media="screen" ></link>
@@ -16,98 +16,17 @@
         <script src="../static/js/bootstrap.min.js" th:src="@{js/bootstrap.min.js}" ></script>
 
 
-        <!-- Bootstrap.js -->
-        <link rel="stylesheet" type="text/css" href="../static/css/dataTables.bootstrap.min.css" th:src="@{css/dataTables.bootstrap.min.css}"> </link>
-        <script type="text/javascript"  src="../static/js/jquery.dataTables.min.js"></script>
-        <script type="text/javascript"  src="../static/js/dataTables.bootstrap.min.js"></script>
+        <!-- Bootstrap.js -->	
+        <link rel="stylesheet" type="text/css" href="css/dataTables.bootstrap.min.css"> </link>
+        <script type="text/javascript"  src="js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript"  src="js/dataTables.bootstrap.min.js"></script>
 
     </head>
     <body>
         <!-- Page Container -->
         <div id="page-container">
 
-            <header class="navbar navbar-inverse">
-                <!-- Mobile Navigation, Shows up  on smaller screens -->
-                <ul class="navbar-nav-custom pull-right hidden-md hidden-lg">
-                    <li class="divider-vertical"></li>
-                    <li>
-                        <!-- It is set to open and close the main navigation on smaller screens. The class .navbar-main-collapse was added to aside#page-sidebar -->
-                        <a href="javascript:void(0)" data-toggle="collapse" data-target=".navbar-main-collapse">
-                            <i class="fa fa-bars"></i>
-                        </a>
-                    </li>
-                </ul>
-                <!-- END Mobile Navigation -->
-
-                <!-- Logo -->
-                <a href="index.html" class="navbar-brand header-logo-img"><img src="../static/images/logo.png" th:src="@{images/logo.png}" alt="logo" class="img-responsive"></img></a>
-                <!-- Header Widgets -->
-                <!-- You can create the widgets you want by replicating the following. Each one exists in a <li> element -->
-                <ul id="widgets" class="navbar-nav-custom pull-right">
-                    <!-- Just a divider -->
-                    <li class="divider-vertical"></li>
-                    <!-- User Menu -->
-                    <li class="dropdown pull-right dropdown-user">
-                        <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user fa-2x"></i> <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <!-- Just a button demostrating how loading of widgets could happen, check main.js- - uiDemo() -->
-                            <li>
-                                <a href="javascript:void(0)" class="loading-on"><i class="fa fa-refresh"></i> Refresh</a>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <!-- Modal div is at the bottom of the page before including javascript code #modal-user-settings -->
-                                <a href="" role="button" data-toggle="modal"><i class="fa fa-user"></i> User Profile</a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0)"><i class="fa fa-wrench"></i> App Settings</a>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <a href="logout"><i class="fa fa-lock"></i> Log out</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <!-- END User Menu -->
-                </ul>
-                <!-- END Header Widgets -->
-            </header>            
-            <!-- END Header -->
-            <!-- Inner Container -->
-            <div class="sub_header clearfix">
-                <div class="col-md-12">
-                    <nav class=" navbar-default menu-default">
-                        <div class="container-fluid menu-container">
-                            <!-- Brand and toggle get grouped for better mobile display -->
-                            <div class="navbar-header">
-                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                                    <span class="sr-only">Toggle navigation</span>
-                                    <span class="icon-bar"></span>
-                                    <span class="icon-bar"></span>
-                                    <span class="icon-bar"></span>
-                                </button>
-                            </div>
-                            <!-- Collect the nav links, forms, and other content for toggling -->
-                            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                                <ul class="nav navbar-nav">
-                                    <li class="">
-                                        <a title="Home" href="home.html">Home</a>
-                                    </li>
-                                    <li class="">
-                                        <a title="Database" href="database">Database</a>
-                                    </li>
-                                    <li class="">
-                                        <a title="Project" href="project.html">Project</a>
-                                    </li>                                          
-                                    <li class="">
-                                        <a title="Edit Profile" href="editprofile.html">Edit Profile</a>
-                                    </li>                                            
-                                </ul>
-                            </div><!-- /.navbar-collapse -->
-                        </div><!-- /.container-fluid -->
-                    </nav>
-                </div>
-            </div>
+            <div th:replace="fragments/header :: header"> </div>
             <!-- main header html contecnt end -->
             <!-- Inner Container -->
             <div id="inner-container">
@@ -133,20 +52,21 @@
                                                     <!-- ngRepeat: info in recipeData.localeSpecificData| filter:{locale:localeVal} -->
                                                     <div class="form-group ">
                                                         <label>Username</label>
-                                                        <input type="text" class="form-control" name="" placeholder="Username" required="required">                                                    </div>
+                                                        <input type="text" class="form-control" name="" placeholder="Username" required="required" ></input> 
+                                                       </div>
                                                 </div>                                               
                                             </div>
                                             <div class="row form-seprate">                                                                       
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Password</label>
-                                                        <input type="password" class="form-control" name="" placeholder="" required="required">
+                                                        <input type="password" class="form-control" name="" placeholder="" required="required"></input> 
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Confirm  Password</label>
-                                                        <input type="password" name="" class="form-control"  placeholder="" required="required">
+                                                        <input type="password" name="" class="form-control"  placeholder="" required="required"></input> 
                                                     </div>
                                                 </div>
 
@@ -156,20 +76,21 @@
                                                     <!-- ngRepeat: info in recipeData.localeSpecificData| filter:{locale:localeVal} -->
                                                     <div class="form-group ">
                                                         <label>Password Hint</label>
-                                                        <input type="text" class="form-control" name="" placeholder="Password Hint" required="required">                                                    </div>
+                                                        <input type="text" class="form-control" name="" placeholder="Password Hint" required="required"></input>                                                     
+                                                       </div>
                                                 </div>                                               
                                             </div>
                                             <div class="row form-seprate">                                                                       
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>First Name</label>
-                                                        <input type="text" class="form-control" name="" placeholder="First Name" required="required">
+                                                        <input type="text" class="form-control" name="" placeholder="First Name" required="required"></input>   
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>last Name</label>
-                                                        <input type="text" name="" class="form-control"  placeholder="last Name" required="required">
+                                                        <input type="text" name="" class="form-control"  placeholder="last Name" required="required"></input> 
                                                     </div>
                                                 </div>
 
@@ -178,13 +99,13 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Email</label>
-                                                        <input type="text" class="form-control" name="" placeholder="Email" required="required">
+                                                        <input type="text" class="form-control" name="" placeholder="Email" required="required"></input> 
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Phone Number</label>
-                                                        <input type="text" name="" class="form-control"  placeholder="Phone Number" required="required">
+                                                        <input type="text" name="" class="form-control"  placeholder="Phone Number" required="required"></input> 
                                                     </div>
                                                 </div>
 
@@ -194,7 +115,7 @@
                                                     <!-- ngRepeat: info in recipeData.localeSpecificData| filter:{locale:localeVal} -->
                                                     <div class="form-group ">
                                                         <label>Website</label>
-                                                        <input type="text" class="form-control" name="" placeholder="Website" required="required">                                                    </div>
+                                                        <input type="text" class="form-control" name="" placeholder="Website" required="required">  </input>                                                   </div>
                                                 </div>                                               
                                             </div>
                                             <div class="row form-seprate">                                                                      
@@ -210,13 +131,13 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>City</label>
-                                                        <input type="text" class="form-control" name="" placeholder="Enter City Name" required="required">
+                                                        <input type="text" class="form-control" name="" placeholder="Enter City Name" required="required"></input> 
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>province</label>
-                                                        <input type="text" name="" class="form-control"  placeholder="Enter Province" required="required">
+                                                        <input type="text" name="" class="form-control"  placeholder="Enter Province" required="required"></input> 
                                                     </div>
                                                 </div>
 
@@ -225,7 +146,7 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>postalCode</label>
-                                                        <input type="text" class="form-control" name="" placeholder="Enter City Name" required="required">
+                                                        <input type="text" class="form-control" name="" placeholder="Enter City Name" required="required"></input> 
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
@@ -335,8 +256,6 @@
 
                                             </div>
 
-
-
                                         </div>
                                     </div>
                                 </div>
@@ -355,6 +274,8 @@
                         <span style="color: #fff">4.0.0</span>
                         &copy; 2016 <a href="#">Integrated Proteomics Applications, Inc.</a>
                     </span>
+                 </div>
                 </div> 
             </div>
-        </div>
+</body>
+</html>
