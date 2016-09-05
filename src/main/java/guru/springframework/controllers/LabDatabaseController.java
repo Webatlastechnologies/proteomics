@@ -76,14 +76,13 @@ public class LabDatabaseController {
 		return labDatabaseList;
 	}
 
-	@RequestMapping(value = "/database/delete", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/database/delete", method = RequestMethod.POST)
 	@ResponseBody
-	public String delete(HttpServletRequest request, Principal principal) {
-		/*long database_id = Long.valueOf(requestMap.get("database_id"));
+	public String delete(@RequestParam long database_id) {
 		LabDatabase labDatabase = databaseRepository.findOne(database_id);
-		databaseRepository.delete(labDatabase);*/
+		databaseRepository.delete(labDatabase);
 		System.out.println("inside database delete");
-		return "success";
+		return "";
 	}
 	
 	@RequestMapping(value = "/database/add", method = RequestMethod.POST)
