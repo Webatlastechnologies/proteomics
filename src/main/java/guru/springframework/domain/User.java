@@ -42,7 +42,10 @@ public class User {
 	private String username;
 	private String password;
 	private String role;
-	
+	private String mobile;
+	private String passwordHint;
+	private String website;
+	private String address;
 	@ManyToOne(cascade=CascadeType.MERGE)
 	@JoinColumn(name="lab_id")
 	@JsonIgnore
@@ -137,6 +140,54 @@ public class User {
 
 	public void setLabDatabases(Set<LabDatabase> labDatabases) {
 		this.labDatabases = labDatabases;
+	}
+
+	public String getMobile() {
+		return mobile;
+	}
+
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
+
+	public String getPasswordHint() {
+		return passwordHint;
+	}
+
+	public void setPasswordHint(String passwordHint) {
+		this.passwordHint = passwordHint;
+	}
+
+	public String getWebsite() {
+		return website;
+	}
+
+	public void setWebsite(String website) {
+		this.website = website;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public Set<Project> getProjects() {
+		return projects;
+	}
+
+	public void setProjects(Set<Project> projects) {
+		this.projects = projects;
+	}
+
+	public Set<Project> getSharedProjects() {
+		return sharedProjects;
+	}
+
+	public void setSharedProjects(Set<Project> sharedProjects) {
+		this.sharedProjects = sharedProjects;
 	}
 
 	

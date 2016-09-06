@@ -45,6 +45,8 @@
                             <div id="main">           
                                 <div class="panel panel-primary edit-profile">
                                     <div class="panel-heading"><h5 class="panel-title">User Profile</h5></div>
+                                    <form id="login-form" action="#" th:action="@{/profile}" th:object="${userForm}" method="post" class="form-horizontal login-form">
+                                    <input th:field="*{user_id}" type="hidden" class="form-control" name="" placeholder="Username" required="required" ></input> 
                                     <div class="panel-body">
                                         <div class="">                     
                                             <div class="row form-seprate">                                                                      
@@ -52,7 +54,7 @@
                                                     <!-- ngRepeat: info in recipeData.localeSpecificData| filter:{locale:localeVal} -->
                                                     <div class="form-group ">
                                                         <label>Username</label>
-                                                        <input type="text" class="form-control" name="" placeholder="Username" required="required" ></input> 
+                                                        <input th:field="*{username}" type="text" class="form-control" name="" placeholder="Username" required="required" ></input> 
                                                     </div>
                                                 </div>                                               
                                             </div>
@@ -60,7 +62,7 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Password</label>
-                                                        <input type="password" class="form-control" name="" placeholder="" required="required"></input> 
+                                                        <input th:field="*{password}" type="password" class="form-control" name="" placeholder="" required="required"></input> 
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
@@ -76,7 +78,7 @@
                                                     <!-- ngRepeat: info in recipeData.localeSpecificData| filter:{locale:localeVal} -->
                                                     <div class="form-group ">
                                                         <label>Password Hint</label>
-                                                        <input type="text" class="form-control" name="" placeholder="Password Hint" required="required"></input>                                                     
+                                                        <input th:field="*{passwordHint}" type="text" class="form-control" name="" placeholder="Password Hint" required="required"></input>                                                     
                                                     </div>
                                                 </div>                                               
                                             </div>
@@ -84,13 +86,13 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>First Name</label>
-                                                        <input type="text" class="form-control" name="" placeholder="First Name" required="required"></input>   
+                                                        <input th:field="*{firstName}" type="text" class="form-control" name="" placeholder="First Name" required="required"></input>   
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>last Name</label>
-                                                        <input type="text" name="" class="form-control"  placeholder="last Name" required="required"></input> 
+                                                        <input th:field="*{lastName}" type="text" name="" class="form-control"  placeholder="last Name" required="required"></input> 
                                                     </div>
                                                 </div>
 
@@ -99,13 +101,13 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Email</label>
-                                                        <input type="text" class="form-control" name="" placeholder="Email" required="required"></input> 
+                                                        <input th:field="*{email}" type="text" class="form-control" name="" placeholder="Email" required="required"></input> 
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Phone Number</label>
-                                                        <input type="text" name="" class="form-control"  placeholder="Phone Number" required="required"></input> 
+                                                        <input th:field="*{mobile}" type="text" name="" class="form-control"  placeholder="Phone Number" required="required"></input> 
                                                     </div>
                                                 </div>
 
@@ -115,7 +117,7 @@
                                                     <!-- ngRepeat: info in recipeData.localeSpecificData| filter:{locale:localeVal} -->
                                                     <div class="form-group ">
                                                         <label>Website</label>
-                                                        <input type="text" class="form-control" name="" placeholder="Website" required="required">  </input>                                                   </div>
+                                                        <input th:field="*{website}" type="text" class="form-control" name="" placeholder="Website" required="required">  </input>                                                   </div>
                                                 </div>                                               
                                             </div>
                                             <div class="row form-seprate">                                                                      
@@ -123,26 +125,26 @@
                                                     <!-- ngRepeat: info in recipeData.localeSpecificData| filter:{locale:localeVal} -->
                                                     <div class="form-group ">
                                                         <label>Address</label>
-                                                        <textarea  class="form-control"  placeholder="Website" required="required"></textarea> 
+                                                        <textarea th:field="*{address}" class="form-control"  placeholder="Website" required="required"></textarea> 
                                                     </div>
                                                 </div>                                               
                                             </div>
-                                            <div class="row form-seprate">                                                                       
+                                            <!-- <div class="row form-seprate">                                                                       
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>City</label>
-                                                        <input type="text" class="form-control" name="" placeholder="Enter City Name" required="required"></input> 
+                                                        <input th:field="*{city}" type="text" class="form-control" name="" placeholder="Enter City Name" required="required"></input> 
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>province</label>
-                                                        <input type="text" name="" class="form-control"  placeholder="Enter Province" required="required"></input> 
+                                                        <input th:field="*{username}" type="text" name="" class="form-control"  placeholder="Enter Province" required="required"></input> 
                                                     </div>
                                                 </div>
 
-                                            </div>
-                                            <div class="row form-seprate">                                                                       
+                                            </div> -->
+                                            <!-- <div class="row form-seprate">                                                                       
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>postalCode</label>
@@ -254,16 +256,18 @@
                                                     </div>
                                                 </div>
 
-                                            </div>
+                                            </div> -->
 
                                         </div>
                                         <div class="edit-btn">
                                      
-                                                <button type="button" class="btn btn-success">Update</button>
+                                                <button type="submit" class="btn btn-success">Update</button>
                                                 <button type="button" class="btn btn-default"> cancel</button>
                                                 
                                             
                                         </div>
+                                        </div>
+                                      </form>
                                     </div>
                                 </div>
                             </div>
@@ -283,6 +287,6 @@
                     </span>
                 </div>
             </div> 
-        </div>
+       
     </body>
 </html>
