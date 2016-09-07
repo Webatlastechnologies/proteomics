@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -60,14 +61,12 @@ public class FileUploadController {
     }
 
     @PostMapping("/upload")
-    public String handleFileUpload(@RequestParam("file") MultipartFile file,
-                                   RedirectAttributes redirectAttributes) {
+    @ResponseBody
+    public ResponseEntity<Void> handleFileUpload(@RequestParam("file") MultipartFile file) {
 
         storageService.store(file);
-        redirectAttributes.addFlashAttribute("message",
-                "You successfully uploaded " + file.getOriginalFilename() + "!");
 
-        return "redirect:/";
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
     @ExceptionHandler(StorageFileNotFoundException.class)

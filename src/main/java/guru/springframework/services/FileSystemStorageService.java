@@ -1,10 +1,13 @@
 package guru.springframework.services;
 
+import java.io.BufferedOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +39,18 @@ public class FileSystemStorageService implements StorageService {
             if (file.isEmpty()) {
                 throw new StorageException("Failed to store empty file " + file.getOriginalFilename());
             }
-            Files.copy(file.getInputStream(), this.rootLocation.resolve(file.getOriginalFilename()));
+//            Files.copy(file.getInputStream(), this.rootLocation.resolve(file.getOriginalFilename()));
+            
+            Path filePath = this.rootLocation.resolve(file.getOriginalFilename());
+            
+            OutputStream outputStream = new BufferedOutputStream(
+        			Files.newOutputStream(filePath, StandardOpenOption.CREATE,
+        					StandardOpenOption.APPEND));
+            byte [] bytes = new byte[file.getInputStream().available()];
+            file.getInputStream().read(bytes);
+        	outputStream.write(bytes, 0, bytes.length);	
+        	outputStream.close();
+            
         } catch (IOException e) {
             throw new StorageException("Failed to store file " + file.getOriginalFilename(), e);
         }
