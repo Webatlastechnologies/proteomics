@@ -86,15 +86,22 @@ public class IndexController {
 
     @RequestMapping(value = "/profile", method = RequestMethod.POST)
     public String profile(@ModelAttribute("userForm") User user, BindingResult bindingResult, Model model) {
-    	user.setRole("ROLE_USER");
-        userRepository.save(user);
-        try {
-			utils.sendEmail(user.getEmail(),"Registration Successfull",String.format("Dear %s, Thank you for registration!",user.getFirstName()));
-		} catch (AddressException e) {
-			model.addAttribute("danger",String.format("Error occured. Contact %s",adminEmail));
-		}
-        model.addAttribute("info","Thank you for registration!");
-        return "login";
+    	User dbuser=userRepository.findOne(user.getUser_id());
+    	System.out.println(user+user.getUsername());
+    	System.out.println(dbuser+dbuser.getUsername());
+        if(user.getPassword().length()>0)
+        	dbuser.setPassword(user.getPassword());
+        dbuser.setPasswordHint(user.getPasswordHint());
+        dbuser.setFirstName(user.getFirstName());
+        dbuser.setLastName(user.getLastName());
+        dbuser.setEmail(user.getEmail());
+        dbuser.setMobile(user.getMobile());
+        dbuser.setWebsite(user.getWebsite());
+        dbuser.setAddress(user.getAddress());
+        userRepository.save(dbuser);
+        model.addAttribute("userForm",dbuser);
+        model.addAttribute("info","Profile updated successfully");
+        return "editprofile";
     }
     
     @RequestMapping(value = "/lab-register", method = RequestMethod.GET)

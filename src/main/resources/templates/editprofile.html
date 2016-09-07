@@ -21,7 +21,16 @@
         <link rel="stylesheet" type="text/css" href="css/dataTables.bootstrap.min.css"> </link>
         <script type="text/javascript"  src="js/jquery.dataTables.min.js"></script>
         <script type="text/javascript"  src="js/dataTables.bootstrap.min.js"></script>
-
+		<script type="text/javascript">
+		
+		$(document).on("submit", "form", function (e) {
+		    if($("#password").val()!=$("#cpassword").val()){
+		    	alert("Password did not match}"); 
+		    	return false;
+		    }else
+		    return true;
+		})
+		</script>
     </head>
     <body>
         <!-- Page Container -->
@@ -47,7 +56,7 @@
                                 <div class="panel panel-primary edit-profile">
                                     <div class="panel-heading"><h5 class="panel-title">User Profile</h5></div>
                                     <form id="login-form" action="#" th:action="@{/profile}" th:object="${userForm}" method="post" class="form-horizontal login-form">
-                                    <input th:field="*{user_id}" type="hidden" class="form-control" name="" placeholder="Username" required="required" ></input> 
+                                    <input type="hidden" th:field="*{user_id}" class="form-control"></input> 
                                     <div class="panel-body">
                                         <div class="">                     
                                             <div class="row form-seprate">                                                                      
@@ -55,7 +64,7 @@
                                                     <!-- ngRepeat: info in recipeData.localeSpecificData| filter:{locale:localeVal} -->
                                                     <div class="form-group ">
                                                         <label>Username</label>
-                                                        <input th:field="*{username}" type="text" class="form-control" name="" placeholder="Username" required="required" ></input> 
+                                                        <input disabled="disabled" th:field="*{username}" type="text" class="form-control"></input> 
                                                     </div>
                                                 </div>                                               
                                             </div>
@@ -63,13 +72,13 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Password</label>
-                                                        <input th:field="*{password}" type="password" class="form-control" name="" placeholder="" required="required"></input> 
+                                                        <input th:field="*{password}" id="password" type="password" class="form-control" ></input> 
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Confirm  Password</label>
-                                                        <input type="password" name="" class="form-control"  placeholder="" required="required"></input> 
+                                                        <input type="password" id="cpassword" class="form-control"></input> 
                                                     </div>
                                                 </div>
 

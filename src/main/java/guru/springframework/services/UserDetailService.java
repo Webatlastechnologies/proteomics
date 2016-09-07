@@ -23,7 +23,7 @@ public class UserDetailService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
-		guru.springframework.domain.User user  = this.repository.findByUsernameOrEmail(usernameOrEmail,usernameOrEmail);
+		guru.springframework.domain.User user  = this.repository.findByUsername(usernameOrEmail);
 		repository.findAll(new PageRequest(1, 20));
 		return new User(user.getUsername(),user.getPassword(),AuthorityUtils.createAuthorityList(user.getRole()));
 	}

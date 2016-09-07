@@ -46,6 +46,7 @@ public class User {
 	private String passwordHint;
 	private String website;
 	private String address;
+	
 	@ManyToOne(cascade=CascadeType.MERGE)
 	@JoinColumn(name="lab_id")
 	@JsonIgnore
