@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -58,7 +59,9 @@ public class LabDatabaseController {
 	}
 	
 	@RequestMapping(value = "/viewAddNewDatabase", method = RequestMethod.GET)
-	public String addNewDatabase() {
+	public String addNewDatabase(Model model) {
+		model.addAttribute("sourceList", sourceRepository.findAll());
+		model.addAttribute("organismList", organismRepository.findAll());
 		return "addNewDatabase";
 	}
 	
@@ -124,20 +127,16 @@ public class LabDatabaseController {
 			labDatabase.setGenRevSeq(YesNo.No);
 		}
 		
-		Organism organism = organismRepository.findByOrganismName(requestMap.get("organism"));
+		Organism organism = organismRepository.findOne(Integer.parseInt(requestMap.get("organism")));
 		if(organism == null){
-			organism = new Organism();
-			organism.setOrganismName(requestMap.get("organism"));
-			organismRepository.save(organism);
+			
 		}
 		labDatabase.setOrganism(organism);
 		labDatabase.setProteinNum(0);
 		
-		Source source = sourceRepository.findBySourceName(requestMap.get("organism"));
+		Source source = sourceRepository.findOne(Integer.parseInt(requestMap.get("dbSource")));
 		if(source == null){
-			source = new Source();
-			source.setSourceName(requestMap.get("dbSource"));
-			sourceRepository.save(source);
+			
 		}
 		labDatabase.setSource(source);
 		
