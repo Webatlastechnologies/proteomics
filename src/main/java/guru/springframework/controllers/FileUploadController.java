@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import guru.springframework.services.StorageService;
 import guru.springframework.util.StorageFileNotFoundException;
@@ -62,10 +62,12 @@ public class FileUploadController {
 
     @PostMapping("/upload")
     @ResponseBody
-    public ResponseEntity<Void> handleFileUpload(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<Void> handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("filename") String fileName, @RequestParam(required=false, defaultValue="-1") int chunks, @RequestParam(required=false, defaultValue="-1") int chunk) {
 
-        storageService.store(file);
-
+        storageService.store(file, fileName, chunks, chunk);
+    	//System.out.println("fileName "+ fileName);
+    	//System.out.println("chunks "+ chunks);
+    	//System.out.println("chunk "+ chunk);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 

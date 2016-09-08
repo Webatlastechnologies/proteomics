@@ -1,13 +1,14 @@
 package guru.springframework.services;
 
-import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.MalformedURLException;
+import java.nio.channels.Channels;
+import java.nio.channels.FileChannel;
+import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,25 +35,46 @@ public class FileSystemStorageService implements StorageService {
     }
 
     @Override
-    public void store(MultipartFile file) {
+    public void store(MultipartFile file, String fileName, int chunks, int chunk) {
+    	FileOutputStream fileOutputStream = null;
+    	FileChannel destinationFileChannel = null;
+    	ReadableByteChannel readableChannel = null;
         try {
             if (file.isEmpty()) {
-                throw new StorageException("Failed to store empty file " + file.getOriginalFilename());
+                throw new StorageException("Failed to store empty file " + fileName);
             }
 //            Files.copy(file.getInputStream(), this.rootLocation.resolve(file.getOriginalFilename()));
             
-            Path filePath = this.rootLocation.resolve(file.getOriginalFilename());
+            Path filePath = this.rootLocation.resolve(fileName);
             
-            OutputStream outputStream = new BufferedOutputStream(
+            /*OutputStream outputStream = new BufferedOutputStream(
         			Files.newOutputStream(filePath, StandardOpenOption.CREATE,
         					StandardOpenOption.APPEND));
             byte [] bytes = new byte[file.getInputStream().available()];
             file.getInputStream().read(bytes);
         	outputStream.write(bytes, 0, bytes.length);	
-        	outputStream.close();
-            
+        	outputStream.close();*/
+            System.out.println(filePath.toFile() + " " + chunk);
+            fileOutputStream = new FileOutputStream(filePath.toFile(),true);
+            destinationFileChannel = fileOutputStream.getChannel();
+            readableChannel = Channels.newChannel(file.getInputStream());
+            int count = file.getInputStream().available();
+	        destinationFileChannel.transferFrom(readableChannel, destinationFileChannel.size(), count);
         } catch (IOException e) {
-            throw new StorageException("Failed to store file " + file.getOriginalFilename(), e);
+            throw new StorageException("Failed to store file " + fileName, e);
+        }finally {
+        	try{
+        		if(destinationFileChannel !=null){
+        			destinationFileChannel.close();
+        		}
+        		if(fileOutputStream != null){
+                    fileOutputStream.close();
+        		}
+
+        	}catch(IOException io){
+        		io.printStackTrace();
+        	}
+        	
         }
     }
 

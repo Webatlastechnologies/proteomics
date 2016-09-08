@@ -920,7 +920,7 @@
                     url : "/fileUpload/upload",
              
                     // Maximum file size
-                    max_file_size : '10000mb',
+                    max_file_size : 0,
              
                     chunk_size: '1mb',
              
@@ -958,7 +958,14 @@
                     flash_swf_url : '@{js/Moxie.swf}',
                  
                     // Silverlight settings
-                    silverlight_xap_url : '@{js/Moxie.xap}'
+                    silverlight_xap_url : '@{js/Moxie.xap}',
+                    init : {
+                    	BeforeUpload: function(up, file) {
+                    		up.settings.multipart_params = {
+                   	            filename: file.name
+                   	        };
+                    	}
+                    }
                 });
 
             });
