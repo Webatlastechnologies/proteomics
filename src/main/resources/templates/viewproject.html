@@ -12,7 +12,7 @@
         th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
         <!-- Bootstrap.js -->
         <script src="../static/js/bootstrap.min.js" th:src="@{js/bootstrap.min.js}" ></script>
-           <link rel="icon" href="../static/images/favicon.ico" type="image/ico" > </link>
+        <link rel="icon" href="../static/images/favicon.ico" type="image/ico" > 
 
 
         <!-- Bootstrap.js -->
@@ -123,11 +123,51 @@
                     <div class="row">
                         <div class="col-md-12 push">
                             <div id="main" class="project-page">  
-                                 <div>
-                                        <h4 class="pull-left">Active Project</h4>
-                                    <span class="pull-right"><a href="addnewproject.html"><i class="fa fa-plus"></i> Add New Project</a></span>
-                                    </div>
-                                <table class="table table-hover table-bordered">                                   
+                                <div class="container-fluid">                                   
+                                    <nav class="navbar navbar-default">
+
+                                        <div class="navbar-header">
+
+                                            <ul class="nav navbar-nav">
+                                                <li ><a href="" role="menuitem"><span aria-hidden="true" class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Add
+                                                        Experiment</a></li>
+                                                <li ><a href="" role="menuitem"><span aria-hidden="true" class="glyphicon glyphicon-search"></span>&nbsp;&nbsp;Batch
+                                                        Search</a></li>
+                                                <li ><a href="" role="menuitem"><span aria-hidden="true" class="glyphicon glyphicon-cog"></span>&nbsp;&nbsp;ID&copy;COMPARE</a></li>
+                                                <li ><a href="" role="menuitem"><span aria-hidden="true" class="glyphicon glyphicon-cog"></span>&nbsp;&nbsp;ID_STAT&copy;COMPARE</a></li>
+                                                <li ><a href="" role="menuitem"><span aria-hidden="true" class="glyphicon glyphicon-cog"></span>&nbsp;&nbsp;Quantitative&copy;COMPARE</a></li>
+                                                <li ><a href="" role="menuitem"><span aria-hidden="true" class="glyphicon glyphicon-cog"></span>&nbsp;&nbsp;Quantitative
+                                                        &copy;REGRESSION</a></li>
+                                                <li ><a href="" role="menuitem"><span aria-hidden="true" class="glyphicon glyphicon-cog"></span>&nbsp;&nbsp;Label
+                                                        free analysis</a></li>
+                                                <li ><a href="" role="menuitem"><span aria-hidden="true" class="glyphicon glyphicon-tasks"></span>&nbsp;&nbsp;Raw Files</a></li>
+                                                <li class="dropdwon">
+                                                    <a data-toggle="dropdown" class="dropdown-toggle" href="#"> More <span class="caret"></span>
+                                                    </a>
+                                                    <ul role="menu" class="dropdown-menu">
+                                                        <li ><a href="" role="menuitem"><span aria-hidden="true" class="glyphicon glyphicon-upload"></span>&nbsp;&nbsp;Batch
+                                                                upload</a></li>
+                                                        
+                                                        <li class="divider" ></li>
+                                                        <li ><a href="" role="menuitem"><span aria-hidden="true" class="glyphicon glyphicon-search"></span>&nbsp;&nbsp;Search
+                                                                protein</a></li>
+                                                        <li ><a href="" role="menuitem"><span aria-hidden="true" class="glyphicon glyphicon-search"></span>&nbsp;&nbsp;Search
+                                                                param overview</a></li>
+
+                                                        <li class="divider" ></li>
+                                                        <li ><a href="" role="menuitem"><span aria-hidden="true" class="glyphicon glyphicon-level-up"></span>&nbsp;&nbsp;Move
+                                                                experiments to another project</a></li>
+
+                                                    </ul>
+                                                </li>
+
+                                            </ul></div>
+
+                                    </nav>
+                                </div>
+                             
+                                <table class="table table-hover table-bordered">
+                                         <h4 >Active Experiments</h4>
                                     <thead>
                                         <tr>
                                             <th>First Name</th>
@@ -157,9 +197,9 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                
-                                 <table class="table table-hover table-bordered">
-                                    <h4>Archive Project</h4>
+
+                                <table class="table table-hover table-bordered">
+                                    <h4>Archive Experiments</h4>
                                     <thead>
                                         <tr>
                                             <th>First Name</th>
@@ -190,38 +230,7 @@
 
                                     </tbody>
                                 </table>
-                                 <table class="table table-hover table-bordered">
-                                    <h4>Shared Projects with me</h4>
-                                    <thead>
-                                        <tr>
-                                            <th>First Name</th>
-                                            <th>Last Name</th>
-                                            <th>Username</th>
-                                            <th>First Name</th>
-                                            <th>Last Name</th>
-                                            <th>Username</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                        </tr>
 
-                                    </tbody>
-                                </table>
                             </div>
                         </div>
                     </div>

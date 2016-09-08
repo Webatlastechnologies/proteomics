@@ -617,3 +617,8 @@ a{outline: 0 !important}
     background: #76b3ef none repeat scroll 0 0;
     border-color: #337ab7;
 }
+.project-page table {  text-align: center;}
+.project-page th {
+    font-size: 13px;
+    text-align: center;
+}
