@@ -19,214 +19,123 @@
         <link rel="stylesheet" type="text/css" href="../static/css/dataTables.bootstrap.min.css" th:src="@{css/dataTables.bootstrap.min.css}"> </link>
         <script type="text/javascript"  src="../static/js/jquery.dataTables.min.js"></script>
         <script type="text/javascript"  src="../static/js/dataTables.bootstrap.min.js"></script>
-
+		<link rel="stylesheet" href="css/kendo.common.min.css" />
+	    <link rel="stylesheet" href="css/kendo.default.min.css"/>
+	    <link rel="stylesheet" href="css/kendo.default.mobile.min.css" />
+	    <script src="js/kendo.all.min.js" ></script>
     </head>
     <body>
-        <!-- Page Container -->
-        <div id="page-container">
-
-            <header class="navbar navbar-inverse">
-                <!-- Mobile Navigation, Shows up  on smaller screens -->
-                <ul class="navbar-nav-custom pull-right hidden-md hidden-lg">
-                    <li class="divider-vertical"></li>
-                    <li>
-                        <!-- It is set to open and close the main navigation on smaller screens. The class .navbar-main-collapse was added to aside#page-sidebar -->
-                        <a href="javascript:void(0)" data-toggle="collapse" data-target=".navbar-main-collapse">
-                            <i class="fa fa-bars"></i>
-                        </a>
-                    </li>
-                </ul>
-                <!-- END Mobile Navigation -->
-
-                <!-- Logo -->
-                <a href="index.html" class="navbar-brand header-logo-img"><img src="../static/images/logo.png" th:src="@{images/logo.png}" alt="logo" class="img-responsive"></img></a>
-                <!-- Header Widgets -->
-                <!-- You can create the widgets you want by replicating the following. Each one exists in a <li> element -->
-                <ul id="widgets" class="navbar-nav-custom pull-right">
-                    <!-- Just a divider -->
-                    <li class="divider-vertical"></li>
-                    <!-- User Menu -->
-                    <li class="dropdown pull-right dropdown-user">
-                        <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user fa-2x"></i> <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <!-- Just a button demostrating how loading of widgets could happen, check main.js- - uiDemo() -->
-                            <li>
-                                <a href="javascript:void(0)" class="loading-on"><i class="fa fa-refresh"></i> Refresh</a>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <!-- Modal div is at the bottom of the page before including javascript code #modal-user-settings -->
-                                <a href="" role="button" data-toggle="modal"><i class="fa fa-user"></i> User Profile</a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0)"><i class="fa fa-wrench"></i> App Settings</a>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <a href="logout"><i class="fa fa-lock"></i> Log out</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <!-- END User Menu -->
-                </ul>
-                <!-- END Header Widgets -->
-            </header>            
-            <!-- END Header -->
-            <!-- Inner Container -->
-            <div class="sub_header clearfix">
-                <div class="col-md-12">
-                    <nav class=" navbar-default menu-default">
-                        <div class="container-fluid menu-container">
-                            <!-- Brand and toggle get grouped for better mobile display -->
-                            <div class="navbar-header">
-                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                                    <span class="sr-only">Toggle navigation</span>
-                                    <span class="icon-bar"></span>
-                                    <span class="icon-bar"></span>
-                                    <span class="icon-bar"></span>
-                                </button>
-                            </div>
-                            <!-- Collect the nav links, forms, and other content for toggling -->
-                            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                                <ul class="nav navbar-nav">
-                                    <li class="">
-                                        <a title="Home" href="home.html">Home</a>
-                                    </li>
-                                    <li class="">
-                                        <a title="Database" href="database">Database</a>
-                                    </li>
-                                    <li class="">
-                                        <a title="Project" href="project.html">Project</a>
-                                    </li>                                          
-                                    <li class="">
-                                        <a title="Edit Profile" href="editprofile.html">Edit Profile</a>
-                                    </li>                                            
-                                </ul>
-                            </div><!-- /.navbar-collapse -->
-                        </div><!-- /.container-fluid -->
-                    </nav>
-                </div>
-            </div>
-            <!-- main header html contecnt end -->
-            <!-- Inner Container -->
-            <div id="inner-container">
+      	<div th:replace="fragments/header :: header">
+	</div>
+	
+	<div id="inner-container">
                 <!-- Page Content -->
                 <div id="page-content">
+                    <!-- Navigation info -->
+               
                     <div class="row">
                         <div class="col-sm-12">
                             <ol class="breadcrumb">
-                                <li><a href="#">Home</a></li>
-                                <li class="active">Project</li>
+                                <li class="active">Home</li>
                             </ol>
                         </div>
                     </div>
+                    <!-- END Navigation info -->
+                    <!-- Datatables -->
                     <div class="row">
                         <div class="col-md-12 push">
-                            <div id="main" class="project-page">  
-                                 <div>
-                                        <h4 class="pull-left">Active Project</h4>
-                                    <span class="pull-right"><a href="addnewproject.html"><i class="fa fa-plus"></i> Add New Project</a></span>
-                                    </div>
-                                <table class="table table-hover table-bordered">                                   
-                                    <thead>
-                                        <tr>
-                                            <th>First Name</th>
-                                            <th>Last Name</th>
-                                            <th>Experiment</th>
-                                            <th>Edit</th>
-                                            <th>Delete</th>
-                                            <th>Share</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>                                        
-                                        <tr>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td><a href="viewproject.html">View Project</a></td>
-                                            <td><a href="editproject.html"><i class="fa fa-pencil"></i></a></td>
-                                            <td><a href=""><i class="fa fa-trash"></i></a></td>
-                                            <td><a href=""><i class="fa fa-share"></i></a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td><a href="viewproject.html">View Project</a></td>
-                                            <td><a href="editproject.html"><i class="fa fa-pencil"></i></a></td>
-                                            <td><a href=""><i class="fa fa-trash"></i></a></td>
-                                            <td><a href=""><i class="fa fa-share"></i></a></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                
-                                 <table class="table table-hover table-bordered">
-                                    <h4>Archive Project</h4>
-                                    <thead>
-                                        <tr>
-                                            <th>First Name</th>
-                                            <th>Last Name</th>
-                                            <th>Username</th>
-                                            <th>First Name</th>
-                                            <th>Last Name</th>
-                                            <th>Username</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                        </tr>
-
-                                    </tbody>
-                                </table>
-                                 <table class="table table-hover table-bordered">
-                                    <h4>Shared Projects with me</h4>
-                                    <thead>
-                                        <tr>
-                                            <th>First Name</th>
-                                            <th>Last Name</th>
-                                            <th>Username</th>
-                                            <th>First Name</th>
-                                            <th>Last Name</th>
-                                            <th>Username</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                        </tr>
-
-                                    </tbody>
-                                </table>
-                            </div>
+                              <div id="grid"> </div>
                         </div>
                     </div>
-                </div>    
+                    <!-- END Datatables in the grid -->
+                </div>
+                <!-- END Page Content -->
+                <!-- Footer -->
+                <div class="container-fluid" id="footer" th:replace="fragments/footer :: footer">
+                    
+                </div>            
+                <!-- END Footer -->
             </div>
-        </div>
+            <!-- END Inner Container -->
+            
+            <script  th:inline="javascript">
+            /*<![CDATA[*/
+                       
+                $(document).ready(function () {
+                    var crudServiceBaseUrl = "project",
+                        dataSource = new kendo.data.DataSource({
+                            transport: {
+                                read:  {
+                                    url: crudServiceBaseUrl + "/read",
+                                    dataType: "json",
+                                    type: "post"
+                                },
+                                update: {
+                                    url: crudServiceBaseUrl + "/update",
+                                    dataType: "json",
+                                    type: "post"
+                                },
+                                destroy: {
+                                    url: crudServiceBaseUrl + "/delete",
+                                    dataType: "json",
+                                    type: "post"
+                                },
+                                create: {
+                                    url: crudServiceBaseUrl + "/update",
+                                    dataType: "json",
+                                    type: "post"
+                                },
+                                /* parameterMap: function(options, operation) {
+                                    if (operation !== "read" && options.models) {
+                                        return kendo.stringify(options.models);
+                                    }
+                                } */
+                            },
+                           /*  schema: {
+                            	data: "_embedded.siteUpdateMessages",
+                                total: "page.totalElements"
+                              }, */
+                            batch: false,
+                            serverPaging: false,
+                            schema: {
+                                model: {
+                                    id: "project_id",
+                                    fields: {
+                                    	firstName: {editable:false},
+                                    	projectName: { type :"text",editable:true },
+                                    	createdDate: { type :"text",editable:true },
+                                    	description: { type :"text",editable:true },
+                                    	isArchive: { type :"text",editable:true },
+                                    	isEditable: { type :"text",editable:false },
+                                    	canDelete: { type :"text",editable:false },
+                                    	noOfSharedUsers: { type :"number",editable:false },
+                                    }
+                                }
+                            }
+                        });
+
+                    $("#grid").kendoGrid({
+                        dataSource: dataSource,
+                        navigatable: true,
+                        pageable: true,
+                        height: 550,
+                        toolbar: ["create", "save", "cancel"],
+                        columns: [
+                            { field: "project_id", title: "Id"},
+                            { field: "projectName", title: "Name"},
+                            { title: "Experiments", template: '<a href="experiment/#:project_id#" >View</a>'},
+                            { field: "createdDate", title: "Created Date"},
+                            { field: "description", title: "Description"},
+                            { field: "isArchive", title: "Archive"},
+                          /*   {  title: "Edit" ,template:'<a href="\\#"><i class="fa fa-pencil"></i></a>'}, */
+                            { title: "Delete" ,template:'<a href="\\#"><i class="fa fa-trash"></i></a>' , command: "destroy",},
+                            {  title: "Share" ,template:'<a href="\\#"><i class="fa fa-share"></i></a>'},
+                            ],
+                        editable: true
+                    });
+                });
+            
+                /*]]>*/
+            </script>
     </body>
 </html>    
