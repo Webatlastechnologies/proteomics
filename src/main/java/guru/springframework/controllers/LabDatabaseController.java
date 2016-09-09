@@ -11,8 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import guru.springframework.domain.Lab;
 import guru.springframework.domain.LabDatabase;
@@ -65,7 +64,7 @@ public class LabDatabaseController {
 		return "addNewDatabase";
 	}
 	
-	@RequestMapping(value="/database/read", method = RequestMethod.GET)
+	@RequestMapping(value="/readDatabase", method = RequestMethod.GET)
 	@ResponseBody
 	public List<LabDatabase> read() {
 		System.out.println("inside database read");
@@ -79,7 +78,7 @@ public class LabDatabaseController {
 		return labDatabaseList;
 	}
 
-	@RequestMapping(value = "/database/delete", method = RequestMethod.POST)
+	@RequestMapping(value = "/deleteDatabase", method = RequestMethod.POST)
 	@ResponseBody
 	public String delete(@RequestParam long database_id) {
 		LabDatabase labDatabase = databaseRepository.findOne(database_id);
@@ -88,7 +87,7 @@ public class LabDatabaseController {
 		return "";
 	}
 	
-	@RequestMapping(value = "/database/add", method = RequestMethod.POST)
+	@RequestMapping(value = "/addDatabase", method = RequestMethod.POST)
 	public ModelAndView add(@RequestParam Map<String, String> requestMap, Principal principal) {
 		String userName = principal.getName();	
 		User user = userRepository.findByUsernameOrEmail(userName, userName);
@@ -164,8 +163,48 @@ public class LabDatabaseController {
 		return new ModelAndView("redirect:/database");
 	}
 	
+	@RequestMapping(value = "/viewAddNewOrganism", method = RequestMethod.GET)
+	public String addNewOrganism() {
+		return "addNewOrganism";
+	}
+	
+	@RequestMapping(value = "/viewAddNewSource", method = RequestMethod.GET)
+	public String addNewSource() {
+		return "addNewSource";
+	}
+	
+	@RequestMapping(value = "/addNewSource", method = RequestMethod.POST)
+	public ModelAndView addNewSource(@RequestBody String sourceName, Model model, RedirectAttributes redir){
+		sourceName = sourceName.substring(sourceName.indexOf("dbSource=") + "dbSource=".length());
+		Source source = sourceRepository.findBySourceName(sourceName);
+		if(source != null){
+			redir.addFlashAttribute("error", "Source with given name already exists");
+			return new ModelAndView("redirect:/viewAddNewSource");
+		}else{
+			Source newSource = new Source();
+			newSource.setSourceName(sourceName);
+			sourceRepository.save(newSource);
+			return new ModelAndView("redirect:/viewAddNewDatabase");
+		}
+	}
+	
+	@RequestMapping(value = "/addNewOrganism", method = RequestMethod.POST)
+	public ModelAndView addNewOrganism(@RequestBody String organismName, Model model, RedirectAttributes redir){
+		organismName = organismName.substring(organismName.indexOf("organism=") + "organism=".length());
+		Organism organism = organismRepository.findByOrganismName(organismName);
+		if(organism != null){
+			redir.addFlashAttribute("error", "Organism with given name already exists");
+			return new ModelAndView("redirect:/viewAddNewOrganism");
+		}else{
+			Organism newOrganism = new Organism();
+			newOrganism.setOrganismName(organismName);
+			organismRepository.save(newOrganism);
+			return new ModelAndView("redirect:/viewAddNewDatabase");
+		}
+	}
+	
 	public Date getDate(String year, String month, String date) throws ParseException{
-		
+	
 		if(month.length() == 1){
 			month = "0"+month;
 		}

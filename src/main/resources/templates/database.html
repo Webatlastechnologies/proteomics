@@ -213,21 +213,20 @@
                 	return yearVal + "-" + monthVal + "-" + dayVal + " "+hourVal + ":"+ minVal + ":"+secVal +".0";
                 }
                 
-            	var crudServiceBaseUrl = "database",
                 dataSource = new kendo.data.DataSource({
                     transport: {
                         read:  {
-                            url: crudServiceBaseUrl + "/read",
+                            url: "/readDatabase",
                             dataType: "json",
                             type: "get"
                         },
                         destroy: {
-                            url: crudServiceBaseUrl + "/delete",
+                            url: "/deleteDatabase",
                             dataType: "json",
                             type: "post"
                         },
                         create: {
-                            url: crudServiceBaseUrl + "/add",
+                            url: "/addDatabase",
                             dataType: "json",
                             type: "post"
                         },
