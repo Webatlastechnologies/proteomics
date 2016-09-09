@@ -2,7 +2,9 @@ package guru.springframework.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -28,5 +30,13 @@ public class UserDetailService implements UserDetailsService {
 		return new User(user.getUsername(),user.getPassword(),AuthorityUtils.createAuthorityList(user.getRole()));
 	}
 	
+	public String getPrinciple(){
+		 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		 return auth.getName();
+	}
+	
+	public guru.springframework.domain.User getLoggedInUser(){
+		return repository.findByUsername(getPrinciple());
+	}
 
 }

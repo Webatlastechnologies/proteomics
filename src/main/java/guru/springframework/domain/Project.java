@@ -1,6 +1,6 @@
 package guru.springframework.domain;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -13,6 +13,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Project {
@@ -23,14 +26,19 @@ public class Project {
 	
 	@ManyToOne
 	@JoinColumn(name="user_id")
+	@JsonIgnore
 	private User user;
 	
 	@OneToMany(mappedBy="project")
 	private Set<Experiment> experiments;
 	
 	@ManyToMany(cascade=CascadeType.ALL)  
-	@JoinTable(name="user_project", joinColumns=@JoinColumn(name="project_id"), inverseJoinColumns=@JoinColumn(name="user_id"))  
+	@JoinTable(name="user_project", joinColumns=@JoinColumn(name="project_id"), inverseJoinColumns=@JoinColumn(name="user_id"))
+	@JsonIgnore
 	private Set<User> users;
+	
+	@Transient
+	private long projectOwner;
 	 
 	private String projectName;
 	
@@ -75,6 +83,7 @@ public class Project {
 	}
 
 	public void setUsers(Set<User> users) {
+		this.noOfSharedUsers = users.size();
 		this.users = users;
 	}
 
@@ -132,5 +141,13 @@ public class Project {
 
 	public void setNoOfSharedUsers(int noOfSharedUsers) {
 		this.noOfSharedUsers = noOfSharedUsers;
+	}
+
+	public long getProjectOwner() {
+		return projectOwner;
+	}
+
+	public void setProjectOwner(long projectOwner) {
+		this.projectOwner = projectOwner;
 	}
 }
