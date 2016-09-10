@@ -62,11 +62,11 @@
             /*<![CDATA[*/
                        
                 $(document).ready(function () {
-                    var crudServiceBaseUrl = "project",
+                    var crudServiceBaseUrl = "experiment",
                         dataSource = new kendo.data.DataSource({
                             transport: {
                                 read:  {
-                                    url: crudServiceBaseUrl + "/read",
+                                    url: crudServiceBaseUrl + '/read/'+[[${project_id}]],
                                     dataType: "json",
                                     type: "post"
                                 },
@@ -99,17 +99,14 @@
                             serverPaging: false,
                             schema: {
                                 model: {
-                                    id: "project_id",
+                                    id: "experiment_id",
                                     fields: {
-                                    	firstName: {editable:false},
-                                    	projectName: { type :"text",editable:true },
-                                    	createdDate: { type :"text",editable:true },
-                                    	description: { type :"text",editable:true },
-                                    	projectOwner: { type :"number",editable:false },
-                                    	isArchive: { type :"text",editable:false },
-                                    	isEditable: { type :"text",editable:false },
-                                    	canDelete: { type :"text",editable:false },
-                                    	noOfSharedUsers: { type :"number",editable:false },
+                                    	sampleName: {editable: true},
+                                    	sampleDescription: { type :"text",editable:true },
+                                    	date: { type :"date",editable:false},
+                                    	createDate: { type :"date",editable: false },
+                                    	instrument: { type :"text",editable: true },
+                                    	description: { type :"text",editable: true },
                                     }
                                 }
                             }
@@ -124,15 +121,15 @@
                         height: 550,
                         toolbar: ["create", "save", "cancel"],
                         columns: [
-                            { field: "project_id", title: "Id"},
-                            { field: "projectName", title: "Name"},
-                            { title: "Experiments", template: '<a href="experiment?project_id=#:project_id#" >View</a>'},
-                            { field: "createdDate", title: "Created Date"},
-                            {field:"projectOwner", title: "Owner id"},
+                            { field: "experiment_id", title: "Id"},
+                            { field: "sampleName", title: "Sample Name"},
+                            { field: "sampleDescription", title: "Sample Description"},
+                            { field: "date", title: "Date"},
+                            {field:"createDate", title: "Create Date"},
+                            { field: "instrument", title: "Instrument"},
                             { field: "description", title: "Description"},
                             { field: "isArchive", title: "Archive"},
-                            { title: "Delete" ,template:'<a href="project/delete?project_id=#:project_id#"><i class="fa fa-trash"></i></a>' },
-                            {  title: "Share" ,template:'<a href="\\#"><i class="fa fa-share"></i> #:noOfSharedUsers#</a>'},
+                            { title: "Delete" ,template:'<a href="experiment/delete?experiment_id=#:experiment_id#"><i class="fa fa-trash"></i></a>' },
                             ],
                         editable: true
                     });
