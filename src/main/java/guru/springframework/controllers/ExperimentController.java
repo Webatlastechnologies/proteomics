@@ -31,7 +31,7 @@ public class ExperimentController {
 	public String getDetails(@RequestParam("project_id") String project_id,Model model) {
 		System.out.println("inside experiment get details project_id : "+project_id);
 		model.addAttribute("project_id",project_id);
-		return "experiment";
+		return "allexperiment";
 	}
 
 	@RequestMapping(value="/read/{project_id}", method = RequestMethod.POST)

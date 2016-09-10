@@ -622,3 +622,12 @@ a{outline: 0 !important}
     font-size: 13px;
     text-align: center;
 }
+.exp-table td{
+border-right:1px solid #ddd; 
+}
+.table.exp-table {
+    text-align: left;
+}
+.upload-spectral {
+    margin: 10px 0;
+}
