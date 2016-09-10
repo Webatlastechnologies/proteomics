@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -30,6 +31,7 @@ public class Project {
 	private User user;
 	
 	@OneToMany(mappedBy="project")
+	@JsonIgnore
 	private Set<Experiment> experiments;
 	
 	@ManyToMany(cascade=CascadeType.ALL)  
@@ -42,13 +44,12 @@ public class Project {
 	 
 	private String projectName;
 	
+	@JsonFormat(pattern="yyyy-MM-dd") 
 	private Date createdDate;
 	
 	private String description;
 	
-	private boolean isArchive;
-	
-	private boolean isEditable;
+	private String archiveStatus;
 	
 	private boolean canDelete;
 	
@@ -111,22 +112,6 @@ public class Project {
 		this.description = description;
 	}
 
-	public boolean isArchive() {
-		return isArchive;
-	}
-
-	public void setArchive(boolean isArchive) {
-		this.isArchive = isArchive;
-	}
-
-	public boolean isEditable() {
-		return isEditable;
-	}
-
-	public void setEditable(boolean isEditable) {
-		this.isEditable = isEditable;
-	}
-
 	public boolean isCanDelete() {
 		return canDelete;
 	}
@@ -149,5 +134,13 @@ public class Project {
 
 	public void setProjectOwner(long projectOwner) {
 		this.projectOwner = projectOwner;
+	}
+
+	public String getArchiveStatus() {
+		return archiveStatus;
+	}
+
+	public void setArchiveStatus(String archiveStatus) {
+		this.archiveStatus = archiveStatus;
 	}
 }

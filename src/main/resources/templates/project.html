@@ -101,13 +101,11 @@
                                 model: {
                                     id: "project_id",
                                     fields: {
-                                    	firstName: {editable:false},
                                     	projectName: { type :"text",editable:true },
-                                    	createdDate: { type :"text",editable:true },
+                                    	createdDate: { type :"text",editable:false },
                                     	description: { type :"text",editable:true },
                                     	projectOwner: { type :"number",editable:false },
-                                    	isArchive: { type :"text",editable:false },
-                                    	isEditable: { type :"text",editable:false },
+                                    	archiveStatus: { type :"text",editable:true },
                                     	canDelete: { type :"text",editable:false },
                                     	noOfSharedUsers: { type :"number",editable:false },
                                     }
@@ -130,9 +128,9 @@
                             { field: "createdDate", title: "Created Date"},
                             {field:"projectOwner", title: "Owner id"},
                             { field: "description", title: "Description"},
-                            { field: "isArchive", title: "Archive"},
-                            { title: "Delete" ,template:'<a href="project/delete?project_id=#:project_id#"><i class="fa fa-trash"></i></a>' },
-                            {  title: "Share" ,template:'<a href="\\#"><i class="fa fa-share"></i> #:noOfSharedUsers#</a>'},
+                            { field: "archiveStatus", title: "Archive Status"},
+                            { title: "Delete", command:"destroy" },
+                            {  title: "Share" ,template:'<a href="shareProject?project_id=#:project_id#"><i class="fa fa-share"></i> #:noOfSharedUsers#</a>'},
                             ],
                         editable: true
                     });

@@ -46,7 +46,7 @@
                             <div id="main">           
                                 <div class="panel panel-primary edit-profile">
                                     <div class="panel-heading"><h5 class="panel-title">Share Project</h5></div>
-                                    <form  method="post" class="form-horizontal login-form">
+                                    <form action="shareProject" method="post" class="form-horizontal login-form">
                                     
                                     <div class="panel-body">
                                         <div class="">                     
@@ -55,7 +55,8 @@
                                                    
                                                     <div class="form-group ">
                                                         <label>Username (To Share) *:</label>
-                                                        <input type="text" class="form-control" name="" placeholder="Username" required="required" ></input> 
+                                                        <input type="hidden" name="project_id" th:value="${project.project_id}" ></input> 
+                                                        <input type="text" class="form-control" name="username" placeholder="Username" required="required" ></input> 
                                                     </div>
                                                 </div>                                               
                                             </div>
@@ -64,9 +65,9 @@
                                                     <!-- ngRepeat: info in recipeData.localeSpecificData| filter:{locale:localeVal} -->
                                                   <div class="form-group">
 									              <label class="control-label" for="desc">Access Rights:</label>
-									              <br>
-									              <input type="radio" value="false" name="fullAccess"> Read only
-									              <input type="radio" checked="" value="true" name="fullAccess"> Full Access
+									              <br/>
+									              <input type="radio" disabled="disabled" checked="" value="false" name="fullAccess"></input> Read only
+									              <input type="radio" disabled="disabled" value="true" name="fullAccess"></input> Full Access
            										 </div>
                                                 </div>                                               
                                             </div>
@@ -84,29 +85,22 @@
                                     </div>
 					<div class="share-table">
 						 <table class="table table-hover table-bordered">
-                                    <h4>Share With</h4>
+                                    <h4>Shared With</h4>
                                     <thead>
                                         <tr>
                                             <th>First Name</th>
                                             <th>Last Name</th>
                                             <th>Username</th>
-                                           
+                                           <th>Remove</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                           
+                                        <tr th:each="user : ${sharedUsers}" >
+                                            <td th:text="${user.firstName}">Mark</td>
+                                            <td th:text="${user.lastName}">Otto</td>
+                                            <td th:text="${user.username}">@mdo</td>
+                                          <!--  <td th:href="@{'/deleteSharing?project_id=' + ${project.project_id} + '&username=' + ${user.username} }" >delete</td> -->
                                         </tr>
-                                        <tr>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                           
-                                        </tr>
-
                                     </tbody>
                                 </table>
 					</div>

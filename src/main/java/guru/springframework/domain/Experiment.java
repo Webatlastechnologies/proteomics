@@ -11,6 +11,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Experiment {
 
@@ -21,12 +24,15 @@ public class Experiment {
 	private String sampleName;
 	private String sampleDescription;
 	private String instrument;	
-	private Date date;
+	@JsonFormat(pattern="yyyy-MM-dd") 
+	private Date experimentDate;
+	@JsonFormat(pattern="yyyy-MM-dd") 
 	private Date createDate;
 	private String description;
 	
 	@ManyToOne
 	@JoinColumn(name="project_id")
+	@JsonIgnore
 	private Project project;
 	
 	@OneToMany(mappedBy="experiment")
@@ -80,13 +86,6 @@ public class Experiment {
 		this.instrument = instrument;
 	}
 
-	public Date getDate() {
-		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
-	}
 
 	public Date getCreateDate() {
 		return createDate;
@@ -102,6 +101,14 @@ public class Experiment {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Date getExperimentDate() {
+		return experimentDate;
+	}
+
+	public void setExperimentDate(Date experimentdate) {
+		this.experimentDate = experimentdate;
 	}
 	
 	
