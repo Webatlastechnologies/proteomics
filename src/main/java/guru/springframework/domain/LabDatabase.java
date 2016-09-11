@@ -75,7 +75,7 @@ public class LabDatabase {
 	private long proteinNum;
 	
 	@Column(name="FILE_SIZE")
-	private long sizeInKb;
+	private double sizeInKb;
 	
 	private boolean deletedb;
 	
@@ -145,10 +145,6 @@ public class LabDatabase {
 		return proteinNum;
 	}
 
-	public long getSizeInKb() {
-		return sizeInKb;
-	}
-
 	public void setOrganism(Organism organism) {
 		this.organism = organism;
 	}
@@ -193,10 +189,6 @@ public class LabDatabase {
 		this.proteinNum = proteinNum;
 	}
 
-	public void setSizeInKb(long sizeInKb) {
-		this.sizeInKb = sizeInKb;
-	}
-
 	public boolean isDeletedb() {
 		return deletedb;
 	}
@@ -219,5 +211,13 @@ public class LabDatabase {
 
 	public void setUploadDateStr(String uploadDateStr) {
 		this.uploadDateStr = uploadDateStr;
+	}
+
+	public double getSizeInKb() {
+		return sizeInKb;
+	}
+
+	public void setSizeInKb(double sizeInKb) {
+		this.sizeInKb = sizeInKb;
 	}
 }

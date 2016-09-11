@@ -148,10 +148,8 @@
                                       onsubmit="return validateForm_addDatabaseAction();"
                                       action="addDatabase" method="post"
                                       enctype="multipart/form-data" class="form-horizontal">
-                                    <input type="hidden" name="upload_file_name" value=""></input>
-                                    <input
-                                        type="hidden" name="dbFilePath"
-                                        value="/data/2/rpark/ip2_data//ip2test/database/"></input>
+                                    <input type="hidden" name="upload_file_name" value="" id="upload_file_name"></input>
+                                    <input type="hidden" name="file_size" value="" id="file_size"></input>
 
 
                                     <div class="panel panel-primary">
@@ -354,61 +352,7 @@
                                                     file name does not contain special characters including
                                                     white space</font>
                                                     <div id="uploader" style="position: relative;">
-                                                        <div class="plupload_wrapper plupload_scroll">
-                                                            <div id="uploader_container" class="plupload_container"
-                                                                 title="Using runtime: html5">
-                                                                <div class="plupload">
-                                                                    <div class="plupload_content">
-                                                                        <div class="plupload_filelist_header">
-                                                                            <div class="plupload_file_name">Filename</div>
-                                                                            <div class="plupload_file_action">&nbsp;</div>
-                                                                            <div class="plupload_file_status">
-                                                                                <span>Status</span>
-                                                                            </div>
-                                                                            <div class="plupload_file_size">Size</div>
-                                                                            <div class="plupload_clearer">&nbsp;</div>
-                                                                        </div>
-                                                                        <ul id="uploader_filelist" class="plupload_filelist">
-                                                                            <li class="plupload_droptext">Drag files here or
-                                                                                click add files button below.</li>
-                                                                        </ul>
-                                                                        <div class="plupload_filelist_footer">
-                                                                            <div class="plupload_file_name">
-                                                                                <div class="plupload_buttons">
-                                                                                    <a href="#" class="plupload_button plupload_add"
-                                                                                       id="uploader_browse"
-                                                                                       style="position: relative; z-index: 1;">Add
-                                                                                        Files</a>
-                                                                                </div>
-                                                                                <span class="plupload_upload_status"></span>
-                                                                            </div>
-                                                                            <div class="plupload_file_action"></div>
-                                                                            <div class="plupload_file_status">
-                                                                                <span class="plupload_total_status">0%</span>
-                                                                            </div>
-                                                                            <div class="plupload_file_size">
-                                                                                <span class="plupload_total_file_size">0 b</span>
-                                                                            </div>
-                                                                            <div class="plupload_progress">
-                                                                                <div class="plupload_progress_container">
-                                                                                    <div class="plupload_progress_bar"></div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="plupload_clearer">&nbsp;</div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <input type="hidden" id="uploader_count"
-                                                                   name="uploader_count" value="0"></input>
-                                                        </div>
-                                                        <div id="html5_1arq3uivests19go1aup5471sd93_container"
-                                                             class="moxie-shim moxie-shim-html5"
-                                                             style="position: absolute; top: 236px; left: 16px; width: 81px; height: 21px; overflow: hidden; z-index: 0;">
-                                                            <input id="html5_1arq3uivests19go1aup5471sd93" type="file"
-                                                                   style="font-size: 999px; opacity: 0; position: absolute; top: 0px; left: 0px; width: 100%; height: 100%;"
-                                                                   multiple="" accept=""></input>
-                                                        </div>
+                                                        
                                                     </div>
                                                 </div>
                                             </div>
@@ -504,7 +448,18 @@
                     		up.settings.multipart_params = {
                    	            filename: file.name
                    	        };
-                    	}
+                    	},
+                    	FileUploaded: function(up, file, info) {
+                            // Called when file has finished uploading
+                            //console.log('[FileUploaded] File:', file, "Info:", info);
+                            if(info.status === 200){
+                            	var fileName = file.name;
+                                $("#upload_file_name").val(fileName);
+                                var fileSize = file.size/1024;
+                                $("#file_size").val(fileSize)
+                            }
+                            
+                        }
                     }
                 });
 

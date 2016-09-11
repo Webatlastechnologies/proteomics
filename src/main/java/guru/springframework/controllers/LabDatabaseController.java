@@ -1,5 +1,6 @@
 package guru.springframework.controllers;
 
+import java.io.File;
 import java.security.Principal;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -14,6 +15,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,6 +35,8 @@ import guru.springframework.repositories.LabRepository;
 import guru.springframework.repositories.OrganismRepository;
 import guru.springframework.repositories.SourceRepository;
 import guru.springframework.repositories.UserRepository;
+import guru.springframework.services.StorageService;
+import guru.springframework.util.FastaReader;
 
 @Controller
 public class LabDatabaseController {
@@ -51,6 +55,12 @@ public class LabDatabaseController {
 	
 	@Autowired
 	SourceRepository sourceRepository;
+	
+	@Autowired
+	FastaReader fastaReader;
+	
+	@Autowired
+	StorageService storageService;
 	
 	@RequestMapping(value = "/database", method = RequestMethod.GET)
 	public String getDetails() {
@@ -111,14 +121,31 @@ public class LabDatabaseController {
 		labDatabase.setLab(lab);
 		labDatabase.setUser(user);
 		String addConProtein = requestMap.get("contaminant");
+		String fileName = requestMap.get("upload_file_name");
+		String filePath = "";
 		if(addConProtein != null && addConProtein.equalsIgnoreCase(YesNo.Yes.name())){
+			if(!StringUtils.isEmpty(fileName)){
+				filePath = storageService.getDefaultFilePath().toString() + File.separator + fileName;
+				labDatabase.setProteinNum(fastaReader.getproteinCount(filePath));
+				if(!StringUtils.isEmpty(requestMap.get("file_size"))){
+					double fileSize = Double.parseDouble(requestMap.get("file_size"));
+					labDatabase.setSizeInKb(fileSize);
+				}else{
+					labDatabase.setSizeInKb(0);
+				}
+				
+			}
+			
 			labDatabase.setAddConProtein(YesNo.Yes);
 		}else{
 			labDatabase.setAddConProtein(YesNo.No);
 		}
 		
 		labDatabase.setDescription(requestMap.get("desc"));
-		labDatabase.setFilePath(requestMap.get("upload_file_name"));
+		if(!StringUtils.isEmpty(filePath)){
+			labDatabase.setFilePath(filePath);
+		}
+		
 		String reverse = requestMap.get("reverse");
 		if(reverse != null && reverse.equalsIgnoreCase(YesNo.Yes.name())){
 			labDatabase.setGenRevSeq(YesNo.Yes);
@@ -127,16 +154,10 @@ public class LabDatabaseController {
 		}
 		
 		Organism organism = organismRepository.findOne(Integer.parseInt(requestMap.get("organism")));
-		if(organism == null){
-			
-		}
 		labDatabase.setOrganism(organism);
-		labDatabase.setProteinNum(0);
+		
 		
 		Source source = sourceRepository.findOne(Integer.parseInt(requestMap.get("dbSource")));
-		if(source == null){
-			
-		}
 		labDatabase.setSource(source);
 		
 		String year = requestMap.get("year");
@@ -148,7 +169,7 @@ public class LabDatabaseController {
 			e.printStackTrace();
 		}
 		
-		labDatabase.setSizeInKb(0);
+		
 		labDatabase.setUploadedBy(userName);
 		year = requestMap.get("year");
 		
