@@ -310,7 +310,9 @@
 							},
 							{
 								field : "deletedb",
+								command : "destroy",
 								title : "Delete",
+								width : 0,
 								headerAttributes : {
 									"class" : "db-custom-table-header",
 								}
@@ -321,13 +323,20 @@
 								headerAttributes : {
 									"class" : "db-custom-table-header",
 								}
-							},
-							{
-								command : "destroy",
-								title : "&nbsp;",
-								width : 0
-							} ],
-						editable: { mode:"inline",destroy: true }
+							}
+							],
+						editable: { mode:"inline",destroy: true },
+						dataBound: function(e){
+							//Selects all delete buttons
+						    $("#Grid tbody tr .k-grid-delete").each(function () {
+						        var currentDataItem = $("#grid").data("kendoGrid").dataItem($(this).closest("tr"));
+						 
+						        //Check in the current dataItem if the row is deletable
+						        if (currentDataItem.deletedb == false) {
+						            $(this).remove();
+						        }
+						    });
+						}
 				});
 			});
 		</script>

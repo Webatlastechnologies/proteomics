@@ -77,6 +77,7 @@ public class LabDatabase {
 	@Column(name="FILE_SIZE")
 	private double sizeInKb;
 	
+	@Transient
 	private boolean deletedb;
 	
 	@Transient

@@ -76,13 +76,18 @@ public class LabDatabaseController {
 	
 	@RequestMapping(value="/readDatabase", method = RequestMethod.GET)
 	@ResponseBody
-	public List<LabDatabase> read() {
+	public List<LabDatabase> read(Principal principal) {
+		String userName = principal.getName();
 		System.out.println("inside database read");
 		List<LabDatabase> labDatabaseList = databaseRepository.findAll();
 		if(labDatabaseList != null){
 			for(LabDatabase labDatabase : labDatabaseList){
 				labDatabase.setReleaseDateStr(getReleaseDate(labDatabase.getReleasedDate()));
 				labDatabase.setUploadDateStr(getUploadedDate(labDatabase.getReleasedDate()));
+				if(userName.equals(labDatabase.getUser().getUsername())){
+					labDatabase.setDeletedb(true);
+				}
+			
 			}
 		}
 		return labDatabaseList;
