@@ -398,7 +398,7 @@
 
         <script>
             $(function () {
-            	$("#uploader").plupload({
+            	var uploader = $("#uploader").plupload({
                     // General settings
                     runtimes : 'html5,flash,silverlight,html4',
                     url : "/fileUpload/upload",
@@ -443,6 +443,7 @@
                  
                     // Silverlight settings
                     silverlight_xap_url : '@{js/Moxie.xap}',
+                    buttons:{browse:true,start:false,stop:false},
                     init : {
                     	BeforeUpload: function(up, file) {
                     		up.settings.multipart_params = {
@@ -459,6 +460,12 @@
                                 $("#file_size").val(fileSize)
                             }
                             
+                        },
+                        FilesAdded: function(up, files){
+                        	if(files.length === 1){
+                        		up.start();
+                        		$("#uploader").plupload('disable');
+                        	}
                         }
                     }
                 });
