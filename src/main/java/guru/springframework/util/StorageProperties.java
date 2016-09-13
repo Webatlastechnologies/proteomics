@@ -9,6 +9,10 @@ public class StorageProperties {
      * Folder location for storing files
      */
     private String location = "upload-dir";
+    
+    private String awsAccessKeyId = "accessKey";
+    private String awsSecretAccessKey = "secretKey";
+    private String existingBucketName = "existingBucketName";
 
     public String getLocation() {
         return location;
@@ -18,4 +22,27 @@ public class StorageProperties {
         this.location = location;
     }
 
+	public String getAwsSecretAccessKey() {
+		return awsSecretAccessKey;
+	}
+
+	public void setAwsSecretAccessKey(String awsSecretAccessKey) {
+		this.awsSecretAccessKey = awsSecretAccessKey;
+	}
+
+	public String getExistingBucketName() {
+		return existingBucketName;
+	}
+
+	public void setExistingBucketName(String existingBucketName) {
+		this.existingBucketName = existingBucketName;
+	}
+
+	public String getAwsAccessKeyId() {
+		return awsAccessKeyId;
+	}
+
+	public void setAwsAccessKeyId(String awsAccessKeyId) {
+		this.awsAccessKeyId = awsAccessKeyId;
+	}
 }
