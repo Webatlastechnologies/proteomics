@@ -17,6 +17,7 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.AbortMultipartUploadRequest;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.CompleteMultipartUploadRequest;
 import com.amazonaws.services.s3.model.InitiateMultipartUploadRequest;
 import com.amazonaws.services.s3.model.InitiateMultipartUploadResult;
@@ -66,14 +67,27 @@ public class S3StorageService {
 		}
 		String bucketName = existingBucketName;
 		String key = DATABASES_FOLDER_NAME +SUFFIX + file.getName();
-		InitiateMultipartUploadRequest initRequest = new InitiateMultipartUploadRequest(bucketName, key);
-	    InitiateMultipartUploadResult initResponse = s3Client.initiateMultipartUpload(initRequest);
-	    
+		
 	    
 	    long contentLength = file.length();
-	    long partSize = 5 * 1024 * 1024; // Set part size to 5 MB.
-
-	    try {
+	    long partSize = 5 * 1024 * 1024; 
+	    if(partSize > contentLength){
+	    	uploadFile(file, bucketName, key);
+	    }else{
+	    	uploadFileInParts(file, contentLength, partSize, bucketName, key);
+	    }
+	}
+	
+	private void uploadFile(File file, String bucketName, String key){
+		s3Client.putObject(new PutObjectRequest(bucketName, key, 
+				file)
+				.withCannedAcl(CannedAccessControlList.PublicRead));
+	}
+	private void uploadFileInParts(File file, long contentLength, long partSize, String bucketName, String key){
+		InitiateMultipartUploadRequest initRequest = new InitiateMultipartUploadRequest(bucketName, key);
+	    InitiateMultipartUploadResult initResponse = s3Client.initiateMultipartUpload(initRequest);
+		// Set part size to 5 MB.
+		try {
 	        // Step 2: Upload parts.
 	        long filePosition = 0;
 	        for (int i = 1; filePosition < contentLength; i++) {
@@ -103,12 +117,11 @@ public class S3StorageService {
 
 	        s3Client.completeMultipartUpload(compRequest);
 	    } catch (Exception e) {
+	    	e.printStackTrace();
 	        s3Client.abortMultipartUpload(new AbortMultipartUploadRequest(
 	                  existingBucketName, key, initResponse.getUploadId()));
 	    }	
-	    
 	}
-
 	private void createFolder(String bucketName, String folderName, AmazonS3 client) {
 		ObjectMetadata metadata = new ObjectMetadata();
 		metadata.setContentLength(0);
