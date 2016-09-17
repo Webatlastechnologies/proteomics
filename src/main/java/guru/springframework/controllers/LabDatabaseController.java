@@ -3,6 +3,7 @@ package guru.springframework.controllers;
 import java.io.File;
 import java.security.Principal;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -129,26 +130,29 @@ public class LabDatabaseController {
 		String fileName = requestMap.get("upload_file_name");
 		String filePath = "";
 		if(addConProtein != null && addConProtein.equalsIgnoreCase(YesNo.Yes.name())){
-			if(!StringUtils.isEmpty(fileName)){
-				filePath = storageService.getDefaultFilePath().toString() + File.separator + fileName;
-				labDatabase.setProteinNum(fastaReader.getproteinCount(filePath));
-				if(!StringUtils.isEmpty(requestMap.get("file_size"))){
-					double fileSize = Double.parseDouble(requestMap.get("file_size"));
-					labDatabase.setSizeInKb(fileSize);
-				}else{
-					labDatabase.setSizeInKb(0);
-				}
-				
-			}
-			
 			labDatabase.setAddConProtein(YesNo.Yes);
 		}else{
 			labDatabase.setAddConProtein(YesNo.No);
 		}
 		
+		if(!StringUtils.isEmpty(fileName)){
+			filePath = storageService.getDefaultFilePath().toString() + File.separator + fileName;
+			labDatabase.setProteinNum(fastaReader.getproteinCount(filePath));
+			if(!StringUtils.isEmpty(requestMap.get("file_size"))){
+				double fileSize = Double.parseDouble(requestMap.get("file_size"));
+				DecimalFormat df = new DecimalFormat("#.##");      
+				fileSize = Double.valueOf(df.format(fileSize));	
+				labDatabase.setSizeInKb(fileSize);
+			}else{
+				labDatabase.setSizeInKb(0);
+			}
+		}
+		
 		labDatabase.setDescription(requestMap.get("desc"));
 		if(!StringUtils.isEmpty(filePath)){
-			labDatabase.setFilePath(filePath);
+			File file = new File(filePath);
+			labDatabase.setFilePath(file.getName());
+			file.delete();
 		}
 		
 		String reverse = requestMap.get("reverse");

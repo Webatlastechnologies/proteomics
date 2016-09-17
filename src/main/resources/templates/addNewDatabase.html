@@ -417,10 +417,9 @@
                     },
              
                     // Specify what files to browse for
-                    /*filters : [
-                        {title : "Image files", extensions : "jpg,gif,png"},
-                        {title : "Zip files", extensions : "zip,avi"}
-                    ],*/
+                    filters : [
+                        {title : "Protein files", extensions : "fasta,FASTA, Fasta"},
+                    ],
              
                     // Rename files by clicking on their titles
                     rename: true,
@@ -447,7 +446,8 @@
                     init : {
                     	BeforeUpload: function(up, file) {
                     		up.settings.multipart_params = {
-                   	            filename: file.name
+                   	            filename: file.name,
+                   	         	foldername: "databases"
                    	        };
                     	},
                     	FileUploaded: function(up, file, info) {
@@ -466,7 +466,12 @@
                         		up.start();
                         		$("#uploader").plupload('disable');
                         	}
-                        }
+                        },
+                        FilesRemoved: function(up, files) {
+                        	if(files.length === 1){
+                        		$("#uploader").plupload('enable');
+                        	}
+                        },
                     }
                 });
 

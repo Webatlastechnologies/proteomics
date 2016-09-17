@@ -34,12 +34,11 @@ public class FileUploadController {
 
     @PostMapping("/upload")
     @ResponseBody
-    public ResponseEntity<Void> handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("filename") String fileName, @RequestParam(required=false, defaultValue="-1") int chunks, @RequestParam(required=false, defaultValue="-1") int chunk, Principal principal) {
+    public ResponseEntity<Void> handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("filename") String fileName, @RequestParam(required=false, defaultValue="-1") int chunks, @RequestParam(required=false, defaultValue="-1") int chunk, @RequestParam(name="foldername") String folderName, Principal principal) {
         storageService.store(file, fileName, chunks, chunk);
         if(chunk == (chunks - 1)){
         	File fileSystemFile = new File(storageService.getDefaultFilePath().toString() + File.separator + fileName);
-            s3StorageService.upload(fileSystemFile);
-            storageService.delete(fileSystemFile);
+            s3StorageService.upload(fileSystemFile, folderName);
         }
         
 	    		

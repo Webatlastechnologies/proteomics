@@ -32,8 +32,6 @@ import guru.springframework.util.StorageProperties;
 @EnableConfigurationProperties(StorageProperties.class)
 public class S3StorageService {
 
-	private Path rootLocation;
-	
 	private String awsAccessKeyID;
     private String awsSecretAccessKey;
     
@@ -44,11 +42,8 @@ public class S3StorageService {
     private List<PartETag> partETags = new ArrayList<PartETag>();
     private String existingBucketName;
     
-    private String DATABASES_FOLDER_NAME = "databases";
-    
     @Autowired
     public S3StorageService(StorageProperties properties) {
-        this.rootLocation = Paths.get(properties.getLocation());
         this.awsAccessKeyID = properties.getAwsAccessKeyId();
         this.awsSecretAccessKey = properties.getAwsSecretAccessKey();
         this.existingBucketName = properties.getExistingBucketName();
@@ -61,12 +56,12 @@ public class S3StorageService {
 		s3Client = new AmazonS3Client(credentials);
 	}
 
-	public void upload(File file) {
-		if(!s3Client.doesObjectExist(existingBucketName, DATABASES_FOLDER_NAME)){
-			createFolder(existingBucketName, DATABASES_FOLDER_NAME, s3Client);
+	public void upload(File file, String folderName) {
+		if(!s3Client.doesObjectExist(existingBucketName, folderName)){
+			createFolder(existingBucketName, folderName, s3Client);
 		}
 		String bucketName = existingBucketName;
-		String key = DATABASES_FOLDER_NAME +SUFFIX + file.getName();
+		String key = folderName +SUFFIX + file.getName();
 		
 	    
 	    long contentLength = file.length();
