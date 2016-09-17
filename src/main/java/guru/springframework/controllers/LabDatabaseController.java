@@ -84,7 +84,7 @@ public class LabDatabaseController {
 		if(labDatabaseList != null){
 			for(LabDatabase labDatabase : labDatabaseList){
 				labDatabase.setReleaseDateStr(getReleaseDate(labDatabase.getReleasedDate()));
-				labDatabase.setUploadDateStr(getUploadedDate(labDatabase.getReleasedDate()));
+				labDatabase.setUploadDateStr(getUploadedDate(labDatabase.getUploadedDate()));
 				if(userName.equals(labDatabase.getUser().getUsername())){
 					labDatabase.setDeletedb(true);
 				}
@@ -109,18 +109,7 @@ public class LabDatabaseController {
 		User user = userRepository.findByUsernameOrEmail(userName, userName);
 		Lab lab = labRepository.findOne(1l);
 		if(lab == null){
-			lab = new Lab();
-			lab.setApproved(true);
-			lab.setLabHeadEmail("a.d@email.com");
-			lab.setLabHeadFirstName("A");
-			lab.setLabHeadLastName("D");
-			lab.setLabName("FirstLab");
-			lab.setLabUrl("/url");
-			lab.setRequestorEmail("a.d@email.com");
-			Set<User> userSet = new HashSet<User>()	;
-			userSet.add(user);
-			lab.setUsers(userSet);
-			labRepository.save(lab);
+			// TODO add error page and redirect to it
 		}
 		
 		LabDatabase labDatabase = new LabDatabase();

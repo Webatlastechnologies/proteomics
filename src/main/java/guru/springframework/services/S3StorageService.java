@@ -3,8 +3,6 @@ package guru.springframework.services;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +45,6 @@ public class S3StorageService {
         this.awsAccessKeyID = properties.getAwsAccessKeyId();
         this.awsSecretAccessKey = properties.getAwsSecretAccessKey();
         this.existingBucketName = properties.getExistingBucketName();
-        System.out.println("inside s3");
         init();
     }
     

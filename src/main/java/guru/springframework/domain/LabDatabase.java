@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 @Entity
@@ -45,6 +47,7 @@ public class LabDatabase {
 	@JoinColumn(name="SRC_ID", nullable=true, insertable=true, updatable=true)
 	private Source source;
 	
+	@Temporal(TemporalType.DATE)
 	@Column(name="RELEASED_DATE")
 	private Date releasedDate;
 	
@@ -65,6 +68,7 @@ public class LabDatabase {
 	@Column(name="FILE_PATH")
 	private String filePath;
 	
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="UPLOADED_DATE")
 	private Date uploadedDate;
 	
