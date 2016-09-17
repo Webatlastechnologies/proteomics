@@ -37,7 +37,7 @@
 				text-align: left;
 			    font-size: 12px;
 			    font-weight: bold;
-			    background: #d7e9f5;
+			    background: #5D6D7E;
 			}
 			.k-grid  .k-grid-header  .k-header  .k-link {
 			    height: auto;
@@ -199,7 +199,7 @@
         <script>
 	        $(document).ready(function () {
 	            wnd = $("#modalWindow").kendoWindow({
-	                                title: "Delete confirmation",
+	                                title: "Delete Database",
 	                                modal: true,
 	                                visible: false,
 	                                resizable: false,
@@ -207,25 +207,6 @@
 	                            }).data("kendoWindow");
 	        });
             $(function () {
-                function convertMilliSToDate(timeInMs){
-                	var dateVal = new Date(timeInMs);
-                	return dateVal;
-                }
-                function getReleaseDate(dateVal){
-                	var yearVal=dateVal.getFullYear()
-                	var monthVal=dateVal.getMonth()+1
-                	var dayVal=dateVal.getDate();
-                	return yearVal + "-" + monthVal + "-" + dayVal;
-                }
-                function getUploadedDate(dateVal){
-                	var yearVal=dateVal.getFullYear()
-                	var monthVal=dateVal.getMonth()+1
-                	var dayVal=dateVal.getDate();
-                	var hourVal=dateVal.getHours();
-                	var minVal=dateVal.getMinutes();
-                	var secVal=dateVal.getSeconds();
-                	return yearVal + "-" + monthVal + "-" + dayVal + " "+hourVal + ":"+ minVal + ":"+secVal +".0";
-                }
                 function confirmDelete(e){
                 	//e.preventDefault();
                 	 
@@ -297,15 +278,20 @@
 
             $("#grid").kendoGrid({
                 dataSource: dataSource,
+                sortable: {
+                    mode: "multiple",
+                    allowUnsort: true
+                },
                 navigatable: true,
                 pageable: true,
-                height: 550,
+                height: 350,
                 selectable : true,
                 columns: 
 						[
 							{
 								field : "sourceName",
 								title : "DB Source",
+								width : 100,
 								headerAttributes : {
 									"class" : "db-custom-table-header",
 								}
@@ -313,6 +299,7 @@
 							{
 								field : "releaseDateStr",
 								title : "Released Date",
+								width : 80,
 								headerAttributes : {
 									"class" : "db-custom-table-header",
 								}
@@ -320,6 +307,7 @@
 							{
 								field : "uploadDateStr",
 								title : "Uploaded Date",
+								width : 110,
 								headerAttributes : {
 									"class" : "db-custom-table-header",
 								}
@@ -327,6 +315,7 @@
 							{
 								field : "sizeInKb",
 								title : "Size (KB)",
+								width : 60,
 								headerAttributes : {
 									"class" : "db-custom-table-header",
 								}
@@ -334,6 +323,7 @@
 							{
 								field : "proteinNum",
 								title : "Protein Num",
+								width : 70,
 								headerAttributes : {
 									"class" : "db-custom-table-header",
 								}
@@ -341,6 +331,7 @@
 							{
 								field : "filePath",
 								title : "File Name (download - right click to save) ",
+								width : 250,
 								headerAttributes : {
 									"class" : "db-custom-table-header",
 								}
@@ -348,6 +339,7 @@
 							{
 								field : "uploadedBy",
 								title : "Uploaded By",
+								width : 60,
 								headerAttributes : {
 									"class" : "db-custom-table-header",
 								}
@@ -356,7 +348,7 @@
 								field : "deletedb",
 								command: { text: "Delete", click: confirmDelete },
 								title : "Delete",
-								width : 0,
+								width : 60,
 								headerAttributes : {
 									"class" : "db-custom-table-header",
 								}
@@ -364,6 +356,7 @@
 							{
 								field : "description",
 								title : "Description",
+								width : 100,
 								headerAttributes : {
 									"class" : "db-custom-table-header",
 								}
