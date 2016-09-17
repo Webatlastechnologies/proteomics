@@ -188,10 +188,24 @@
             </div>
             <!-- END Inner Container -->
         </div>
+        <div id="modalWindow">
+		    <p>Are you sure you want to delete database?</p>
+		    <button id="yes" class="k-button">Yes</button>
+		    <button id="no" class="k-button">No</button>
+		</div>
         <!-- END Page Container -->
         <!-- Javascript code only for this page -->
 
         <script>
+	        $(document).ready(function () {
+	            wnd = $("#modalWindow").kendoWindow({
+	                                title: "Delete confirmation",
+	                                modal: true,
+	                                visible: false,
+	                                resizable: false,
+	                                width: 300
+	                            }).data("kendoWindow");
+	        });
             $(function () {
                 function convertMilliSToDate(timeInMs){
                 	var dateVal = new Date(timeInMs);
@@ -212,7 +226,36 @@
                 	var secVal=dateVal.getSeconds();
                 	return yearVal + "-" + monthVal + "-" + dayVal + " "+hourVal + ":"+ minVal + ":"+secVal +".0";
                 }
-                
+                function confirmDelete(e){
+                	//e.preventDefault();
+                	 
+                    var grid = this;
+                    var row = $(e.currentTarget).closest("tr");
+                    var selectedData = grid.dataItem(grid.select());
+                    
+                    wnd.center().open();
+                    $("#yes").click(function () {
+                    	if(selectedData){
+                    		$.ajax({
+                    			url:'/deleteDatabase',
+                    			method: 'POST',
+                    			data : {
+                    				database_id:selectedData.database_id
+                    			},
+                    			success : function(response){
+                    				grid.removeRow(row);
+                    			}
+                    		});
+                    		
+                    	}
+                        
+                        wnd.close();
+                    });
+                 
+                    $("#no").click(function () {
+                        wnd.close();
+                    });
+                }
                 dataSource = new kendo.data.DataSource({
                     transport: {
                         read:  {
@@ -257,6 +300,7 @@
                 navigatable: true,
                 pageable: true,
                 height: 550,
+                selectable : true,
                 columns: 
 						[
 							{
@@ -310,7 +354,7 @@
 							},
 							{
 								field : "deletedb",
-								command : "destroy",
+								command: { text: "Delete", click: confirmDelete },
 								title : "Delete",
 								width : 0,
 								headerAttributes : {

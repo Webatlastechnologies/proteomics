@@ -98,8 +98,11 @@ public class LabDatabaseController {
 	@ResponseBody
 	public String delete(@RequestParam long database_id) {
 		LabDatabase labDatabase = databaseRepository.findOne(database_id);
-		databaseRepository.delete(labDatabase);
-		System.out.println("inside database delete");
+		if(labDatabase != null){
+			databaseRepository.delete(labDatabase);
+			System.out.println("inside database delete");
+		}
+		
 		return "";
 	}
 	
