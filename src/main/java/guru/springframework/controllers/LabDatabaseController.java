@@ -2,6 +2,7 @@ package guru.springframework.controllers;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.Principal;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -237,12 +238,13 @@ public class LabDatabaseController {
 	@RequestMapping(value = "/downloadDatabaseFile/{fileName}.{ext}", method = RequestMethod.GET)
 	public ResponseEntity<InputStreamResource> downloadStuff(@PathVariable String fileName, @PathVariable String ext)
 	                                                                  throws IOException {
+		
+		InputStream inputStream = s3StorageService.download(fileName + "." + ext, "databases");
 	    HttpHeaders respHeaders = new HttpHeaders();
 	    respHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-	    respHeaders.setContentLength(12345678);
 	    respHeaders.setContentDispositionFormData("attachment", fileName + "." + ext);
 
-	    InputStreamResource isr = new InputStreamResource(s3StorageService.download(fileName + "." + ext, "databases"));
+	    InputStreamResource isr = new InputStreamResource(inputStream);
 	    return new ResponseEntity<InputStreamResource>(isr, respHeaders, HttpStatus.OK);
 	}	
 		
