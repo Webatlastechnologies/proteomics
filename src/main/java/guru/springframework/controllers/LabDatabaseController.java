@@ -1,6 +1,7 @@
 package guru.springframework.controllers;
 
 import java.io.File;
+import java.io.IOException;
 import java.security.Principal;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -8,15 +9,19 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -36,6 +41,7 @@ import guru.springframework.repositories.LabRepository;
 import guru.springframework.repositories.OrganismRepository;
 import guru.springframework.repositories.SourceRepository;
 import guru.springframework.repositories.UserRepository;
+import guru.springframework.services.S3StorageService;
 import guru.springframework.services.StorageService;
 import guru.springframework.util.FastaReader;
 
@@ -62,6 +68,9 @@ public class LabDatabaseController {
 	
 	@Autowired
 	StorageService storageService;
+	
+	@Autowired
+	S3StorageService s3StorageService;
 	
 	@RequestMapping(value = "/database", method = RequestMethod.GET)
 	public String getDetails() {
@@ -224,6 +233,19 @@ public class LabDatabaseController {
 			return new ModelAndView("redirect:/viewAddNewDatabase");
 		}
 	}
+	
+	@RequestMapping(value = "/downloadDatabaseFile/{fileName}.{ext}", method = RequestMethod.GET)
+	public ResponseEntity<InputStreamResource> downloadStuff(@PathVariable String fileName, @PathVariable String ext)
+	                                                                  throws IOException {
+	    HttpHeaders respHeaders = new HttpHeaders();
+	    respHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+	    respHeaders.setContentLength(12345678);
+	    respHeaders.setContentDispositionFormData("attachment", fileName + "." + ext);
+
+	    InputStreamResource isr = new InputStreamResource(s3StorageService.download(fileName + "." + ext, "databases"));
+	    return new ResponseEntity<InputStreamResource>(isr, respHeaders, HttpStatus.OK);
+	}	
+		
 	
 	public Date getDate(String year, String month, String date) throws ParseException{
 	

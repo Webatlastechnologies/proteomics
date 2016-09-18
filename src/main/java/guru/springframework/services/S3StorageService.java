@@ -17,11 +17,13 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.AbortMultipartUploadRequest;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.CompleteMultipartUploadRequest;
+import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.InitiateMultipartUploadRequest;
 import com.amazonaws.services.s3.model.InitiateMultipartUploadResult;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PartETag;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.UploadPartRequest;
 
 import guru.springframework.util.StorageProperties;
@@ -51,6 +53,19 @@ public class S3StorageService {
 	public void init() {
 		credentials = new BasicAWSCredentials(awsAccessKeyID, awsSecretAccessKey);
 		s3Client = new AmazonS3Client(credentials);
+	}
+	
+	public InputStream download(String fileName, String folderName){
+		String bucketName = existingBucketName;
+		String key = folderName +SUFFIX + fileName;	
+		GetObjectRequest rangeObjectRequest = new GetObjectRequest(
+				bucketName, key);
+		rangeObjectRequest.setRange(0, 10); // retrieve 1st 11 bytes.
+		S3Object objectPortion = s3Client.getObject(rangeObjectRequest);
+
+		InputStream inputStream = objectPortion.getObjectContent();
+		// Process the objectData stream.
+		return inputStream;
 	}
 
 	public void upload(File file, String folderName) {

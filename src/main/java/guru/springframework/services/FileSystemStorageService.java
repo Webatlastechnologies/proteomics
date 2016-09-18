@@ -21,9 +21,6 @@ public class FileSystemStorageService implements StorageService {
     
     @Override
     public void store(MultipartFile file, String fileName, int chunks, int chunk) {
-    	/*FileOutputStream fileOutputStream = null;
-    	FileChannel destinationFileChannel = null;
-    	ReadableByteChannel readableChannel = null;*/
     	OutputStream outputStream = null;
         try {
             if (file.isEmpty()) {
@@ -37,21 +34,10 @@ public class FileSystemStorageService implements StorageService {
             file.getInputStream().read(bytes);
         	outputStream.write(bytes, 0, bytes.length);	
             System.out.println(filePath.toFile() + " " + chunk);
-            /*fileOutputStream = new FileOutputStream(filePath.toFile(),true);
-            destinationFileChannel = fileOutputStream.getChannel();
-            readableChannel = Channels.newChannel(file.getInputStream());
-            int count = file.getInputStream().available();
-	        destinationFileChannel.transferFrom(readableChannel, destinationFileChannel.size(), count);*/
         } catch (IOException e) {
             throw new StorageException("Failed to store file " + fileName, e);
         }finally {
         	try{
-        		/*if(destinationFileChannel !=null){
-        			destinationFileChannel.close();
-        		}
-        		if(fileOutputStream != null){
-                    fileOutputStream.close();
-        		}*/
         		outputStream.close();
         	}catch(IOException io){
         		io.printStackTrace();
