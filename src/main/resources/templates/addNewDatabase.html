@@ -143,6 +143,7 @@
                     <div class="row">
                         <div class="col-md-12 push">
                             <div class="addnewdb">
+                            	<div class="alert-danger" style="display:none;"><span>Please upload a file before proceeding.</span></div>
                                 <form namespace="/" id="addDatabaseAction"
                                       name="addDatabaseAction"
                                       onsubmit="return validateForm_addDatabaseAction();"
@@ -308,19 +309,6 @@
 
                                                 </div>
                                             </div>
-
-                                            <script type="text/javascript">
-                                                function validateForm_addDatabaseAction() {
-                                                    form = document.getElementById("addDatabaseAction");
-                                                    clearErrorMessages(form);
-                                                    clearErrorLabels(form);
-
-                                                    var errors = false;
-
-                                                    return !errors;
-                                                }
-                                            </script>
-
                                             <div class="form-group">
                                                 <label class="col-sm-4 text-left text-nowrap control-label">
                                                     File name </label>
@@ -374,6 +362,16 @@
         <!-- Javascript code only for this page -->
 
         <script>
+        	var isFileAdded = false;
+        	
+        	 function validateForm_addDatabaseAction() {
+        		if(!isFileAdded){
+        			$(".alert-danger").show();
+        			return false;
+        		}
+				
+             }
+        	
             $(function () {
             	var uploader = $("#uploader").plupload({
                     // General settings
@@ -442,11 +440,14 @@
                         	if(files.length === 1){
                         		up.start();
                         		$("#uploader").plupload('disable');
+                        		isFileAdded = true;
+                        		$(".alert-danger").hide();
                         	}
                         },
                         FilesRemoved: function(up, files) {
                         	if(files.length === 1){
                         		$("#uploader").plupload('enable');
+                        		isFileAdded = false;
                         	}
                         },
                     }
