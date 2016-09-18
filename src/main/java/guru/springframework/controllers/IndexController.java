@@ -65,6 +65,13 @@ public class IndexController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String registration(@ModelAttribute("userForm") User user, BindingResult bindingResult, Model model) {
+    	if(userRepository.findByUsername(user.getUsername())!=null){
+    		model.addAttribute("danger","Username already exists");
+    		model.addAttribute("userForm", user);
+    		model.addAttribute("labs", labRepository.findByApproved(true));
+    		return "register";
+    	}
+    	
     	user.setRole("ROLE_USER");
         userRepository.save(user);
         try {
