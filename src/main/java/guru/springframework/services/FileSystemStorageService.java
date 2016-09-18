@@ -29,7 +29,7 @@ public class FileSystemStorageService implements StorageService {
             
             Path filePath = this.rootLocation.resolve(fileName);
             
-            outputStream = new BufferedOutputStream(Files.newOutputStream(filePath, StandardOpenOption.CREATE, StandardOpenOption.APPEND));
+            outputStream = Files.newOutputStream(filePath, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
             byte [] bytes = new byte[file.getInputStream().available()];
             file.getInputStream().read(bytes);
         	outputStream.write(bytes, 0, bytes.length);	
@@ -52,8 +52,10 @@ public class FileSystemStorageService implements StorageService {
     }
     
     @Override
-    public void delete(File file) {
-    	file.delete();
+    public void delete(File file) throws IOException {
+    	if(file.exists() && file.isFile()){
+    		Files.delete(file.toPath());
+    	}
     }
     
 }

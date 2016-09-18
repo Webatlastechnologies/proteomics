@@ -11,5 +11,5 @@ public interface StorageService {
 
     Path getDefaultFilePath();
     
-    void delete(File file);
+    void delete(File file) throws Exception;
 }
