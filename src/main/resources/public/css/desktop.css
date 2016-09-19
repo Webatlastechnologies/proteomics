@@ -548,3 +548,26 @@ a{outline: 0 !important}
     color: #fff;
 }
 .signup{margin: 5px; text-align: left}
+
+#grid .k-grid-header
+{
+   padding: 0 !important;
+}
+
+#grid .k-grid-content
+{
+   overflow-y: visible;
+}
+.db-custom-table-header {
+	text-align: left;
+    font-size: 12px;
+    font-weight: bold;
+    background: #5D6D7E;
+}
+.k-grid  .k-grid-header  .k-header  .k-link {
+    height: auto;
+}
+  
+.k-grid  .k-grid-header  .k-header {
+    white-space: normal;
+}

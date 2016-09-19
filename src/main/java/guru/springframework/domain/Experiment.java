@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -23,7 +24,6 @@ public class Experiment {
 	
 	private String sampleName;
 	private String sampleDescription;
-	private String instrument;	
 	@JsonFormat(pattern="yyyy-MM-dd") 
 	private Date experimentDate;
 	@JsonFormat(pattern="yyyy-MM-dd") 
@@ -37,6 +37,10 @@ public class Experiment {
 	
 	@OneToMany(mappedBy="experiment")
 	private Set<DataFile> dataFiles;
+	
+	@OneToOne	
+	@JoinColumn(name="INSTRUMENT_ID", nullable=true, insertable=true, updatable=true)
+	private Instrument instrument;
 
 	public long getExperiment_id() {
 		return experiment_id;
@@ -78,15 +82,6 @@ public class Experiment {
 		this.sampleDescription = sampleDescription;
 	}
 
-	public String getInstrument() {
-		return instrument;
-	}
-
-	public void setInstrument(String instrument) {
-		this.instrument = instrument;
-	}
-
-
 	public Date getCreateDate() {
 		return createDate;
 	}
@@ -110,6 +105,12 @@ public class Experiment {
 	public void setExperimentDate(Date experimentdate) {
 		this.experimentDate = experimentdate;
 	}
-	
-	
+
+	public Instrument getInstrument() {
+		return instrument;
+	}
+
+	public void setInstrument(Instrument instrument) {
+		this.instrument = instrument;
+	}
 }
