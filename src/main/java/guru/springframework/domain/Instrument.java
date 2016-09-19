@@ -26,5 +26,12 @@ public class Instrument {
 	public void setInstrumentName(String instrumentName) {
 		this.instrumentName = instrumentName;
 	}
-	
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 }

@@ -177,17 +177,17 @@
 						            </label>
 						            <div class="col-sm-7">
 						                <div class="col-xs-7" style="padding-left:0px">
-						                    <select name="dbSource" id="source" class="form-control">
-                                                          <option th:each="source : ${sourceList}" 
-													        th:value="${source.id}" 
-													        th:text="${source.sourceName}">	</option>
+						                    <select name="instrument" id="instrument" class="form-control">
+                                                          <option th:each="instrument : ${instrumentList}" 
+													        th:value="${instrument.id}" 
+													        th:text="${instrument.instrumentName}">	</option>
 
 
                                             </select>
 						                </div>
 						                <div class="col-xs-5">
 						                
-						                <a href="/ip2/newInstrument.html?pid=1668&amp;projectName=IainCheesemanTest">Add new instrument</a>
+						                <a href="/viewAddNewInstrument">Add new instrument</a>
 						                </div>
 						            </div>
 						        </div>

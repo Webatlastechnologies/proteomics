@@ -84,7 +84,7 @@ public class ExperimentController {
 			Instrument newInstrumentName = new Instrument();
 			newInstrumentName.setInstrumentName(instrumentName);
 			instrumentRepository.save(newInstrumentName);
-			return new ModelAndView("redirect:/viewAddNewDatabase");
+			return new ModelAndView("redirect:/viewAddNewExperiment");
 		}
 	}
 	
