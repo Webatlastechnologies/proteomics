@@ -10,6 +10,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,16 +56,6 @@ public class ExperimentController {
 		return experimentRepository.findByProject(p);
 	}
 	
-	 @RequestMapping(value = {"/experiment/update","/save"}, method = RequestMethod.POST)
-		 public @ResponseBody Experiment update(@Valid @ModelAttribute Experiment experiment, BindingResult errors) {
-			 if(experiment.getExperiment_id()==0){
-				 experiment.setCreateDate(GregorianCalendar.getInstance().getTime());
-				 	experiment.setExperimentDate(GregorianCalendar.getInstance().getTime());
-					experimentRepository.save(experiment);
-			 }
-	        return experiment;
-	    }
-
 	 @RequestMapping(value = "/experiment/delete", method = RequestMethod.POST)
 	    public @ResponseBody String update(@RequestParam long experiment_id) {
 		 Experiment experiment=experimentRepository.findOne(experiment_id);
@@ -93,21 +84,28 @@ public class ExperimentController {
 	}
 	
 	@RequestMapping(value = "/viewAddNewExperiment", method = RequestMethod.GET)
-	public String addNewDatabase(Model model,@RequestParam("project_id") String project_id) {
+	public String addNewDatabase(Model model,@RequestParam(name="project_id", required=false) String project_id, @RequestParam(name="experiment_id", required=false) String experiment_id) {
 		model.addAttribute("instrumentList", instrumentRepository.findAll());
+		if(StringUtils.isEmpty(project_id)){
+			project_id = "1";
+		}
 		model.addAttribute("project_id",project_id);
+		if(!StringUtils.isEmpty(experiment_id)){
+			Experiment experiment = experimentRepository.findOne(Long.parseLong(experiment_id));
+			if(experiment != null){
+				model.addAttribute("experiment",experiment);
+			}
+		}
 		return "addNewExperiment";
 	}
 	
 	@RequestMapping(value = "/addExperiment", method = RequestMethod.POST)
 	public ModelAndView add(@Valid @ModelAttribute Experiment experiment, BindingResult errors, @RequestParam("project_id") String project_id, Principal principal) {
-		 if(experiment.getExperiment_id()==0){
-			Project project = projectRepository.findOne(Long.parseLong(project_id));
-			experiment.setCreateDate(GregorianCalendar.getInstance().getTime());
-		 	experiment.setExperimentDate(GregorianCalendar.getInstance().getTime());
-		 	experiment.setProject(project);
-			experimentRepository.save(experiment);
-		 }
+		Project project = projectRepository.findOne(Long.parseLong(project_id));
+		experiment.setCreateDate(GregorianCalendar.getInstance().getTime());
+	 	experiment.setExperimentDate(GregorianCalendar.getInstance().getTime());
+	 	experiment.setProject(project);
+	 	experimentRepository.save(experiment);
 		return new ModelAndView("redirect:/experiment?project_id="+project_id);
 	}
 }

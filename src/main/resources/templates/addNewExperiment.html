@@ -144,10 +144,10 @@
                         <div class="col-xs-7 col-sm-7 col-md-7">
 						        
 						<form namespace="/" id="addExperiment" name="addExperiment" onsubmit="return validateForm_addExperiment();" th:action="@{|/addExperiment?project_id=${project_id}|}" method="post" class="form-horizontal">
-						<input type="hidden" name="experiment_id" id="experiment_id" value="0"></input>
+						<input type="hidden" name="experiment_id" id="experiment_id" th:value="${experiment != null} ? ${experiment.experiment_id} : 0"></input>
 						<div class="panel panel-primary">
 						    <div class="panel-heading">
-						        <h5 class="panel-title">Add new experiment</h5>
+						        <h5 class="panel-title"><span th:if="${experiment != null}">Edit experiment</span> <span th:if="${experiment == null}">Add new experiment</span></h5>
 						    </div>
 						    <div class="panel-body">
 						        <div class="form-group">
@@ -155,7 +155,7 @@
 						                Sample name
 						            </label>
 						            <div class="col-sm-7">
-						                <input type="text" id="sampleName" name="sampleName" class="form-control" value=""></input><br></br>
+						                <input type="text" id="sampleName" name="sampleName" class="form-control" th:value="${experiment != null} ? ${experiment.sampleName} : ''"></input><br></br>
 								(please do not include special characters (e.g., +, %, #, space) in sample name 
 						            </div>
 						        </div>
