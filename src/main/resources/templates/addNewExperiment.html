@@ -142,10 +142,9 @@
                     <!-- Datatables -->
                     <div class="row">
                         <div class="col-xs-7 col-sm-7 col-md-7">
-						<script type="text/javascript" src="/ip2/struts/css_xhtml/validation.js"></script>
 						        
-						<form namespace="/" id="addExperiment" name="addExperiment" onsubmit="return validateForm_addExperiment();" action="/addInstrument" method="post" class="form-horizontal">
-						<input type="hidden" name="experiment_id" value="1668" id="experiment_id"></input>
+						<form namespace="/" id="addExperiment" name="addExperiment" onsubmit="return validateForm_addExperiment();" th:action="@{|/addExperiment?project_id=${project_id}|}" method="post" class="form-horizontal">
+						<input type="hidden" name="experiment_id" id="experiment_id" value="0"></input>
 						<div class="panel panel-primary">
 						    <div class="panel-heading">
 						        <h5 class="panel-title">Add new experiment</h5>

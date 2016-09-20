@@ -27,6 +27,7 @@ import guru.springframework.domain.Project;
 import guru.springframework.domain.Source;
 import guru.springframework.repositories.ExperimentRepository;
 import guru.springframework.repositories.InstrumentRepository;
+import guru.springframework.repositories.ProjectRepository;
 
 @Controller
 public class ExperimentController {
@@ -36,6 +37,9 @@ public class ExperimentController {
 	
 	@Autowired
 	InstrumentRepository instrumentRepository;
+	
+	@Autowired
+	ProjectRepository projectRepository;
 	
 	@RequestMapping(value = "/experiment", method = RequestMethod.GET)
 	public String getDetails(@RequestParam("project_id") String project_id,Model model) {
@@ -89,18 +93,21 @@ public class ExperimentController {
 	}
 	
 	@RequestMapping(value = "/viewAddNewExperiment", method = RequestMethod.GET)
-	public String addNewDatabase(Model model) {
+	public String addNewDatabase(Model model,@RequestParam("project_id") String project_id) {
 		model.addAttribute("instrumentList", instrumentRepository.findAll());
+		model.addAttribute("project_id",project_id);
 		return "addNewExperiment";
 	}
 	
-	@RequestMapping(value = "/addInstrument", method = RequestMethod.POST)
-	public ModelAndView add(@Valid @ModelAttribute Experiment experiment, BindingResult errors, Principal principal) {
+	@RequestMapping(value = "/addExperiment", method = RequestMethod.POST)
+	public ModelAndView add(@Valid @ModelAttribute Experiment experiment, BindingResult errors, @RequestParam("project_id") String project_id, Principal principal) {
 		 if(experiment.getExperiment_id()==0){
+			Project project = projectRepository.findOne(Long.parseLong(project_id));
 			experiment.setCreateDate(GregorianCalendar.getInstance().getTime());
 		 	experiment.setExperimentDate(GregorianCalendar.getInstance().getTime());
+		 	experiment.setProject(project);
 			experimentRepository.save(experiment);
 		 }
-		return new ModelAndView("redirect:/experiment");
+		return new ModelAndView("redirect:/experiment?project_id="+project_id);
 	}
 }

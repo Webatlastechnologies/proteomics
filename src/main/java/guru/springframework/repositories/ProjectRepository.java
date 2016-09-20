@@ -11,4 +11,5 @@ import guru.springframework.domain.User;
 public interface ProjectRepository extends PagingAndSortingRepository<Project, Long>{
 	List<Project> findAll();
 	List<Project> findByUser(User user);
+	Project findOne(Long id);
 }

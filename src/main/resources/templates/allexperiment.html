@@ -2,40 +2,28 @@
 <head xmlns:th="http://www.thymeleaf.org">
 <meta name="viewport"
 	content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width"></meta>
-<title>Project | Proteome Cloud</title>
-<link href="../static/css/responsive.css"
-	th:href="@{css/responsive.css}" rel="stylesheet"></link>
-<link rel="stylesheet" type="text/css"
-	href="../static/css/font-awesome.min.css"
-	th:href="@{css/font-awesome.min.css}"></link>
-<link
-	href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
-	th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}"
-	rel="stylesheet" media="screen"></link>
-<script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
-	th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
-<!-- Bootstrap.js -->
-<script src="../static/js/bootstrap.min.js"
-	th:src="@{js/bootstrap.min.js}"></script>
-<link rel="icon" href="../static/images/favicon.ico" type="image/ico">
-</link>
+	<title>Project | Proteome Cloud</title>	
+	<link href="../static/css/responsive.css" th:href="@{css/responsive.css}" rel="stylesheet"></link>
+    <link rel="stylesheet" type="text/css" href="../static/css/font-awesome.min.css" th:href="@{css/font-awesome.min.css}"></link>
+    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen" ></link>
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
+            th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+        <!-- Bootstrap.js -->
+   <script src="../static/js/bootstrap.min.js" th:src="@{js/bootstrap.min.js}" > </script>
+   <link rel="icon" href="../static/images/favicon.ico" type="image/ico" > </link>
 
+   <link rel="stylesheet" type="text/css" href="../static/css/dataTables.bootstrap.min.css" th:href="@{css/dataTables.bootstrap.min.css}"> </link>
+   <script type="text/javascript"  src="../static/js/jquery.dataTables.min.js" th:src="@{js/jquery.dataTables.min.js}"></script>
+   <script type="text/javascript"  src="../static/js/dataTables.bootstrap.min.js" th:src="@{js/dataTables.bootstrap.min.js}"></script>
 
-<!-- Bootstrap.js -->
-<link rel="stylesheet" type="text/css"
-	href="../static/css/dataTables.bootstrap.min.css"
-	th:src="@{css/dataTables.bootstrap.min.css}">
-</link>
-<script type="text/javascript"
-	src="../static/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript"
-	src="../static/js/dataTables.bootstrap.min.js"></script>
-<link rel="stylesheet" href="css/kendo.common.min.css" />
-<link rel="stylesheet" href="css/kendo.default.min.css" />
-<link rel="stylesheet" href="css/kendo.default.mobile.min.css" />
-<script src="js/kendo.all.min.js"></script>
-<link href="../static/css/desktop.css" th:href="@{css/desktop.css}"
-	rel="stylesheet"></link>
+   <link rel="stylesheet" href="../static/css/kendo.common.min.css" th:href="@{css/kendo.common.min.css}"></link>
+   <link rel="stylesheet" href="../static/css/kendo.default.min.css" th:href="@{css/kendo.default.min.css}"></link>
+   <!-- <link rel="stylesheet" href="../static/css/kendo.default.mobile.min.css" th:href="@{css/kendo.default.mobile.min.css}"></link> -->
+   <script src="../static/js/kendo.all.min.js" th:src="@{js/kendo.all.min.js}"></script>
+   <link href="../static/css/desktop.css" th:href="@{css/desktop.css}" rel="stylesheet"></link>
+
 </head>
 <body>
 	<div th:replace="fragments/header :: header"></div>
@@ -55,7 +43,7 @@
 			<div class="row">
 				<div class="col-sm-12">
 					<div id="button" style="float: right">
-						<a href="viewAddNewExperiment"> <span
+						<a th:href="@{|/viewAddNewExperiment?project_id=${project_id}|}"> <span
 							class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add
 							new Experiment
 						</a>
@@ -106,16 +94,7 @@
                                     dataType: "json",
                                     type: "post"
                                 },
-                                /* parameterMap: function(options, operation) {
-                                    if (operation !== "read" && options.models) {
-                                        return kendo.stringify(options.models);
-                                    }
-                                } */
                             },
-                           /*  schema: {
-                            	data: "_embedded.siteUpdateMessages",
-                                total: "page.totalElements"
-                              }, */
                             batch: false,
                             serverPaging: false,
                             pageSize: 50,
@@ -127,7 +106,7 @@
                                     	sampleDescription: { type :"text",editable:true },
                                     	experimentDate: { type :"text",editable:false},
                                     	createDate: { type :"text",editable: false },
-                                    	instrument: { type :"text",editable: true },
+                                    	instrument: { from: 'instrument.instrumentName', type :"text",editable: true },
                                     	description: { type :"text",editable: true },
                                     }
                                 }
@@ -150,7 +129,7 @@
                             { field: "isArchive", title: "Archive", headerAttributes : {"class" : "db-custom-table-header"}},
                             { title: "Delete" ,template:'<a href="experiment/delete?experiment_id=#:experiment_id#"><i class="fa fa-trash"></i></a>', headerAttributes : {"class" : "db-custom-table-header"} },
                             ],
-                        editable: true
+                        editable: false
                     });
                 });
             
