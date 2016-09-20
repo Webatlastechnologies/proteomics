@@ -26,7 +26,7 @@ public class Experiment {
 	private String sampleDescription;
 	@JsonFormat(pattern="yyyy-MM-dd") 
 	private Date experimentDate;
-	@JsonFormat(pattern="yyyy-MM-dd") 
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss.S") 
 	private Date createDate;
 	private String description;
 	
