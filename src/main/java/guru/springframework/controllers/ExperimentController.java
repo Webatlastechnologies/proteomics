@@ -3,7 +3,6 @@ package guru.springframework.controllers;
 import java.security.Principal;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -50,10 +49,13 @@ public class ExperimentController {
 	}
 
 	@RequestMapping(value="/experiment/read/{project_id}", method = RequestMethod.POST)
-	public @ResponseBody List<Experiment> read(@PathVariable("project_id") long project_id,Model model){
+	public @ResponseBody List<Experiment> read(@PathVariable("project_id") long project_id, @RequestParam(value="isArchive", required=false) Boolean isArchive, Model model){
 		Project p=new Project();
 		p.setProject_id(project_id);
-		return experimentRepository.findByProject(p);
+		if(isArchive == null){
+			isArchive = false;
+		}
+		return experimentRepository.findByProjectAndIsArchive(p, isArchive);
 	}
 	
 	 @RequestMapping(value = "/experiment/delete", method = RequestMethod.POST)
@@ -107,5 +109,11 @@ public class ExperimentController {
 	 	experiment.setProject(project);
 	 	experimentRepository.save(experiment);
 		return new ModelAndView("redirect:/experiment?project_id="+project_id);
+	}
+	
+	@RequestMapping(value = "/updateArchiveStatus", method = RequestMethod.POST)
+	@ResponseBody
+	public int updateArchiveStatus(@RequestParam long experiment_id, @RequestParam boolean isArchive){
+		return experimentRepository.setIsArchiveFor(isArchive, experiment_id);
 	}
 }

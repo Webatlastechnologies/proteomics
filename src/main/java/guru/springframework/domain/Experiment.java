@@ -30,6 +30,8 @@ public class Experiment {
 	private Date createDate;
 	private String description;
 	
+	private boolean isArchive;
+	
 	@ManyToOne
 	@JoinColumn(name="project_id")
 	@JsonIgnore
@@ -108,6 +110,14 @@ public class Experiment {
 
 	public Instrument getInstrument() {
 		return instrument;
+	}
+
+	public boolean isArchive() {
+		return isArchive;
+	}
+
+	public void setArchive(boolean isArchive) {
+		this.isArchive = isArchive;
 	}
 
 	public void setInstrument(Instrument instrument) {

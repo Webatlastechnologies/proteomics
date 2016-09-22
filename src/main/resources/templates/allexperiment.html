@@ -36,7 +36,9 @@
 			<div class="row">
 				<div class="col-sm-12">
 					<ol class="breadcrumb">
-						<li class="active">Home</li>
+						<li><a href="#">Home</a></li>
+                        <li class="active">Project</li>
+                        <li class="active">experiment</li>
 					</ol>
 				</div>
 			</div>
@@ -50,11 +52,26 @@
 					</div>
 				</div>
 			</div>
+			<div class="row">
+				<div class="col-md-12 push">
+				Active Experiments
+				</div>
+			</div>
 			<!-- END Navigation info -->
 			<!-- Datatables -->
 			<div class="row">
 				<div class="col-md-12 push">
 					<div id="grid"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12 push">
+				Active Experiments
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12 push">
+					<div id="gridArchive"></div>
 				</div>
 			</div>
 			<!-- END Datatables in the grid -->
@@ -69,32 +86,47 @@
 
 	<script th:inline="javascript">
             /*<![CDATA[*/
-                       
+                function updateArchiveStatus(experimentId, isArchive){
+					$.ajax({
+						url:'/updateArchiveStatus?experiment_id='+experimentId +'&isArchive='+ isArchive,
+						method: "POST",
+						success: function(response){
+							$('#grid').data('kendoGrid').dataSource.read();
+							$('#grid').data('kendoGrid').refresh();
+							
+							$('#gridArchive').data('kendoGrid').dataSource.read();
+							$('#gridArchive').data('kendoGrid').refresh();
+						}
+					});
+				}
+            
+                function deleteExperiment(experimentId){
+					$.ajax({
+						url:'/experiment/delete?experiment_id='+experimentId,
+						method: "POST",
+						success: function(response){
+							$('#grid').data('kendoGrid').dataSource.read();
+							$('#grid').data('kendoGrid').refresh();
+							
+							$('#gridArchive').data('kendoGrid').dataSource.read();
+							$('#gridArchive').data('kendoGrid').refresh();
+						}
+					});
+				}
                 $(document).ready(function () {
-                    var crudServiceBaseUrl = "experiment",
-                        dataSource = new kendo.data.DataSource({
-                            transport: {
+                	
+                	
+                	
+                	function getDatasource(readURL){
+                		var transportForGrid = {
                                 read:  {
-                                    url: crudServiceBaseUrl + '/read/'+[[${project_id}]],
+                                    url: readURL,
                                     dataType: "json",
                                     type: "post"
-                                },
-                                update: {
-                                    url: crudServiceBaseUrl + "/update",
-                                    dataType: "json",
-                                    type: "post"
-                                },
-                                destroy: {
-                                    url: crudServiceBaseUrl + "/delete",
-                                    dataType: "json",
-                                    type: "post"
-                                },
-                                create: {
-                                    url: crudServiceBaseUrl + "/update",
-                                    dataType: "json",
-                                    type: "post"
-                                },
-                            },
+                                }
+                            };
+                		var dataSource = new kendo.data.DataSource({
+                            transport: transportForGrid,
                             batch: false,
                             serverPaging: false,
                             pageSize: 50,
@@ -112,22 +144,51 @@
                                 }
                             }
                         });
-
+                		return dataSource;
+                	}
+                	var readURL = "experiment" + '/read/'+[[${project_id}]];
+                	
+                	var readURLArchive = "experiment" + '/read/'+[[${project_id}]]+'?isArchive=true';
+                    
+                	var dataSource = getDatasource(readURL);
+					
                     $("#grid").kendoGrid({
                         dataSource: dataSource,
                         pageable: true,
                         sortable: true,
-                        height: 150,
+                        height: 250,
                         columns: [
                             { field: "experiment_id", title: "Id", template:'<a href="/viewAddNewExperiment?experiment_id=#:experiment_id#">#:experiment_id#</a>', headerAttributes : {"class" : "db-custom-table-header"}},
                             { field: "sampleName", title: "Sample Name", headerAttributes : {"class" : "db-custom-table-header"}},
                             { field: "sampleDescription", title: "Sample Description", headerAttributes : {"class" : "db-custom-table-header"}},
+                            { field: "instrument", title: "Instrument", headerAttributes : {"class" : "db-custom-table-header"}},
                             { field: "experimentDate", title: "Date", headerAttributes : {"class" : "db-custom-table-header"}},
                             {field:" createDate", title: "Create Date", headerAttributes : {"class" : "db-custom-table-header"}},
-                            { field: "instrument", title: "Instrument", headerAttributes : {"class" : "db-custom-table-header"}},
                             { field: "description", title: "Description", headerAttributes : {"class" : "db-custom-table-header"}},
-                            { field: "isArchive", title: "Archive", headerAttributes : {"class" : "db-custom-table-header"}},
-                            { title: "Delete" ,template:'<a href="experiment/delete?experiment_id=#:experiment_id#"><i class="fa fa-trash"></i></a>', headerAttributes : {"class" : "db-custom-table-header"} },
+                            { title: "Archive",template:'<a href="javascript:updateArchiveStatus(#=experiment_id#,true);"><span class="glyphicon glyphicon-eye-open"></span></a>', headerAttributes : {"class" : "db-custom-table-header"}},
+                            { title: "Edit" ,template:'<a href="/viewAddNewExperiment?experiment_id=#:experiment_id#"><i class="glyphicon glyphicon-edit"></i></a>', headerAttributes : {"class" : "db-custom-table-header"} },
+                            ],
+                        editable: false
+                    });
+                    
+                    dataSource = getDatasource(readURLArchive);
+                    
+                    $("#gridArchive").kendoGrid({
+                        dataSource: dataSource,
+                        pageable: true,
+                        sortable: true,
+                        height: 250,
+                        columns: [
+                            { field: "experiment_id", title: "Id", template:'<a href="/viewAddNewExperiment?experiment_id=#:experiment_id#">#:experiment_id#</a>', headerAttributes : {"class" : "db-custom-table-header"}},
+                            { field: "sampleName", title: "Sample Name", headerAttributes : {"class" : "db-custom-table-header"}},
+                            { field: "sampleDescription", title: "Sample Description", headerAttributes : {"class" : "db-custom-table-header"}},
+                            { field: "instrument", title: "Instrument", headerAttributes : {"class" : "db-custom-table-header"}},
+                            { field: "experimentDate", title: "Date", headerAttributes : {"class" : "db-custom-table-header"}},
+                            {field:" createDate", title: "Create Date", headerAttributes : {"class" : "db-custom-table-header"}},
+                            { field: "description", title: "Description", headerAttributes : {"class" : "db-custom-table-header"}},
+                            { title: "Mark",template:'<a href="javascript:updateArchiveStatus(#=experiment_id#,false);"><span class="glyphicon glyphicon-eye-open"></span></a>', headerAttributes : {"class" : "db-custom-table-header"}},
+                            { title: "Edit" ,template:'<a href="/viewAddNewExperiment?experiment_id=#:experiment_id#"><i class="glyphicon glyphicon-edit"></i></a>', headerAttributes : {"class" : "db-custom-table-header"} },
+                            { title: "Delete" ,template:'<a href="javascript:deleteExperiment(#=experiment_id#)"><i class="glyphicon glyphicon-trash"></i></a>', headerAttributes : {"class" : "db-custom-table-header"} },
                             ],
                         editable: false
                     });
