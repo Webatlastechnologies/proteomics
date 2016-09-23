@@ -89,8 +89,9 @@ public class LabDatabaseController {
 	@ResponseBody
 	public List<LabDatabase> read(Principal principal) {
 		String userName = principal.getName();
-		System.out.println("inside database read");
-		List<LabDatabase> labDatabaseList = databaseRepository.findAll();
+		User user = userRepository.findByUsername(userName);
+		Lab lab = user.getLab();
+		List<LabDatabase> labDatabaseList = databaseRepository.findByLab(lab);
 		if(labDatabaseList != null){
 			for(LabDatabase labDatabase : labDatabaseList){
 				labDatabase.setReleaseDateStr(getReleaseDate(labDatabase.getReleasedDate()));
@@ -120,7 +121,7 @@ public class LabDatabaseController {
 	public ModelAndView add(@RequestParam Map<String, String> requestMap, Principal principal) {
 		String userName = principal.getName();	
 		User user = userRepository.findByUsernameOrEmail(userName, userName);
-		Lab lab = labRepository.findOne(1l);
+		Lab lab = user.getLab();
 		if(lab == null){
 			// TODO add error page and redirect to it
 		}
