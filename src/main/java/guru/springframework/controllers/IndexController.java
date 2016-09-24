@@ -91,6 +91,13 @@ public class IndexController {
         return "editprofile";
     }
 
+    @ModelAttribute("loginuser")
+    public String loginuser(){
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    	return auth.getName();
+    }
+    
+    
     @RequestMapping(value = "/profile", method = RequestMethod.POST)
     public String profile(@ModelAttribute("userForm") User user, BindingResult bindingResult, Model model) {
     	User dbuser=userRepository.findOne(user.getUser_id());

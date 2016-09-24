@@ -7,6 +7,8 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -40,7 +42,13 @@ public class ExperimentController {
 	
 	@Autowired
 	ProjectRepository projectRepository;
-	
+
+    @ModelAttribute("loginuser")
+    public String loginuser(){
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    	return auth.getName();
+    }
+    
 	@RequestMapping(value = "/experiment", method = RequestMethod.GET)
 	public String getDetails(@RequestParam("project_id") String project_id,Model model) {
 		System.out.println("inside experiment get details project_id : "+project_id);
