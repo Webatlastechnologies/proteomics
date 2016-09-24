@@ -5,6 +5,8 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -31,6 +33,14 @@ public class UserController {
 	public String get(){
 		return "admin-user";
 	}
+	
+	 @ModelAttribute("loginuser")
+	    public String loginuser(){
+	    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    	return auth.getName();
+	    }
+	    
+	
 	
 	@RequestMapping(value="/read", method = RequestMethod.POST)
 	public @ResponseBody List<User> read(){

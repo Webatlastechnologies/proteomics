@@ -8,6 +8,8 @@ import java.util.Set;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -39,6 +41,14 @@ public class ProjectController {
 	public long getLoginUser(){
 		return userDetailService.getLoggedInUser().getUser_id();
 	}
+	
+	 @ModelAttribute("loginuser")
+	    public String loginuser(){
+	    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    	return auth.getName();
+	    }
+	    
+	 
 	
 	@RequestMapping(value = "/project", method = RequestMethod.GET)
 	public String getDetails() {

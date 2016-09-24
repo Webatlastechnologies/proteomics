@@ -6,6 +6,8 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingErrorProcessor;
 import org.springframework.validation.BindingResult;
@@ -34,6 +36,14 @@ public class MessageController {
 		return "admin-message";
 	}
 	
+	 @ModelAttribute("loginuser")
+	    public String loginuser(){
+	    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    	return auth.getName();
+	    }
+	    
+	 
+	 
 	@RequestMapping(value="/read", method = RequestMethod.POST)
 	public @ResponseBody List<SiteUpdateMessage> read(){
 		return messageRepository.findAll();
