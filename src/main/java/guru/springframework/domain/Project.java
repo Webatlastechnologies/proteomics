@@ -27,7 +27,6 @@ public class Project {
 	
 	@ManyToOne
 	@JoinColumn(name="user_id")
-	@JsonIgnore
 	private User user;
 	
 	@OneToMany(mappedBy="project")

@@ -34,30 +34,17 @@ public class FileUploadController {
 
     @PostMapping("/upload")
     @ResponseBody
-    public ResponseEntity<Void> handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("filename") String fileName, @RequestParam(required=false, defaultValue="-1") int chunks, @RequestParam(required=false, defaultValue="-1") int chunk, @RequestParam(name="foldername") String folderName, Principal principal) {
+    public ResponseEntity<Void> handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("filename") String fileName, @RequestParam(required=false, defaultValue="-1") int chunks, @RequestParam(required=false, defaultValue="-1") int chunk, @RequestParam(name="foldername") String folderName, Principal principal) throws Exception {
     	String filePath = storageService.getDefaultFilePath().toString() + File.separator + fileName;
     	if(chunk == 0){
-    		try{
-    			storageService.delete(new File(filePath));
-    		}catch(Exception e){
-    			// TODO handle this exception
-    			e.printStackTrace();
-    		}
-    		
+    		storageService.delete(new File(filePath));
     	}
         storageService.store(file, fileName, chunks, chunk);
         if(chunk == (chunks - 1)){
         	File fileSystemFile = new File(storageService.getDefaultFilePath().toString() + File.separator + fileName);
             s3StorageService.upload(fileSystemFile, folderName);
         }
-        
-	    		
         return new ResponseEntity<Void>(HttpStatus.OK);
-    }
-
-    @ExceptionHandler(StorageFileNotFoundException.class)
-    public ResponseEntity handleStorageFileNotFound(StorageFileNotFoundException exc) {
-        return ResponseEntity.notFound().build();
     }
 
 }

@@ -49,7 +49,6 @@ public class User {
 	
 	@ManyToOne(cascade=CascadeType.MERGE)
 	@JoinColumn(name="lab_id")
-	@JsonIgnore
 	private Lab lab;
 	
 	@OneToMany(mappedBy="user")

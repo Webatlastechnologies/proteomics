@@ -34,7 +34,6 @@ public class Experiment {
 	
 	@ManyToOne
 	@JoinColumn(name="project_id")
-	@JsonIgnore
 	private Project project;
 	
 	@OneToMany(mappedBy="experiment")

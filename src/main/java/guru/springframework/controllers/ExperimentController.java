@@ -26,7 +26,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import guru.springframework.domain.Experiment;
 import guru.springframework.domain.Instrument;
 import guru.springframework.domain.Project;
-import guru.springframework.domain.Source;
 import guru.springframework.repositories.ExperimentRepository;
 import guru.springframework.repositories.InstrumentRepository;
 import guru.springframework.repositories.ProjectRepository;
@@ -79,7 +78,7 @@ public class ExperimentController {
 	}
 	 
 	@RequestMapping(value = "/addNewInstrument", method = RequestMethod.POST)
-	public ModelAndView addNewSource(@RequestBody String instrumentName, Model model, RedirectAttributes redir){
+	public ModelAndView addNewInstrument(@RequestBody String instrumentName, Model model, RedirectAttributes redir){
 		instrumentName = instrumentName.substring(instrumentName.indexOf("instrumentName=") + "instrumentName=".length());
 		Instrument instrument = instrumentRepository.findByInstrumentName(instrumentName);
 		if(instrument != null){
@@ -123,5 +122,12 @@ public class ExperimentController {
 	@ResponseBody
 	public int updateArchiveStatus(@RequestParam long experiment_id, @RequestParam boolean isArchive){
 		return experimentRepository.setIsArchiveFor(isArchive, experiment_id);
+	}
+	
+	@RequestMapping(value = "/viewExperimentDetails", method = RequestMethod.GET)
+	public String viewExperimentDetails(@RequestParam long experiment_id, Model model){
+		Experiment experiment = experimentRepository.findOne(experiment_id);
+		model.addAttribute("experiment", experiment);
+		return "experimentDetails";
 	}
 }

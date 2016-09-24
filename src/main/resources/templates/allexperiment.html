@@ -42,6 +42,12 @@
 					</ol>
 				</div>
 			</div>
+			
+			<div class="row">
+				<div class="col-md-12 push">
+				Active Experiments
+				</div>
+			</div>
 			<div class="row">
 				<div class="col-sm-12">
 					<div id="button" style="float: right">
@@ -50,11 +56,6 @@
 							new Experiment
 						</a>
 					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-12 push">
-				Active Experiments
 				</div>
 			</div>
 			<!-- END Navigation info -->
@@ -158,7 +159,7 @@
                         sortable: true,
                         height: 250,
                         columns: [
-                            { field: "experiment_id", title: "Id", template:'<a href="/viewAddNewExperiment?experiment_id=#:experiment_id#">#:experiment_id#</a>', headerAttributes : {"class" : "db-custom-table-header"}},
+                            { field: "experiment_id", title: "Id", template:'<a href="/viewExperimentDetails?experiment_id=#:experiment_id#">#:experiment_id#</a>', headerAttributes : {"class" : "db-custom-table-header"}},
                             { field: "sampleName", title: "Sample Name", headerAttributes : {"class" : "db-custom-table-header"}},
                             { field: "sampleDescription", title: "Sample Description", headerAttributes : {"class" : "db-custom-table-header"}},
                             { field: "instrument", title: "Instrument", headerAttributes : {"class" : "db-custom-table-header"}},
@@ -180,7 +181,7 @@
                         sortable: true,
                         height: 250,
                         columns: [
-                            { field: "experiment_id", title: "Id", template:'<a href="/viewAddNewExperiment?experiment_id=#:experiment_id#">#:experiment_id#</a>', headerAttributes : {"class" : "db-custom-table-header"}},
+                            { field: "experiment_id", title: "Id", template:'<a href="/viewExperimentDetails?experiment_id=#:experiment_id#">#:experiment_id#</a>', headerAttributes : {"class" : "db-custom-table-header"}},
                             { field: "sampleName", title: "Sample Name", headerAttributes : {"class" : "db-custom-table-header"}},
                             { field: "sampleDescription", title: "Sample Description", headerAttributes : {"class" : "db-custom-table-header"}},
                             { field: "instrument", title: "Instrument", headerAttributes : {"class" : "db-custom-table-header"}},
