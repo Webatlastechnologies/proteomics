@@ -38,7 +38,7 @@ public class S3StorageService {
     private AWSCredentials credentials;
     private AmazonS3 s3Client;
     
-    private final String SUFFIX = "/";
+    public static final String SUFFIX = "/";
     private List<PartETag> partETags = new ArrayList<PartETag>();
     private String existingBucketName;
     
@@ -68,9 +68,6 @@ public class S3StorageService {
 	}
 
 	public void upload(File file, String folderName) {
-		if(!s3Client.doesObjectExist(existingBucketName, folderName)){
-			createFolder(existingBucketName, folderName, s3Client);
-		}
 		String bucketName = existingBucketName;
 		String key = folderName +SUFFIX + file.getName();
 		
@@ -128,12 +125,14 @@ public class S3StorageService {
 	                  existingBucketName, key, initResponse.getUploadId()));
 	    }	
 	}
-	private void createFolder(String bucketName, String folderName, AmazonS3 client) {
-		ObjectMetadata metadata = new ObjectMetadata();
-		metadata.setContentLength(0);
-		InputStream emptyContent = new ByteArrayInputStream(new byte[0]);
-		PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName,
-				folderName + SUFFIX, emptyContent, metadata);
-		client.putObject(putObjectRequest);
+	public void createFolder(String folderName) {
+		if(!s3Client.doesObjectExist(existingBucketName, folderName)){
+			ObjectMetadata metadata = new ObjectMetadata();
+			metadata.setContentLength(0);
+			InputStream emptyContent = new ByteArrayInputStream(new byte[0]);
+			PutObjectRequest putObjectRequest = new PutObjectRequest(existingBucketName,
+					folderName + SUFFIX, emptyContent, metadata);
+			s3Client.putObject(putObjectRequest);
+		}
 	}	
 }

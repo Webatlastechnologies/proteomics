@@ -42,6 +42,25 @@ public class FileUploadController {
         storageService.store(file, fileName, chunks, chunk);
         if(chunk == (chunks - 1)){
         	File fileSystemFile = new File(storageService.getDefaultFilePath().toString() + File.separator + fileName);
+        	if(folderName.contains("/")){
+        		String folderNameArr []= folderName.split("/");
+        		for(int i=0;i<folderNameArr.length; i++){
+        			if(i != 0){
+        				String folderPath = "";
+        				for(int j=0; j<i;j++){
+        					folderPath = folderPath + "/" + folderNameArr[j];
+        				}
+        				if(folderPath.startsWith("/")){
+        					folderPath = folderPath.substring(1);
+        				}
+        				s3StorageService.createFolder(folderPath);
+        			}
+        		}
+        		
+        	}else{
+        		s3StorageService.createFolder(folderName);
+        	}
+        	
             s3StorageService.upload(fileSystemFile, folderName);
         }
         return new ResponseEntity<Void>(HttpStatus.OK);

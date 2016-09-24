@@ -1,0 +1,267 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head xmlns:th="http://www.thymeleaf.org">
+<meta name="viewport"
+	content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width"></meta>
+	<title>Project | Proteome Cloud</title>	
+	<link href="../static/css/responsive.css" th:href="@{css/responsive.css}" rel="stylesheet"></link>
+    <link rel="stylesheet" type="text/css" href="../static/css/font-awesome.min.css" th:href="@{css/font-awesome.min.css}"></link>
+    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen" ></link>
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
+            th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+        <!-- Bootstrap.js -->
+   <script src="../static/js/bootstrap.min.js" th:src="@{js/bootstrap.min.js}" > </script>
+   <link rel="icon" href="../static/images/favicon.ico" type="image/ico" > </link>
+
+   <link rel="stylesheet" type="text/css" href="../static/css/dataTables.bootstrap.min.css" th:href="@{css/dataTables.bootstrap.min.css}"> </link>
+   <script type="text/javascript"  src="../static/js/jquery.dataTables.min.js" th:src="@{js/jquery.dataTables.min.js}"></script>
+   <script type="text/javascript"  src="../static/js/dataTables.bootstrap.min.js" th:src="@{js/dataTables.bootstrap.min.js}"></script>
+
+   <link rel="stylesheet" href="../static/css/kendo.common.min.css" th:href="@{css/kendo.common.min.css}"></link>
+   <link rel="stylesheet" href="../static/css/kendo.default.min.css" th:href="@{css/kendo.default.min.css}"></link>
+   <!-- <link rel="stylesheet" href="../static/css/kendo.default.mobile.min.css" th:href="@{css/kendo.default.mobile.min.css}"></link> -->
+   <script src="../static/js/kendo.all.min.js" th:src="@{js/kendo.all.min.js}"></script>
+   <link href="../static/css/desktop.css" th:href="@{css/desktop.css}" rel="stylesheet"></link>
+   
+   <link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/themes/smoothness/jquery-ui.min.css" media="screen"
+        									th:href="@{http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/themes/smoothness/jquery-ui.min.css}"></link>
+        
+   <link rel="stylesheet" href="../static/css/jquery.ui.plupload.css" th:href="@{css/jquery.ui.plupload.css}"></link>
+       
+   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js" th:src="@{http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js}"></script>
+   <script type="text/javascript"  src="../static/js/plupload.full.min.js" th:src="@{js/plupload.full.min.js}"></script>
+   <script type="text/javascript"  src="../static/js/jquery.ui.plupload.min.js" th:src="@{js/jquery.ui.plupload.min.js}"></script>
+
+</head>
+<body>
+	<div th:replace="fragments/header :: header"></div>
+
+	<div id="inner-container">
+		<!-- Page Content -->
+		<div id="page-content">
+			<!-- Navigation info -->
+
+			<div class="row">
+				<div class="col-sm-12">
+					<ol class="breadcrumb">
+						<li><a href="#">Home</a></li>
+                        <li class="active">Project</li>
+                        <li class="active">experiment</li>
+					</ol>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="col-md-12 push">
+				Active Experiments
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="panel panel-default">
+					  <!-- Table -->
+					  <table class="table" id="experimentDetails">
+					    <tbody>
+					    <tr>
+					        <td>Project name</td>
+					        <td th:text="${experiment.project.projectName}"></td>
+					    </tr>
+					    <tr>
+					        <td>Sample name</td>
+					        <td th:text="${experiment.project.user.lab.labName}"></td>
+					    </tr>
+					    <tr>
+					        <td>Created date</td>
+					        <td th:text="${experiment.createDate}"></td>
+					    </tr>
+					    <tr>
+					        <td>Sample description</td>
+					        <td th:text="${experiment.sampleDescription}"></td>
+					    </tr>
+					    <tr>
+					        <td>Experiment description</td>
+					        <td th:text="${experiment.description}"></td>
+					    </tr>
+					  </tbody></table>
+					</div>
+				</div>
+			</div>
+			
+			<ul id="panelbar">
+                <li>
+                	Upload Spectral Files
+					<div class="alert alert-info" role="alert">
+	                   Note : Please make sure ms1 and ms2 file size is not zero.
+              		</div>
+              		<div id="spectralUploader">
+              		</div>
+		              		
+                </li>
+                <li>
+                	Upload DTA Files
+					<div id="dtaUploader">
+	              	</div>
+                </li>
+            </ul>
+			
+		</div>
+		<!-- END Page Content -->
+		<!-- Footer -->
+		<div class="container-fluid" id="footer"
+			th:replace="fragments/footer :: footer"></div>
+		<!-- END Footer -->
+	</div>
+	<!-- END Inner Container -->
+
+	<script th:inline="javascript">
+		
+		function createKendoPanelBar(){
+            var initPanelBar = function () {
+                $("#panelbar").kendoPanelBar({ expandMode: "single"});
+            };
+
+            initPanelBar();
+		}
+		function createSpectralFileUploader() {
+	    	var uploader = $("#spectralUploader").plupload({
+	            // General settings
+	            runtimes : 'html5,flash,silverlight,html4',
+	            url : "/fileUpload/upload",
+	     
+	            // Maximum file size
+	            max_file_size : 0,
+	     
+	            chunk_size: '1mb',
+	     
+	            // Resize images on clientside if we can
+	            resize : {
+	                width : 200,
+	                height : 100,
+	                quality : 90,
+	                crop: true // crop to exact dimensions
+	            },
+	     
+	            // Rename files by clicking on their titles
+	            rename: true,
+	             
+	            // Sort files
+	            sortable: true,
+	     
+	            // Enable ability to drag'n'drop files onto the widget (currently only HTML5 supports that)
+	            dragdrop: true,
+	     
+	            // Views to activate
+	            views: {
+	                list: true,
+	                thumbs: true, // Show thumbs
+	                active: 'thumbs'
+	            },
+	     
+	            // Flash settings
+	            flash_swf_url : '@{js/Moxie.swf}',
+	         
+	            // Silverlight settings
+	            silverlight_xap_url : '@{js/Moxie.xap}',
+	            buttons:{browse:true,start:true,stop:false},
+	            init : {
+	            	BeforeUpload: function(up, file) {
+	            		up.settings.multipart_params = {
+	           	            filename: file.name,
+	           	         	foldername: "'"+[[${experiment.folderPath}]] +"/"+ "active'"
+	           	        };
+	            	},
+	            	FileUploaded: function(up, file, info) {
+	                    // Called when file has finished uploading
+	                    //console.log('[FileUploaded] File:', file, "Info:", info);
+	                    if(info.status === 200){
+	                    	var fileName = file.name;
+	                        $("#upload_file_name").val(fileName);
+	                        var fileSize = file.size/1024;
+	                        $("#file_size").val(fileSize)
+	                    }
+	                    
+	                }
+	            }
+	        });
+	
+	    }
+		function createDTAFileUploader() {
+	    	var uploader = $("#dtaUploader").plupload({
+	            // General settings
+	            runtimes : 'html5,flash,silverlight,html4',
+	            url : "/fileUpload/upload",
+	     
+	            // Maximum file size
+	            max_file_size : 0,
+	     
+	            chunk_size: '1mb',
+	     
+	            // Resize images on clientside if we can
+	            resize : {
+	                width : 200,
+	                height : 100,
+	                quality : 90,
+	                crop: true // crop to exact dimensions
+	            },
+	     
+	            filters : [
+	                       {title : "DTA Files", extensions : "txt"},
+	                   ],
+	            // Rename files by clicking on their titles
+	            rename: true,
+	             
+	            // Sort files
+	            sortable: true,
+	     
+	            // Enable ability to drag'n'drop files onto the widget (currently only HTML5 supports that)
+	            dragdrop: true,
+	     
+	            // Views to activate
+	            views: {
+	                list: true,
+	                thumbs: true, // Show thumbs
+	                active: 'thumbs'
+	            },
+	     
+	            // Flash settings
+	            flash_swf_url : '@{js/Moxie.swf}',
+	         
+	            // Silverlight settings
+	            silverlight_xap_url : '@{js/Moxie.xap}',
+	            buttons:{browse:true,start:true,stop:false},
+	            init : {
+	            	BeforeUpload: function(up, file) {
+	            		var fileName = file.name;
+	            		fileName = fileName.substring(0, fileName.indexOf('.txt'));
+	            		var date = new Date();
+	            		var month = date.getMonth() + 1;
+	            		fileName = fileName + "_" + date.getFullYear() +"_"+ month +"_"+ date.getDate() +"_"+ date.getHours() +"_"+ date.getMinutes() +"_"+ date.getSeconds() + '.txt'
+	            		up.settings.multipart_params = {
+	           	            filename: fileName,
+	           	         	foldername: "'"+[[${experiment.folderPath}]] +"/"+ "active'"
+	           	        };
+	            	},
+	            	FileUploaded: function(up, file, info) {
+	                    // Called when file has finished uploading
+	                    //console.log('[FileUploaded] File:', file, "Info:", info);
+	                    if(info.status === 200){
+	                    	var fileName = file.name;
+	                        $("#upload_file_name").val(fileName);
+	                        var fileSize = file.size/1024;
+	                        $("#file_size").val(fileSize)
+	                    }
+	                    
+	                }
+	            }
+	        });
+	
+	    }
+		$(function(){
+			createSpectralFileUploader();
+			createDTAFileUploader();
+			createKendoPanelBar();
+		}) ;  
+     </script>
+</body>
+</html>

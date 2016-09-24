@@ -11,9 +11,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
+
+import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import guru.springframework.services.S3StorageService;
 
 @Entity
 public class Experiment {
@@ -42,6 +46,9 @@ public class Experiment {
 	@OneToOne	
 	@JoinColumn(name="INSTRUMENT_ID", nullable=true, insertable=true, updatable=true)
 	private Instrument instrument;
+	
+	@Transient
+	private String folderPath;
 
 	public long getExperiment_id() {
 		return experiment_id;
@@ -121,5 +128,14 @@ public class Experiment {
 
 	public void setInstrument(Instrument instrument) {
 		this.instrument = instrument;
+	}
+
+	public String getFolderPath() {
+		if(project != null && project.getUser() != null && project.getUser().getLab() !=null){
+			if(!StringUtils.isEmpty(project.getProjectName()) && !StringUtils.isEmpty(project.getUser().getUsername()) && !StringUtils.isEmpty(project.getUser().getLab().getLabName())){
+				return project.getUser().getLab().getLabName() + S3StorageService.SUFFIX + project.getUser().getUsername() + S3StorageService.SUFFIX  + project.getProjectName() + S3StorageService.SUFFIX  + String.valueOf(experiment_id);
+			}
+		}
+		return "EMPTY";
 	}
 }
