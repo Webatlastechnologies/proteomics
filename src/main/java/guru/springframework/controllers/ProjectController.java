@@ -1,5 +1,6 @@
 package guru.springframework.controllers;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -12,13 +13,16 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
+import guru.springframework.domain.Experiment;
 import guru.springframework.domain.Project;
 import guru.springframework.domain.User;
 import guru.springframework.repositories.ProjectRepository;
@@ -129,6 +133,21 @@ public class ProjectController {
 		 return "shareporject";
 		}
 	 
-	 
+	 @RequestMapping(value = "/viewAddNewProject", method = RequestMethod.GET)
+		public String addNewProject(Model model) {
+			return "addNewProject";
+		}
+	@RequestMapping(value = "/addProject", method = RequestMethod.POST)
+	public String add(@Valid @ModelAttribute Project project, BindingResult errors) {
+		 project.setUser(userDetailService.getLoggedInUser());
+	 	 if(project.getProject_id()==0){
+	 		project.setArchiveStatus("Active");
+	 		project.setCreatedDate(GregorianCalendar.getInstance().getTime());
+	 		project.setUser(userDetailService.getLoggedInUser());
+	 	 }
+		 projectRepository.save(project);
+		 project.setProjectOwner(userDetailService.getLoggedInUser().getUser_id());
+		 return "project";
+	}
 	 
 }

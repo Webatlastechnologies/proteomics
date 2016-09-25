@@ -2,7 +2,6 @@
     <head xmlns:th="http://www.thymeleaf.org">
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width"></meta>
         <title>Project | Proteome Cloud</title>
-        <link href="../static/css/desktop.css" th:href="@{css/desktop.css}" rel="stylesheet"></link>
         <link href="../static/css/responsive.css" th:href="@{css/responsive.css}" rel="stylesheet"></link>
         <link rel="stylesheet" type="text/css" href="../static/css/font-awesome.min.css" th:href="@{css/font-awesome.min.css}"></link>
         <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
@@ -23,6 +22,7 @@
 	    <link rel="stylesheet" href="css/kendo.default.min.css"/>
 	    <link rel="stylesheet" href="css/kendo.default.mobile.min.css" />
 	    <script src="js/kendo.all.min.js" ></script>
+	    <link href="../static/css/desktop.css" th:href="@{css/desktop.css}" rel="stylesheet"></link>
     </head>
     <body>
       	<div th:replace="fragments/header :: header">
@@ -41,14 +41,38 @@
                         </div>
                     </div>
                     
-                    <!-- END Navigation info -->
-                    <!-- Datatables -->
                     <div class="row">
-                        <div class="col-md-12 push">
-                              <div id="grid"> </div>
-                        </div>
-                    </div>
-                    <!-- END Datatables in the grid -->
+						<div class="col-md-12 push">
+						Active Projects
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12">
+							<div id="button" style="float: right">
+								<a th:href="@{|/viewAddNewProject|}"> <span
+									class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add
+									new Project
+								</a>
+							</div>
+						</div>
+					</div>
+					<!-- END Navigation info -->
+					<!-- Datatables -->
+					<div class="row">
+						<div class="col-md-12 push">
+							<div id="grid"></div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12 push">
+						Archive Projects
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12 push">
+							<div id="gridArchive"></div>
+						</div>
+					</div>
                 </div>
                 <!-- END Page Content -->
                 <!-- Footer -->
@@ -68,21 +92,6 @@
                             transport: {
                                 read:  {
                                     url: crudServiceBaseUrl + "/read",
-                                    dataType: "json",
-                                    type: "post"
-                                },
-                                update: {
-                                    url: crudServiceBaseUrl + "/update",
-                                    dataType: "json",
-                                    type: "post"
-                                },
-                                destroy: {
-                                    url: crudServiceBaseUrl + "/delete",
-                                    dataType: "json",
-                                    type: "post"
-                                },
-                                create: {
-                                    url: crudServiceBaseUrl + "/update",
                                     dataType: "json",
                                     type: "post"
                                 },
@@ -123,24 +132,21 @@
 
                     $("#grid").kendoGrid({
                         dataSource: dataSource,
-                        navigatable: true,
                         pageable: true,
-                        groupable: true,
                         sortable: true,
                         height: 550,
-                        toolbar: ["create", "save", "cancel"],
                         columns: [
-                            { field: "project_id", title: "Id"},
-                            { field: "projectName", title: "Name"},
-                            { title: "Experiments", template: '<a href="experiment?project_id=#:project_id#" >View</a>'},
-                            { field: "createdDate", title: "Created Date"},
-                            { field: "projectOwner", title: "Owner id"},
-                            { field: "user.username", title: "Owner username"},
-                            { field: "user.lab.labName", title: "Lab Name"},
-                            { field: "description", title: "Description"},
-                            { field: "archiveStatus", title: "Archive Status"},
-                            { title: "Delete", command:"destroy" },
-                            {  title: "Share" ,template:'<a href="shareProject?project_id=#:project_id#"><i class="fa fa-share"></i> #:noOfSharedUsers#</a>'},
+                            { field: "project_id", title: "Id", headerAttributes : {"class" : "db-custom-table-header"} },
+                            { field: "projectName", title: "Name", headerAttributes : {"class" : "db-custom-table-header"} },
+                            { title: "Experiments", template: '<a href="experiment?project_id=#:project_id#" >View</a>', headerAttributes : {"class" : "db-custom-table-header"} },
+                            { field: "createdDate", title: "Created Date", headerAttributes : {"class" : "db-custom-table-header"} },
+                            { field: "projectOwner", title: "Owner id", headerAttributes : {"class" : "db-custom-table-header"} },
+                            { field: "user.username", title: "Owner username", headerAttributes : {"class" : "db-custom-table-header"} },
+                            { field: "user.lab.labName", title: "Lab Name", headerAttributes : {"class" : "db-custom-table-header"} },
+                            { field: "description", title: "Description", headerAttributes : {"class" : "db-custom-table-header"} },
+                            { field: "archiveStatus", title: "Archive Status", headerAttributes : {"class" : "db-custom-table-header"} },
+                            { title: "Delete", command:"destroy", headerAttributes : {"class" : "db-custom-table-header"}  },
+                            {  title: "Share" ,template:'<a href="shareProject?project_id=#:project_id#"><i class="fa fa-share"></i> #:noOfSharedUsers#</a>', headerAttributes : {"class" : "db-custom-table-header"} },
                             ],
                         editable: true
                     });

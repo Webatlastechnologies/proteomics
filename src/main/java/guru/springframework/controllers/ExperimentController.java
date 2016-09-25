@@ -93,7 +93,7 @@ public class ExperimentController {
 	}
 	
 	@RequestMapping(value = "/viewAddNewExperiment", method = RequestMethod.GET)
-	public String addNewDatabase(Model model,@RequestParam(name="project_id", required=false) String project_id, @RequestParam(name="experiment_id", required=false) String experiment_id) {
+	public String addNewExperiment(Model model,@RequestParam(name="project_id", required=false) String project_id, @RequestParam(name="experiment_id", required=false) String experiment_id) {
 		model.addAttribute("instrumentList", instrumentRepository.findAll());
 		if(StringUtils.isEmpty(project_id)){
 			project_id = "1";
