@@ -1,5 +1,6 @@
 package guru.springframework.controllers;
 
+import java.io.File;
 import java.security.Principal;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -26,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import guru.springframework.domain.DataFile;
+import guru.springframework.domain.DtaFileDetails;
 import guru.springframework.domain.Experiment;
 import guru.springframework.domain.Instrument;
 import guru.springframework.domain.Project;
@@ -34,6 +36,8 @@ import guru.springframework.repositories.DtaFileDetailsRepository;
 import guru.springframework.repositories.ExperimentRepository;
 import guru.springframework.repositories.InstrumentRepository;
 import guru.springframework.repositories.ProjectRepository;
+import guru.springframework.services.StorageService;
+import guru.springframework.util.ResultReader;
 
 @Controller
 public class ExperimentController {
@@ -52,6 +56,12 @@ public class ExperimentController {
 
 	@Autowired
 	DtaFileDetailsRepository dtaFileDetailsRepository;
+	
+	@Autowired
+	StorageService storageService;
+	
+	@Autowired
+	ResultReader resultReader;
 	
     @ModelAttribute("loginuser")
     public String loginuser(){
@@ -148,10 +158,24 @@ public class ExperimentController {
 		boolean isDtaFile = dataFile.isDtaFile();
 		Experiment experiment = experimentRepository.findOne(experiment_id);
 		dataFile.setExperiment(experiment);
-		dataFile = dataFileRepository.save(dataFile);
-		if(isDtaFile){
-			
+		
+		String fileName = dataFile.getFileName();
+		if(fileName.contains("/")){
+			fileName = fileName.substring(fileName.lastIndexOf("/") + 1);
 		}
+		String filePath = storageService.getDefaultFilePath().toString() + File.separator + fileName;
+		File file = new File(filePath);
+		
+		if(isDtaFile){
+			if(file.exists() && file.isFile()){
+				DtaFileDetails dtaFileDetails = resultReader.reader(file);
+				dtaFileDetails.setDate(GregorianCalendar.getInstance().getTime());
+				dtaFileDetails = dtaFileDetailsRepository.save(dtaFileDetails);
+				dataFile.setDtaFileDetails(dtaFileDetails);
+			}
+		}
+		
+		dataFile = dataFileRepository.save(dataFile);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 }

@@ -201,7 +201,7 @@
 	
 	    }
 		function createDTAFileUploader() {
-			var fileNamesArr = [];
+			var fileNamesArr = new Map();
 	    	var uploader = $("#dtaUploader").plupload({
 	            // General settings
 	            runtimes : 'html5,flash,silverlight,html4',
@@ -221,7 +221,8 @@
 	            },
 	     
 	            filters : [
-	                       {title : "DTA Files", extensions : "txt"}
+	                       {title : "DTA Files", extensions : "txt",prevent_duplicates: true},
+	                       
 	                   ],
 	            // Rename files by clicking on their titles
 	            rename: true,
@@ -252,6 +253,7 @@
 	            		var date = new Date();
 	            		var month = date.getMonth() + 1;
 	            		fileName = fileName + "_" + date.getFullYear() +"_"+ month +"_"+ date.getDate() +"_"+ date.getHours() +"_"+ date.getMinutes() +"_"+ date.getSeconds() + '.txt'
+	            		fileNamesArr.set(file.name,fileName);
 	            		up.settings.multipart_params = {
 	           	            filename: fileName,
 	           	         	foldername: "'"+[[${experiment.folderPath}]] +"/"+ "active'"
@@ -261,13 +263,14 @@
 	                    // Called when file has finished uploading
 	                    //console.log('[FileUploaded] File:', file, "Info:", info);
 	                    if(info.status === 200){
-	                    	var fileName = file.name;
-	                    	var filePath = [[${experiment.folderPath}]] +"/"+ "active/" +   file.name ;
+	                    	var fileNameFromMap = fileNamesArr.get(file.name);
+	                    	var fileName = fileNameFromMap ? fileNameFromMap : file.name;
+	                    	var filePath = [[${experiment.folderPath}]] +"/"+ "active/" +   fileName ;
 	                        var fileSize = (file.size >1024) ? file.size/1024 : file.size;
 	                        var dataFile = {
-	                        	fileName: file.name,
+	                        	fileName: fileName,
 	                        	fileSize: fileSize,
-	                        	isDtaFile : true,
+	                        	dtaFile : true,
 	                        	filePath: filePath
 	                        }
 	                        $.ajax({

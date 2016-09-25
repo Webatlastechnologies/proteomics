@@ -25,10 +25,10 @@ public class DataFile {
 	
 	private String filePath;
 	
-	private long fileSize;
+	private double fileSize;
 	
 	@Transient
-	private boolean isDtaFile;
+	private boolean dtaFile;
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	private DtaFileDetails dtaFileDetails;
@@ -65,22 +65,6 @@ public class DataFile {
 		this.filePath = filePath;
 	}
 
-	public long getFileSize() {
-		return fileSize;
-	}
-
-	public void setFileSize(long fileSize) {
-		this.fileSize = fileSize;
-	}
-
-	public boolean isDtaFile() {
-		return isDtaFile;
-	}
-
-	public void setDtaFile(boolean isDtaFile) {
-		this.isDtaFile = isDtaFile;
-	}
-
 	public DtaFileDetails getDtaFileDetails() {
 		return dtaFileDetails;
 	}
@@ -88,5 +72,20 @@ public class DataFile {
 	public void setDtaFileDetails(DtaFileDetails dtaFileDetails) {
 		this.dtaFileDetails = dtaFileDetails;
 	}
-	
+
+	public double getFileSize() {
+		return fileSize;
+	}
+
+	public void setFileSize(double fileSize) {
+		this.fileSize = fileSize;
+	}
+
+	public boolean isDtaFile() {
+		return dtaFile;
+	}
+
+	public void setDtaFile(boolean dtaFile) {
+		this.dtaFile = dtaFile;
+	}
 }
