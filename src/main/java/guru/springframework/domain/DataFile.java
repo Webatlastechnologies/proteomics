@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 
 @Entity
 public class DataFile {
@@ -25,6 +26,9 @@ public class DataFile {
 	private String filePath;
 	
 	private long fileSize;
+	
+	@Transient
+	private boolean isDtaFile;
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	private DtaFileDetails dtaFileDetails;
@@ -68,4 +72,21 @@ public class DataFile {
 	public void setFileSize(long fileSize) {
 		this.fileSize = fileSize;
 	}
+
+	public boolean isDtaFile() {
+		return isDtaFile;
+	}
+
+	public void setDtaFile(boolean isDtaFile) {
+		this.isDtaFile = isDtaFile;
+	}
+
+	public DtaFileDetails getDtaFileDetails() {
+		return dtaFileDetails;
+	}
+
+	public void setDtaFileDetails(DtaFileDetails dtaFileDetails) {
+		this.dtaFileDetails = dtaFileDetails;
+	}
+	
 }

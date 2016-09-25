@@ -7,6 +7,8 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -23,9 +25,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import guru.springframework.domain.DataFile;
 import guru.springframework.domain.Experiment;
 import guru.springframework.domain.Instrument;
 import guru.springframework.domain.Project;
+import guru.springframework.repositories.DataFileRepository;
+import guru.springframework.repositories.DtaFileDetailsRepository;
 import guru.springframework.repositories.ExperimentRepository;
 import guru.springframework.repositories.InstrumentRepository;
 import guru.springframework.repositories.ProjectRepository;
@@ -41,7 +46,13 @@ public class ExperimentController {
 	
 	@Autowired
 	ProjectRepository projectRepository;
+	
+	@Autowired
+	DataFileRepository dataFileRepository;
 
+	@Autowired
+	DtaFileDetailsRepository dtaFileDetailsRepository;
+	
     @ModelAttribute("loginuser")
     public String loginuser(){
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -129,5 +140,18 @@ public class ExperimentController {
 		Experiment experiment = experimentRepository.findOne(experiment_id);
 		model.addAttribute("experiment", experiment);
 		return "experimentDetails";
+	}
+	
+	@RequestMapping(value = "/addDataFiles", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<Void> addDataFiles(@RequestParam long experiment_id, @ModelAttribute DataFile dataFile, BindingResult errors){
+		boolean isDtaFile = dataFile.isDtaFile();
+		Experiment experiment = experimentRepository.findOne(experiment_id);
+		dataFile.setExperiment(experiment);
+		dataFile = dataFileRepository.save(dataFile);
+		if(isDtaFile){
+			
+		}
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 }

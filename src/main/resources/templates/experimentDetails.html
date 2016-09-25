@@ -124,6 +124,7 @@
             initPanelBar();
 		}
 		function createSpectralFileUploader() {
+			var fileNamesArr = [];
 	    	var uploader = $("#spectralUploader").plupload({
 	            // General settings
 	            runtimes : 'html5,flash,silverlight,html4',
@@ -176,9 +177,22 @@
 	                    //console.log('[FileUploaded] File:', file, "Info:", info);
 	                    if(info.status === 200){
 	                    	var fileName = file.name;
-	                        $("#upload_file_name").val(fileName);
-	                        var fileSize = file.size/1024;
-	                        $("#file_size").val(fileSize)
+	                    	var filePath = [[${experiment.folderPath}]] +"/"+ "active/" +   file.name ;
+	                        var fileSize = (file.size >1024) ? file.size/1024 : file.size;
+	                        var dataFile = {
+	                        	fileName: file.name,
+	                        	fileSize: fileSize,
+	                        	isDtaFile : false,
+	                        	filePath: filePath
+	                        }
+	                        $.ajax({
+	                        	url:'/addDataFiles?experiment_id=' + [[${experiment.experiment_id}]],
+	                        	method:"POST",
+	                        	data : dataFile,
+	                        	success : function(response){
+	                        		console.log('successfully updated experiment with DataFile Detail.');
+	                        	}
+	                        });
 	                    }
 	                    
 	                }
@@ -187,6 +201,7 @@
 	
 	    }
 		function createDTAFileUploader() {
+			var fileNamesArr = [];
 	    	var uploader = $("#dtaUploader").plupload({
 	            // General settings
 	            runtimes : 'html5,flash,silverlight,html4',
@@ -206,7 +221,7 @@
 	            },
 	     
 	            filters : [
-	                       {title : "DTA Files", extensions : "txt"},
+	                       {title : "DTA Files", extensions : "txt"}
 	                   ],
 	            // Rename files by clicking on their titles
 	            rename: true,
@@ -247,11 +262,26 @@
 	                    //console.log('[FileUploaded] File:', file, "Info:", info);
 	                    if(info.status === 200){
 	                    	var fileName = file.name;
-	                        $("#upload_file_name").val(fileName);
-	                        var fileSize = file.size/1024;
-	                        $("#file_size").val(fileSize)
+	                    	var filePath = [[${experiment.folderPath}]] +"/"+ "active/" +   file.name ;
+	                        var fileSize = (file.size >1024) ? file.size/1024 : file.size;
+	                        var dataFile = {
+	                        	fileName: file.name,
+	                        	fileSize: fileSize,
+	                        	isDtaFile : true,
+	                        	filePath: filePath
+	                        }
+	                        $.ajax({
+	                        	url:'/addDataFiles?experiment_id=' + [[${experiment.experiment_id}]],
+	                        	method:"POST",
+	                        	data : dataFile,
+	                        	success : function(response){
+	                        		console.log('successfully updated experiment with DataFile Detail.');
+	                        	}
+	                        });
 	                    }
-	                    
+	                },
+	                FileRemoved: function(up, file, info) {
+	                	
 	                }
 	            }
 	        });
