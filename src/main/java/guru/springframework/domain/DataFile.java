@@ -10,6 +10,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class DataFile {
 
@@ -19,6 +21,7 @@ public class DataFile {
 	
 	@ManyToOne
 	@JoinColumn(name="experiment_id")
+	@JsonIgnore
 	private Experiment experiment;
 	
 	private String fileName;
@@ -31,6 +34,7 @@ public class DataFile {
 	private boolean dtaFile;
 	
 	@OneToOne(cascade = CascadeType.ALL)
+	@JsonIgnore
 	private DtaFileDetails dtaFileDetails;
 	
 	public long getData_file_id() {

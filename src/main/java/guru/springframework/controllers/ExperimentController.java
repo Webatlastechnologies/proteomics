@@ -2,6 +2,8 @@ package guru.springframework.controllers;
 
 import java.io.File;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -169,6 +171,14 @@ public class ExperimentController {
 		if(isDtaFile){
 			if(file.exists() && file.isFile()){
 				DtaFileDetails dtaFileDetails = resultReader.reader(file);
+				Calendar cal = Calendar.getInstance();
+				int year = cal.get(Calendar.YEAR);
+				String yearString = "_" + String.valueOf(year);
+				if(fileName.contains(yearString)){
+					dtaFileDetails.setName(fileName.substring(0, fileName.indexOf(yearString)) + ".txt");
+				}else{
+					dtaFileDetails.setName(fileName);
+				}
 				dtaFileDetails.setDate(GregorianCalendar.getInstance().getTime());
 				dtaFileDetails = dtaFileDetailsRepository.save(dtaFileDetails);
 				dataFile.setDtaFileDetails(dtaFileDetails);
@@ -177,5 +187,43 @@ public class ExperimentController {
 		
 		dataFile = dataFileRepository.save(dataFile);
 		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/readDataFileDetails", method = RequestMethod.GET)
+	@ResponseBody
+	public List<DataFile> readDataFileDetails(@RequestParam long experiment_id){
+		Experiment experiment = experimentRepository.findOne(experiment_id);
+		List<DataFile> dataFiles = dataFileRepository.findByExperiment(experiment);
+		
+		List<DataFile> dataFileList = new ArrayList<DataFile>();	
+		if(dataFiles != null){
+			for(DataFile dataFile : dataFiles){
+				DtaFileDetails dtaFileDetails = dataFile.getDtaFileDetails();
+				if(dtaFileDetails == null){
+					dataFileList.add(dataFile);
+				}
+				
+			}
+		}
+		return dataFileList;
+	}
+	
+	@RequestMapping(value="/readDtaFileDetails", method = RequestMethod.GET)
+	@ResponseBody
+	public List<DtaFileDetails> readDtaFileDetails(@RequestParam long experiment_id){
+		Experiment experiment = experimentRepository.findOne(experiment_id);
+		List<DataFile> dataFiles = dataFileRepository.findByExperiment(experiment);
+		
+		List<DtaFileDetails> dtaFileList = new ArrayList<DtaFileDetails>();	
+		if(dataFiles != null){
+			for(DataFile dataFile : dataFiles){
+				DtaFileDetails dtaFileDetails = dataFile.getDtaFileDetails();
+				if(dtaFileDetails != null){
+					dtaFileList.add(dtaFileDetails);
+				}
+				
+			}
+		}
+		return dtaFileList;
 	}
 }
