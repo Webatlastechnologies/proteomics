@@ -7,10 +7,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class DtaFileDetails {
@@ -40,6 +40,7 @@ public class DtaFileDetails {
 	
 	@OneToOne(mappedBy="dtaFileDetails")
 	@JoinColumn(name = "data_file_id")
+	@JsonIgnore
 	private DataFile dataFile;
 
 	public long getFile_id() {

@@ -8,6 +8,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class DataFile {
@@ -18,15 +21,20 @@ public class DataFile {
 	
 	@ManyToOne
 	@JoinColumn(name="experiment_id")
+	@JsonIgnore
 	private Experiment experiment;
 	
 	private String fileName;
 	
 	private String filePath;
 	
-	private long fileSize;
+	private double fileSize;
+	
+	@Transient
+	private boolean dtaFile;
 	
 	@OneToOne(cascade = CascadeType.ALL)
+	@JsonIgnore
 	private DtaFileDetails dtaFileDetails;
 	
 	public long getData_file_id() {
@@ -61,11 +69,27 @@ public class DataFile {
 		this.filePath = filePath;
 	}
 
-	public long getFileSize() {
+	public DtaFileDetails getDtaFileDetails() {
+		return dtaFileDetails;
+	}
+
+	public void setDtaFileDetails(DtaFileDetails dtaFileDetails) {
+		this.dtaFileDetails = dtaFileDetails;
+	}
+
+	public double getFileSize() {
 		return fileSize;
 	}
 
-	public void setFileSize(long fileSize) {
+	public void setFileSize(double fileSize) {
 		this.fileSize = fileSize;
+	}
+
+	public boolean isDtaFile() {
+		return dtaFile;
+	}
+
+	public void setDtaFile(boolean dtaFile) {
+		this.dtaFile = dtaFile;
 	}
 }

@@ -18,5 +18,10 @@ public interface ExperimentRepository extends PagingAndSortingRepository<Experim
 	@Modifying
 	@Transactional	
 	@Query("update Experiment e set e.isArchive = ?1 where e.experiment_id = ?2")
-	int setIsArchiveFor(boolean isArchive, long experiment_id);	
+	int setIsArchiveFor(boolean isArchive, long experiment_id);
+	
+	@Modifying
+	@Transactional	
+	@Query("update Experiment e set e.isArchive = ?1 where e.project = ?2")
+	int setIsArchiveForProject(boolean isArchive, Project project);	
 }

@@ -1,12 +1,17 @@
 package guru.springframework.controllers;
 
+import java.io.File;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -23,12 +28,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import guru.springframework.domain.DataFile;
+import guru.springframework.domain.DtaFileDetails;
 import guru.springframework.domain.Experiment;
 import guru.springframework.domain.Instrument;
 import guru.springframework.domain.Project;
+import guru.springframework.repositories.DataFileRepository;
+import guru.springframework.repositories.DtaFileDetailsRepository;
 import guru.springframework.repositories.ExperimentRepository;
 import guru.springframework.repositories.InstrumentRepository;
 import guru.springframework.repositories.ProjectRepository;
+import guru.springframework.services.StorageService;
+import guru.springframework.util.ResultReader;
 
 @Controller
 public class ExperimentController {
@@ -41,7 +52,19 @@ public class ExperimentController {
 	
 	@Autowired
 	ProjectRepository projectRepository;
+	
+	@Autowired
+	DataFileRepository dataFileRepository;
 
+	@Autowired
+	DtaFileDetailsRepository dtaFileDetailsRepository;
+	
+	@Autowired
+	StorageService storageService;
+	
+	@Autowired
+	ResultReader resultReader;
+	
     @ModelAttribute("loginuser")
     public String loginuser(){
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -129,5 +152,78 @@ public class ExperimentController {
 		Experiment experiment = experimentRepository.findOne(experiment_id);
 		model.addAttribute("experiment", experiment);
 		return "experimentDetails";
+	}
+	
+	@RequestMapping(value = "/addDataFiles", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<Void> addDataFiles(@RequestParam long experiment_id, @ModelAttribute DataFile dataFile, BindingResult errors){
+		boolean isDtaFile = dataFile.isDtaFile();
+		Experiment experiment = experimentRepository.findOne(experiment_id);
+		dataFile.setExperiment(experiment);
+		
+		String fileName = dataFile.getFileName();
+		if(fileName.contains("/")){
+			fileName = fileName.substring(fileName.lastIndexOf("/") + 1);
+		}
+		String filePath = storageService.getDefaultFilePath().toString() + File.separator + fileName;
+		File file = new File(filePath);
+		
+		if(isDtaFile){
+			if(file.exists() && file.isFile()){
+				DtaFileDetails dtaFileDetails = resultReader.reader(file);
+				Calendar cal = Calendar.getInstance();
+				int year = cal.get(Calendar.YEAR);
+				String yearString = "_" + String.valueOf(year);
+				if(fileName.contains(yearString)){
+					dtaFileDetails.setName(fileName.substring(0, fileName.indexOf(yearString)) + ".txt");
+				}else{
+					dtaFileDetails.setName(fileName);
+				}
+				dtaFileDetails.setDate(GregorianCalendar.getInstance().getTime());
+				dtaFileDetails = dtaFileDetailsRepository.save(dtaFileDetails);
+				dataFile.setDtaFileDetails(dtaFileDetails);
+			}
+		}
+		
+		dataFile = dataFileRepository.save(dataFile);
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/readDataFileDetails", method = RequestMethod.GET)
+	@ResponseBody
+	public List<DataFile> readDataFileDetails(@RequestParam long experiment_id){
+		Experiment experiment = experimentRepository.findOne(experiment_id);
+		List<DataFile> dataFiles = dataFileRepository.findByExperiment(experiment);
+		
+		List<DataFile> dataFileList = new ArrayList<DataFile>();	
+		if(dataFiles != null){
+			for(DataFile dataFile : dataFiles){
+				DtaFileDetails dtaFileDetails = dataFile.getDtaFileDetails();
+				if(dtaFileDetails == null){
+					dataFileList.add(dataFile);
+				}
+				
+			}
+		}
+		return dataFileList;
+	}
+	
+	@RequestMapping(value="/readDtaFileDetails", method = RequestMethod.GET)
+	@ResponseBody
+	public List<DtaFileDetails> readDtaFileDetails(@RequestParam long experiment_id){
+		Experiment experiment = experimentRepository.findOne(experiment_id);
+		List<DataFile> dataFiles = dataFileRepository.findByExperiment(experiment);
+		
+		List<DtaFileDetails> dtaFileList = new ArrayList<DtaFileDetails>();	
+		if(dataFiles != null){
+			for(DataFile dataFile : dataFiles){
+				DtaFileDetails dtaFileDetails = dataFile.getDtaFileDetails();
+				if(dtaFileDetails != null){
+					dtaFileList.add(dtaFileDetails);
+				}
+				
+			}
+		}
+		return dtaFileList;
 	}
 }

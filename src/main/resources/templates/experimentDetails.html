@@ -104,6 +104,18 @@
 	              	</div>
                 </li>
             </ul>
+            <ul id="spectralFilesSection">
+            	<li>
+                	Spectral Files
+                	<div id="spectralFileGrid">
+                	</div>
+                </li>
+                <li>
+                	DTA File Details
+                	<div id="dtaFileDetailsGrid">
+                	</div>
+                </li>
+            </ul>
 			
 		</div>
 		<!-- END Page Content -->
@@ -116,14 +128,104 @@
 
 	<script th:inline="javascript">
 		
-		function createKendoPanelBar(){
+	function createDtaFilesGrid(){
+		
+		var dataSource = new kendo.data.DataSource({
+            transport: {
+                read:  {
+                    url: "/readDtaFileDetails?experiment_id="+ [[${experiment.experiment_id}]],
+                    dataType: "json",
+                    type: "get"
+                },
+            },
+            batch: false,
+            pageSize:50,
+            serverPaging: false,
+            schema: {
+                model: {
+                    id: "file_id",
+                    fields: {
+                    	name: { type :"text" },
+                    	date: { type :"text" },
+                    	proteinIds: { type :"int" },
+                    	peptideIds: { type :"int" },
+                    	proteinFdrs: { type :"number" },
+                    	peptiedFdrs: { type :"int" },
+                    	spectrumFdrs: { type :"int" },
+                    	fileParameters: { type :"text" },
+                    	description:{ type :"text" }
+                    }
+                }
+            }
+        });
+		
+		$("#dtaFileDetailsGrid").kendoGrid({
+            dataSource: dataSource,
+            pageable: true,
+            sortable: true,
+            height: 250,
+            columns: [
+                { field: "name", title: "DTA File Name", headerAttributes : {"class" : "db-custom-table-header"}},
+                { field: "date", title: "Date", headerAttributes : {"class" : "db-custom-table-header"}},
+                { field: "proteinIds", title: "Protein Ids", headerAttributes : {"class" : "db-custom-table-header"}},
+                { field: "peptideIds", title: "Peptide Ids", headerAttributes : {"class" : "db-custom-table-header"}},
+                { field: "proteinFdrs", title: "Protein FDR", headerAttributes : {"class" : "db-custom-table-header"}},
+                { field: "peptiedFdrs", title: "Peptide FDR", headerAttributes : {"class" : "db-custom-table-header"}},
+                { field: "spectrumFdrs", title: "Spectrun FDR", headerAttributes : {"class" : "db-custom-table-header"}},
+                { field: "fileParameters", title: "File Parameters", headerAttributes : {"class" : "db-custom-table-header"}},
+                { field: "description", title: "Description", headerAttributes : {"class" : "db-custom-table-header"}}
+                ],
+            editable: false
+        });
+	}
+	
+		function createSpectralFilesGrid(){
+			
+			var dataSource = new kendo.data.DataSource({
+                transport: {
+                    read:  {
+                        url: "/readDataFileDetails?experiment_id="+ [[${experiment.experiment_id}]],
+                        dataType: "json",
+                        type: "get"
+                    },
+                },
+                batch: false,
+                pageSize:50,
+                serverPaging: false,
+                schema: {
+                    model: {
+                        id: "data_file_id",
+                        fields: {
+                        	fileName: { type :"text" },
+                        	filePath: { type :"text" },
+                        	fileSize: { type :"int" },
+                        }
+                    }
+                }
+            });
+			
+			$("#spectralFileGrid").kendoGrid({
+                dataSource: dataSource,
+                pageable: true,
+                sortable: true,
+                height: 250,
+                columns: [
+                    { field: "fileName", title: "Spectral File Name", headerAttributes : {"class" : "db-custom-table-header"}},
+                    { field: "filePath", title: "File Path", headerAttributes : {"class" : "db-custom-table-header"}},
+                    { field: "fileSize", title: "File Size", headerAttributes : {"class" : "db-custom-table-header"}},
+                    ],
+                editable: false
+            });
+		}
+		function createKendoPanelBar(id){
             var initPanelBar = function () {
-                $("#panelbar").kendoPanelBar({ expandMode: "single"});
+                $("#"+id).kendoPanelBar({ expandMode: "single"});
             };
 
             initPanelBar();
 		}
 		function createSpectralFileUploader() {
+			var fileNamesArr = [];
 	    	var uploader = $("#spectralUploader").plupload({
 	            // General settings
 	            runtimes : 'html5,flash,silverlight,html4',
@@ -176,9 +278,26 @@
 	                    //console.log('[FileUploaded] File:', file, "Info:", info);
 	                    if(info.status === 200){
 	                    	var fileName = file.name;
-	                        $("#upload_file_name").val(fileName);
-	                        var fileSize = file.size/1024;
-	                        $("#file_size").val(fileSize)
+	                    	var filePath = [[${experiment.folderPath}]] +"/"+ "active/" +   file.name ;
+	                        var fileSize = (file.size >1024) ? file.size/1024 : file.size;
+	                        var dataFile = {
+	                        	fileName: file.name,
+	                        	fileSize: fileSize,
+	                        	isDtaFile : false,
+	                        	filePath: filePath
+	                        }
+	                        $.ajax({
+	                        	url:'/addDataFiles?experiment_id=' + [[${experiment.experiment_id}]],
+	                        	method:"POST",
+	                        	data : dataFile,
+	                        	success : function(response){
+	                        		console.log('successfully updated experiment with DataFile Detail.');
+	                        		
+	                        		$('#spectralFileGrid').data('kendoGrid').dataSource.read();
+        							$('#spectralFileGrid').data('kendoGrid').refresh();
+        							
+	                        	}
+	                        });
 	                    }
 	                    
 	                }
@@ -187,6 +306,7 @@
 	
 	    }
 		function createDTAFileUploader() {
+			var fileNamesArr = new Map();
 	    	var uploader = $("#dtaUploader").plupload({
 	            // General settings
 	            runtimes : 'html5,flash,silverlight,html4',
@@ -206,7 +326,8 @@
 	            },
 	     
 	            filters : [
-	                       {title : "DTA Files", extensions : "txt"},
+	                       {title : "DTA Files", extensions : "txt",prevent_duplicates: true},
+	                       
 	                   ],
 	            // Rename files by clicking on their titles
 	            rename: true,
@@ -237,6 +358,7 @@
 	            		var date = new Date();
 	            		var month = date.getMonth() + 1;
 	            		fileName = fileName + "_" + date.getFullYear() +"_"+ month +"_"+ date.getDate() +"_"+ date.getHours() +"_"+ date.getMinutes() +"_"+ date.getSeconds() + '.txt'
+	            		fileNamesArr.set(file.name,fileName);
 	            		up.settings.multipart_params = {
 	           	            filename: fileName,
 	           	         	foldername: "'"+[[${experiment.folderPath}]] +"/"+ "active'"
@@ -246,12 +368,30 @@
 	                    // Called when file has finished uploading
 	                    //console.log('[FileUploaded] File:', file, "Info:", info);
 	                    if(info.status === 200){
-	                    	var fileName = file.name;
-	                        $("#upload_file_name").val(fileName);
-	                        var fileSize = file.size/1024;
-	                        $("#file_size").val(fileSize)
+	                    	var fileNameFromMap = fileNamesArr.get(file.name);
+	                    	var fileName = fileNameFromMap ? fileNameFromMap : file.name;
+	                    	var filePath = [[${experiment.folderPath}]] +"/"+ "active/" +   fileName ;
+	                        var fileSize = (file.size >1024) ? file.size/1024 : file.size;
+	                        var dataFile = {
+	                        	fileName: fileName,
+	                        	fileSize: fileSize,
+	                        	dtaFile : true,
+	                        	filePath: filePath
+	                        }
+	                        $.ajax({
+	                        	url:'/addDataFiles?experiment_id=' + [[${experiment.experiment_id}]],
+	                        	method:"POST",
+	                        	data : dataFile,
+	                        	success : function(response){
+	                        		console.log('successfully updated experiment with DataFile Detail.');
+	                        		$('#dtaFileDetailsGrid').data('kendoGrid').dataSource.read();
+        							$('#dtaFileDetailsGrid').data('kendoGrid').refresh();
+	                        	}
+	                        });
 	                    }
-	                    
+	                },
+	                FileRemoved: function(up, file, info) {
+	                	
 	                }
 	            }
 	        });
@@ -260,7 +400,10 @@
 		$(function(){
 			createSpectralFileUploader();
 			createDTAFileUploader();
-			createKendoPanelBar();
+			createKendoPanelBar('panelbar');
+			createSpectralFilesGrid();
+			createDtaFilesGrid();
+			createKendoPanelBar('spectralFilesSection');
 		}) ;  
      </script>
 </body>
