@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import guru.springframework.domain.Project;
 import guru.springframework.domain.ProjectStatus;
 import guru.springframework.domain.User;
+import guru.springframework.repositories.ExperimentRepository;
 import guru.springframework.repositories.ProjectRepository;
 import guru.springframework.repositories.UserRepository;
 import guru.springframework.services.UserDetailService;
@@ -38,6 +39,9 @@ public class ProjectController {
 	
 	@Autowired
 	UserRepository userRepository;
+	
+	@Autowired
+	ExperimentRepository experimentRepository;
 	
 	@ModelAttribute("login_user_id")
 	public long getLoginUser(){
@@ -170,6 +174,11 @@ public class ProjectController {
 		if(isArchive){
 			archiveStatus = ProjectStatus.Archive.name();
 		}
-		return projectRepository.setIsArchiveFor(archiveStatus, project_id);
+		Project project = projectRepository.findOne(project_id);
+		int value = projectRepository.setIsArchiveFor(archiveStatus, project_id);
+		if(value > 0){
+			experimentRepository.setIsArchiveForProject(isArchive, project);
+		}
+		return value;
 	}
 }

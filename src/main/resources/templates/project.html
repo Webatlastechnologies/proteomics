@@ -92,7 +92,11 @@
             <script  th:inline="javascript">
             /*<![CDATA[*/
                 function updateArchiveStatus(projectId, isArchive){
-                	 $("#message").html('Are you sure you want to Archive project? Archiving a project will archive all its experiments too.');
+                	var msg = 'Are you sure you want to mark Project as Active?'
+               		if(isArchive){
+               			msg = 'Are you sure you want to Archive project? Archiving a project will archive all its experiments too.'
+               		}
+                	 $("#message").html(msg);
                      wnd.center().open();
                      $("#yes").click(function () {
                     		$.ajax({
@@ -114,19 +118,6 @@
                      });
 				}
             
-                function deleteProject(projectId){
-					$.ajax({
-						url:'/project/delete?project_id='+projectId,
-						method: "POST",
-						success: function(response){
-							$('#grid').data('kendoGrid').dataSource.read();
-							$('#grid').data('kendoGrid').refresh();
-							
-							$('#gridArchive').data('kendoGrid').dataSource.read();
-							$('#gridArchive').data('kendoGrid').refresh();
-						}
-					});
-				}
                 function confirmDelete(projectId){
                     $("#message").html('Are you sure you want to Delete project? Deleting a project will delete all its experiments too.');
                     wnd.center().open();

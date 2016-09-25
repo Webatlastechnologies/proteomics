@@ -83,38 +83,73 @@
 			th:replace="fragments/footer :: footer"></div>
 		<!-- END Footer -->
 	</div>
+	<div id="modalWindow">
+	    <p id="message"></p>
+	    <button id="yes" class="k-button">Yes</button>
+	    <button id="no" class="k-button">No</button>
+	</div>
 	<!-- END Inner Container -->
 
 	<script th:inline="javascript">
             /*<![CDATA[*/
                 function updateArchiveStatus(experimentId, isArchive){
-					$.ajax({
-						url:'/updateArchiveStatus?experiment_id='+experimentId +'&isArchive='+ isArchive,
-						method: "POST",
-						success: function(response){
-							$('#grid').data('kendoGrid').dataSource.read();
-							$('#grid').data('kendoGrid').refresh();
-							
-							$('#gridArchive').data('kendoGrid').dataSource.read();
-							$('#gridArchive').data('kendoGrid').refresh();
-						}
-					});
+            		var msg = 'Are you sure you want to mark Experiment as Active?'
+            		if(isArchive){
+            			msg = 'Are you sure you want to Archive Experiment?'
+            		}
+                	$("#message").html(msg);
+                    wnd.center().open();
+                    $("#yes").click(function () {
+                   		$.ajax({
+                   			url:'/updateArchiveStatus?experiment_id='+experimentId +'&isArchive='+ isArchive,
+                   			method: 'POST',
+                   			success : function(response){
+                   				$('#grid').data('kendoGrid').dataSource.read();
+       							$('#grid').data('kendoGrid').refresh();
+       							
+       							$('#gridArchive').data('kendoGrid').dataSource.read();
+       							$('#gridArchive').data('kendoGrid').refresh();
+                   			}
+                   		});
+                        wnd.close();
+                    });
+                 
+                    $("#no").click(function () {
+                        wnd.close();
+                    });
 				}
             
                 function deleteExperiment(experimentId){
-					$.ajax({
-						url:'/experiment/delete?experiment_id='+experimentId,
-						method: "POST",
-						success: function(response){
-							$('#grid').data('kendoGrid').dataSource.read();
-							$('#grid').data('kendoGrid').refresh();
-							
-							$('#gridArchive').data('kendoGrid').dataSource.read();
-							$('#gridArchive').data('kendoGrid').refresh();
-						}
-					});
+                	
+                	 $("#message").html('Are you sure you want to Delete Experiment?');
+                     wnd.center().open();
+                     $("#yes").click(function () {
+                    		$.ajax({
+                    			url:'/experiment/delete?experiment_id='+experimentId,
+                    			method: 'POST',
+                    			success : function(response){
+                    				$('#grid').data('kendoGrid').dataSource.read();
+        							$('#grid').data('kendoGrid').refresh();
+        							
+        							$('#gridArchive').data('kendoGrid').dataSource.read();
+        							$('#gridArchive').data('kendoGrid').refresh();
+                    			}
+                    		});
+                         wnd.close();
+                     });
+                  
+                     $("#no").click(function () {
+                         wnd.close();
+                     });
 				}
                 $(document).ready(function () {
+                	wnd = $("#modalWindow").kendoWindow({
+                        title: "Delete Project",
+                        modal: true,
+                        visible: false,
+                        resizable: false,
+                        width: 300
+                    }).data("kendoWindow");
                 	
                 	function getDatasource(readURL){
                 		var transportForGrid = {
