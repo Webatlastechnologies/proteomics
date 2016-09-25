@@ -74,11 +74,7 @@ public class ProjectController {
 		Set<Project> ownedProjects = userDetailService.getLoggedInUser().getProjects();
 		Set<Project> ownedProjectWithStatus = new HashSet<Project>();
 		for(Project p:sharedProjects){
-			if(p.getArchiveStatus() != null && p.getArchiveStatus().equalsIgnoreCase(archiveStatus)){
-				p.setProjectOwner(p.getUser().getUser_id());
-				
-			}
-			
+			p.setProjectOwner(p.getUser().getUser_id());
 		}
 		for(Project p:ownedProjects){
 			if(p.getArchiveStatus() != null && p.getArchiveStatus().equalsIgnoreCase(archiveStatus)){
@@ -88,8 +84,16 @@ public class ProjectController {
 			}
 		}
 		List<Project> allProjects=new ArrayList<>();
-		allProjects.addAll(sharedProjects);
 		allProjects.addAll(ownedProjectWithStatus);
+		
+		for(Project p : sharedProjects){
+			if(p.getArchiveStatus() != null && p.getArchiveStatus().equalsIgnoreCase(archiveStatus)){
+				if(!allProjects.contains(p)){
+					allProjects.add(p);
+				}
+			}
+		}
+		
 		return allProjects;
 	}
 	

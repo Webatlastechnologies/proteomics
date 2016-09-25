@@ -142,4 +142,14 @@ public class Project {
 	public void setArchiveStatus(String archiveStatus) {
 		this.archiveStatus = archiveStatus;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		return project_id == ((Project)obj).getProject_id();
+	}
+	@Override
+	public int hashCode() {
+		Long value  = new Long(project_id);
+		return value.hashCode();
+	}
 }
