@@ -30,19 +30,7 @@
                     <li class="dropdown pull-right dropdown-user">
                         <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user fa-2x"></i> <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <!-- Just a button demostrating how loading of widgets could happen, check main.js- - uiDemo() -->
-                            <li>
-                                <a href="javascript:void(0)" class="loading-on"><i class="fa fa-refresh"></i> Refresh</a>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <!-- Modal div is at the bottom of the page before including javascript code #modal-user-settings -->
-                                <a href="profile" role="button" data-toggle="modal"><i class="fa fa-user"></i> User Profile</a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0)"><i class="fa fa-wrench"></i> App Settings</a>
-                            </li>
-                            <li class="divider"></li>
+                            <!-- <li class="divider"></li> -->
                             <li>
                                 <a href="logout"><i class="fa fa-lock"></i> Log out</a>
                             </li>
@@ -73,10 +61,10 @@
                                             <li class="">
                                                 <a title="Home" href="home">Home</a>
                                             </li>
-                                            <li class="">
+                                            <li class=""  sec:authorize="hasRole('ROLE_USER')">
                                                 <a title="Database" href="database">Database</a>
                                             </li>
-                                            <li class="">
+                                            <li class="" sec:authorize="hasRole('ROLE_USER')">
                                                 <a title="Project" href="project">Project</a>
                                             </li>                                          
                                             <li class="">

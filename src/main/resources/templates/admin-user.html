@@ -116,6 +116,9 @@
                                     	website: { type :"text",editable:true },
                                     	address: { type :"text",editable:true },
                                     	role: { type :"text",editable:true },
+                                    	lab : {
+                                            labName: {type :"text",editable:false}
+                                    	}
                                     	
                                     }
                                 }
@@ -133,12 +136,13 @@
                             { field: "lastName", title: "Last Name"},
                             { field: "email", title: "Email"},
                             { field: "username", title: "Username"},
-                            { field: "password", title: "Password"},
+                            /* { field: "password", title: "Password"}, */
                             { field: "mobile", title: "Mobile"},
                             { field: "role", title: "Role"},
-                            { field: "passwordHint", title: "Password Hint"},
+                            /* { field: "passwordHint", title: "Password Hint"}, */
                             { field: "address", title: "Address"},
                             { field: "website", title: "Website"},
+                            { field: "lab.labName", title: "Lab Name"},
                             { command: "destroy", title: "&nbsp;", width: 150 }],
                         editable: true
                     });

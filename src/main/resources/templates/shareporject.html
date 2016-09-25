@@ -91,6 +91,7 @@
                                             <th>First Name</th>
                                             <th>Last Name</th>
                                             <th>Username</th>
+                                            <th>Lab</th>
                                            <th>Remove</th>
                                         </tr>
                                     </thead>
@@ -99,6 +100,7 @@
                                             <td th:text="${user.firstName}">Mark</td>
                                             <td th:text="${user.lastName}">Otto</td>
                                             <td th:text="${user.username}">@mdo</td>
+                                            <td th:text="${user.lab.labName}">@mdo</td>
                                             <td >  <a th:href="@{revokeProject(project_id=${project.project_id},username=${user.username})}">delete</a></td>
                                             <!-- ?project_id=${project.project_id}&username=${user.username}  -->
                                         </tr>
