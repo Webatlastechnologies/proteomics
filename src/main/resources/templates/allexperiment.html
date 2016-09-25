@@ -133,12 +133,12 @@
                                 model: {
                                     id: "experiment_id",
                                     fields: {
-                                    	sampleName: {editable: true},
-                                    	sampleDescription: { type :"text",editable:true },
+                                    	sampleName: {editable: false},
+                                    	sampleDescription: { type :"text",editable:false },
                                     	experimentDate: { type :"text",editable:false},
                                     	createDate: { type :"text",editable: false },
-                                    	instrument: { from: 'instrument.instrumentName', type :"text",editable: true },
-                                    	description: { type :"text",editable: true },
+                                    	instrument: { from: 'instrument.instrumentName', type :"text",editable: false },
+                                    	description: { type :"text",editable: false },
                                     }
                                 }
                             }

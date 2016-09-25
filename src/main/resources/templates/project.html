@@ -118,24 +118,21 @@
 						}
 					});
 				}
-                function confirmDelete(e){
-                    var grid = this;
-                    var row = $(e.currentTarget).closest("tr");
-                    var selectedData = grid.dataItem(grid.select());
+                function confirmDelete(projectId){
                     $("#message").html('Are you sure you want to delete database?');
                     wnd.center().open();
                     $("#yes").click(function () {
-                    	if(selectedData){
-                    		$.ajax({
-                    			url:'/project/delete?project_id='+selectedData.projectId,
-                    			method: 'POST',
-                    			success : function(response){
-                    				grid.removeRow(row);
-                    			}
-                    		});
-                    		
-                    	}
-                        
+                   		$.ajax({
+                   			url:'/project/delete?project_id='+projectId,
+                   			method: 'POST',
+                   			success : function(response){
+                   				$('#grid').data('kendoGrid').dataSource.read();
+       							$('#grid').data('kendoGrid').refresh();
+       							
+       							$('#gridArchive').data('kendoGrid').dataSource.read();
+       							$('#gridArchive').data('kendoGrid').refresh();
+                   			}
+                   		});
                         wnd.close();
                     });
                  
@@ -173,7 +170,7 @@
                                     fields: {
                                     	projectName: { type :"text",editable:false },
                                     	createdDate: { type :"text",editable:false },
-                                    	description: { type :"text",editable:true },
+                                    	description: { type :"text",editable:false },
                                     	projectOwner: { type :"number",editable:false },
                                     	user :{
                                     		username : {type :"text",editable:false},
@@ -201,7 +198,6 @@
                         sortable: true,
                         height: 250,
                         columns: [
-									{ field: "project_id", title: "Id", headerAttributes : {"class" : "db-custom-table-header"} },
 									{ field: "projectName", title: "Name", headerAttributes : {"class" : "db-custom-table-header"} },
 									{ title: "Experiments", template: '<a href="experiment?project_id=#:project_id#" >View</a>', headerAttributes : {"class" : "db-custom-table-header"} },
 									{ field: "createdDate", title: "Created Date", headerAttributes : {"class" : "db-custom-table-header"} },
@@ -210,7 +206,7 @@
 									{ field: "user.lab.labName", title: "Lab Name", headerAttributes : {"class" : "db-custom-table-header"} },
 									{ field: "description", title: "Description", headerAttributes : {"class" : "db-custom-table-header"} },
 									{ title: "Archive",template:'<a href="javascript:updateArchiveStatus(#=project_id#,true);"><span class="glyphicon glyphicon-eye-open"></span></a>', headerAttributes : {"class" : "db-custom-table-header"}},
-									{ title: "Delete" ,template:'<a href="javascript:deleteProject(#=project_id#)"><i class="glyphicon glyphicon-trash"></i></a>', headerAttributes : {"class" : "db-custom-table-header"} },
+									{ title: "Delete" ,template:'<a href="javascript:confirmDelete(#=project_id#)"><i class="glyphicon glyphicon-trash"></i></a>', headerAttributes : {"class" : "db-custom-table-header"} },
 									{  title: "Share" ,template:'<a href="shareProject?project_id=#:project_id#"><i class="fa fa-share"></i> #:noOfSharedUsers#</a>', headerAttributes : {"class" : "db-custom-table-header"} }
                             ],
                         editable: false
@@ -224,7 +220,6 @@
                         sortable: true,
                         height: 250,
                         columns: [
-									{ field: "project_id", title: "Id", headerAttributes : {"class" : "db-custom-table-header"} },
 									{ field: "projectName", title: "Name", headerAttributes : {"class" : "db-custom-table-header"} },
 									{ title: "Experiments", template: '<a href="experiment?project_id=#:project_id#" >View</a>', headerAttributes : {"class" : "db-custom-table-header"} },
 									{ field: "createdDate", title: "Created Date", headerAttributes : {"class" : "db-custom-table-header"} },
@@ -233,84 +228,12 @@
 									{ field: "user.lab.labName", title: "Lab Name", headerAttributes : {"class" : "db-custom-table-header"} },
 									{ field: "description", title: "Description", headerAttributes : {"class" : "db-custom-table-header"} },
 									{ title: "Archive",template:'<a href="javascript:updateArchiveStatus(#=project_id#,true);"><span class="glyphicon glyphicon-eye-open"></span></a>', headerAttributes : {"class" : "db-custom-table-header"}},
-		                            { title: "Delete" ,template:'<a href="javascript:deleteProject(#=project_id#)"><i class="glyphicon glyphicon-trash"></i></a>', headerAttributes : {"class" : "db-custom-table-header"} },
+		                            { title: "Delete" ,template:'<a href="javascript:confirmDelete(#=project_id#)"><i class="glyphicon glyphicon-trash"></i></a>', headerAttributes : {"class" : "db-custom-table-header"} },
 									{  title: "Share" ,template:'<a href="shareProject?project_id=#:project_id#"><i class="fa fa-share"></i> #:noOfSharedUsers#</a>', headerAttributes : {"class" : "db-custom-table-header"} }
                             ],
                         editable: false
                     });
-                	
-                	
-                	
-                	
-                	
-                	
-                	
-                	
-                	
-                	
-                	
-                	
-                	
-                	
-                	
-                	
-                	
-                	
-                	
-                    var crudServiceBaseUrl = "project",
-                        dataSource = new kendo.data.DataSource({
-                            transport: {
-                                read:  {
-                                    url: crudServiceBaseUrl + "/read",
-                                    dataType: "json",
-                                    type: "post"
-                                },
-                            },
-                            batch: false,
-                            serverPaging: false,
-                            pageSize: 50,
-                            schema: {
-                                model: {
-                                    id: "project_id",
-                                    fields: {
-                                    	projectName: { type :"text",editable:true },
-                                    	createdDate: { type :"text",editable:false },
-                                    	description: { type :"text",editable:true },
-                                    	projectOwner: { type :"number",editable:false },
-                                    	archiveStatus: { type :"text",editable:true },
-                                    	user :{
-                                    		username : {type :"text",editable:false},
-                                    		lab : {
-                                                labName: {type :"text",editable:false}
-                                        	}
-                                    	},
-                                    	canDelete: { type :"text",editable:false },
-                                    	noOfSharedUsers: { type :"number",editable:false },
-                                    }
-                                }
-                            }
-                        });
-
-                    $("#grid").kendoGrid({
-                        dataSource: dataSource,
-                        pageable: true,
-                        sortable: true,
-                        height: 200,
-                        columns: [
-                            { field: "project_id", title: "Id", headerAttributes : {"class" : "db-custom-table-header"} },
-                            { field: "projectName", title: "Name", headerAttributes : {"class" : "db-custom-table-header"} },
-                            { title: "Experiments", template: '<a href="experiment?project_id=#:project_id#" >View</a>', headerAttributes : {"class" : "db-custom-table-header"} },
-                            { field: "createdDate", title: "Created Date", headerAttributes : {"class" : "db-custom-table-header"} },
-                            { field: "projectOwner", title: "Owner id", headerAttributes : {"class" : "db-custom-table-header"} },
-                            { field: "user.username", title: "Owner username", headerAttributes : {"class" : "db-custom-table-header"} },
-                            { field: "user.lab.labName", title: "Lab Name", headerAttributes : {"class" : "db-custom-table-header"} },
-                            { field: "description", title: "Description", headerAttributes : {"class" : "db-custom-table-header"} },
-                            { field: "archiveStatus", title: "Archive Status", headerAttributes : {"class" : "db-custom-table-header"} },
-                            { title: "Delete", command:"destroy", headerAttributes : {"class" : "db-custom-table-header"}  },
-                            {  title: "Share" ,template:'<a href="shareProject?project_id=#:project_id#"><i class="fa fa-share"></i> #:noOfSharedUsers#</a>', headerAttributes : {"class" : "db-custom-table-header"} },
-                            ],
-                        editable: true
-                    });
+                   
                 });
             
                 /*]]>*/

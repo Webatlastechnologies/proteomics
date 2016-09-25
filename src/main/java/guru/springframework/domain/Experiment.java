@@ -3,6 +3,7 @@ package guru.springframework.domain;
 import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -40,7 +41,7 @@ public class Experiment {
 	@JoinColumn(name="project_id")
 	private Project project;
 	
-	@OneToMany(mappedBy="experiment")
+	@OneToMany(mappedBy="experiment", cascade = CascadeType.ALL)
 	private Set<DataFile> dataFiles;
 	
 	@OneToOne	
