@@ -108,6 +108,12 @@
                                     	description: { type :"text",editable:true },
                                     	projectOwner: { type :"number",editable:false },
                                     	archiveStatus: { type :"text",editable:true },
+                                    	user :{
+                                    		username : {type :"text",editable:false},
+                                    		lab : {
+                                                labName: {type :"text",editable:false}
+                                        	}
+                                    	},
                                     	canDelete: { type :"text",editable:false },
                                     	noOfSharedUsers: { type :"number",editable:false },
                                     }
@@ -128,7 +134,9 @@
                             { field: "projectName", title: "Name"},
                             { title: "Experiments", template: '<a href="experiment?project_id=#:project_id#" >View</a>'},
                             { field: "createdDate", title: "Created Date"},
-                            {field:"projectOwner", title: "Owner id"},
+                            { field: "projectOwner", title: "Owner id"},
+                            { field: "user.username", title: "Owner username"},
+                            { field: "user.lab.labName", title: "labName"},
                             { field: "description", title: "Description"},
                             { field: "archiveStatus", title: "Archive Status"},
                             { title: "Delete", command:"destroy" },
