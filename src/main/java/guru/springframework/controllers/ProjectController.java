@@ -1,8 +1,8 @@
-package guru.springframework.controllers;
+	package guru.springframework.controllers;
 
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -13,17 +13,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
-import guru.springframework.domain.Experiment;
 import guru.springframework.domain.Project;
+import guru.springframework.domain.ProjectStatus;
 import guru.springframework.domain.User;
 import guru.springframework.repositories.ProjectRepository;
 import guru.springframework.repositories.UserRepository;
@@ -60,19 +58,34 @@ public class ProjectController {
 	}
 
 	@RequestMapping(value="/project/read", method = RequestMethod.POST)
-	public @ResponseBody List<Project> read(){
+	public @ResponseBody List<Project> read(@RequestParam(value="isArchive", required=false) Boolean isArchive){
+		if(isArchive == null){
+			isArchive = false;
+		}
+		String archiveStatus = ProjectStatus.Active.name();
+		if(isArchive){
+			archiveStatus = ProjectStatus.Archive.name();
+		}
 		Set<Project> sharedProjects=userDetailService.getLoggedInUser().getSharedProjects();
 		Set<Project> ownedProjects = userDetailService.getLoggedInUser().getProjects();
+		Set<Project> ownedProjectWithStatus = new HashSet<Project>();
 		for(Project p:sharedProjects){
-			p.setProjectOwner(p.getUser().getUser_id());
+			if(p.getArchiveStatus() != null && p.getArchiveStatus().equalsIgnoreCase(archiveStatus)){
+				p.setProjectOwner(p.getUser().getUser_id());
+				
+			}
+			
 		}
 		for(Project p:ownedProjects){
-			p.setProjectOwner(p.getUser().getUser_id());
-			p.setNoOfSharedUsers(p.getUsers().size());
+			if(p.getArchiveStatus() != null && p.getArchiveStatus().equalsIgnoreCase(archiveStatus)){
+				p.setProjectOwner(p.getUser().getUser_id());
+				p.setNoOfSharedUsers(p.getUsers().size());
+				ownedProjectWithStatus.add(p);
+			}
 		}
 		List<Project> allProjects=new ArrayList<>();
 		allProjects.addAll(sharedProjects);
-		allProjects.addAll(ownedProjects);
+		allProjects.addAll(ownedProjectWithStatus);
 		return allProjects;
 	}
 	
@@ -149,5 +162,14 @@ public class ProjectController {
 		 project.setProjectOwner(userDetailService.getLoggedInUser().getUser_id());
 		 return "project";
 	}
-	 
+	
+	@RequestMapping(value = "/updateProjectArchiveStatus", method = RequestMethod.POST)
+	@ResponseBody
+	public int updateArchiveStatus(@RequestParam long project_id, @RequestParam boolean isArchive){
+		String archiveStatus = ProjectStatus.Active.name();
+		if(isArchive){
+			archiveStatus = ProjectStatus.Archive.name();
+		}
+		return projectRepository.setIsArchiveFor(archiveStatus, project_id);
+	}
 }
