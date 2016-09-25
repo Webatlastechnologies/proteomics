@@ -92,10 +92,13 @@
             <script  th:inline="javascript">
             /*<![CDATA[*/
                 function updateArchiveStatus(projectId, isArchive){
-                	var msg = 'Are you sure you want to mark Project as Active?'
+                	var msg = 'Are you sure you want to mark Project as Active?';
+                	var title = 'Mark Project Active';
                		if(isArchive){
-               			msg = 'Are you sure you want to Archive project? Archiving a project will archive all its experiments too.'
+               			msg = 'Are you sure you want to Archive project? Archiving a project will archive all its experiments too.';
+               			title = 'Mark Project Archive';
                		}
+               	 	wnd.title(title);
                 	 $("#message").html(msg);
                      wnd.center().open();
                      $("#yes").click(function () {
@@ -120,6 +123,7 @@
             
                 function confirmDelete(projectId){
                     $("#message").html('Are you sure you want to Delete project? Deleting a project will delete all its experiments too.');
+                    wnd.title("Delete Project");
                     wnd.center().open();
                     $("#yes").click(function () {
                    		$.ajax({
@@ -143,7 +147,7 @@
                 $(document).ready(function () {
                 	
                 	wnd = $("#modalWindow").kendoWindow({
-                        title: "Delete Project",
+                        title: "",
                         modal: true,
                         visible: false,
                         resizable: false,
@@ -227,7 +231,7 @@
 									{ field: "user.username", title: "Owner username", headerAttributes : {"class" : "db-custom-table-header"} },
 									{ field: "user.lab.labName", title: "Lab Name", headerAttributes : {"class" : "db-custom-table-header"} },
 									{ field: "description", title: "Description", headerAttributes : {"class" : "db-custom-table-header"} },
-									{ title: "Archive",template:'<a href="javascript:updateArchiveStatus(#=project_id#,false);"><span class="glyphicon glyphicon-eye-open"></span></a>', headerAttributes : {"class" : "db-custom-table-header"}},
+									{ title: "Mark",template:'<a href="javascript:updateArchiveStatus(#=project_id#,false);"><span class="glyphicon glyphicon-eye-open"></span></a>', headerAttributes : {"class" : "db-custom-table-header"}},
 		                            { title: "Delete" ,template:'<a href="javascript:confirmDelete(#=project_id#)"><i class="glyphicon glyphicon-trash"></i></a>', headerAttributes : {"class" : "db-custom-table-header"} },
 									{  title: "Share" ,template:'<a href="shareProject?project_id=#:project_id#"><i class="fa fa-share"></i> #:noOfSharedUsers#</a>', headerAttributes : {"class" : "db-custom-table-header"} }
                             ],

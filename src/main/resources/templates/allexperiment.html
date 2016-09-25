@@ -93,11 +93,14 @@
 	<script th:inline="javascript">
             /*<![CDATA[*/
                 function updateArchiveStatus(experimentId, isArchive){
-            		var msg = 'Are you sure you want to mark Experiment as Active?'
+            		var msg = 'Are you sure you want to mark Experiment as Active?';
+            		var title = 'Mark Experiment Active';
             		if(isArchive){
-            			msg = 'Are you sure you want to Archive Experiment?'
+            			msg = 'Are you sure you want to Archive Experiment?';
+            			title = 'Mark Experiment Archive';
             		}
                 	$("#message").html(msg);
+                	wnd.title(title);
                     wnd.center().open();
                     $("#yes").click(function () {
                    		$.ajax({
@@ -122,6 +125,7 @@
                 function deleteExperiment(experimentId){
                 	
                 	 $("#message").html('Are you sure you want to Delete Experiment?');
+                	 wnd.title("Delete Experiment");
                      wnd.center().open();
                      $("#yes").click(function () {
                     		$.ajax({
@@ -144,7 +148,7 @@
 				}
                 $(document).ready(function () {
                 	wnd = $("#modalWindow").kendoWindow({
-                        title: "Delete Project",
+                        title: "",
                         modal: true,
                         visible: false,
                         resizable: false,
