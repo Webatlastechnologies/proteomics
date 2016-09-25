@@ -92,17 +92,26 @@
             <script  th:inline="javascript">
             /*<![CDATA[*/
                 function updateArchiveStatus(projectId, isArchive){
-					$.ajax({
-						url:'/updateProjectArchiveStatus?project_id='+projectId +'&isArchive='+ isArchive,
-						method: "POST",
-						success: function(response){
-							$('#grid').data('kendoGrid').dataSource.read();
-							$('#grid').data('kendoGrid').refresh();
-							
-							$('#gridArchive').data('kendoGrid').dataSource.read();
-							$('#gridArchive').data('kendoGrid').refresh();
-						}
-					});
+                	 $("#message").html('Are you sure you want to Archive project? Archiving a project will archive all its experiments too.');
+                     wnd.center().open();
+                     $("#yes").click(function () {
+                    		$.ajax({
+                    			url:'/updateProjectArchiveStatus?project_id='+projectId +'&isArchive='+ isArchive,
+                    			method: 'POST',
+                    			success : function(response){
+                    				$('#grid').data('kendoGrid').dataSource.read();
+        							$('#grid').data('kendoGrid').refresh();
+        							
+        							$('#gridArchive').data('kendoGrid').dataSource.read();
+        							$('#gridArchive').data('kendoGrid').refresh();
+                    			}
+                    		});
+                         wnd.close();
+                     });
+                  
+                     $("#no").click(function () {
+                         wnd.close();
+                     });
 				}
             
                 function deleteProject(projectId){
@@ -119,7 +128,7 @@
 					});
 				}
                 function confirmDelete(projectId){
-                    $("#message").html('Are you sure you want to delete database?');
+                    $("#message").html('Are you sure you want to Delete project? Deleting a project will delete all its experiments too.');
                     wnd.center().open();
                     $("#yes").click(function () {
                    		$.ajax({
@@ -227,7 +236,7 @@
 									{ field: "user.username", title: "Owner username", headerAttributes : {"class" : "db-custom-table-header"} },
 									{ field: "user.lab.labName", title: "Lab Name", headerAttributes : {"class" : "db-custom-table-header"} },
 									{ field: "description", title: "Description", headerAttributes : {"class" : "db-custom-table-header"} },
-									{ title: "Archive",template:'<a href="javascript:updateArchiveStatus(#=project_id#,true);"><span class="glyphicon glyphicon-eye-open"></span></a>', headerAttributes : {"class" : "db-custom-table-header"}},
+									{ title: "Archive",template:'<a href="javascript:updateArchiveStatus(#=project_id#,false);"><span class="glyphicon glyphicon-eye-open"></span></a>', headerAttributes : {"class" : "db-custom-table-header"}},
 		                            { title: "Delete" ,template:'<a href="javascript:confirmDelete(#=project_id#)"><i class="glyphicon glyphicon-trash"></i></a>', headerAttributes : {"class" : "db-custom-table-header"} },
 									{  title: "Share" ,template:'<a href="shareProject?project_id=#:project_id#"><i class="fa fa-share"></i> #:noOfSharedUsers#</a>', headerAttributes : {"class" : "db-custom-table-header"} }
                             ],
