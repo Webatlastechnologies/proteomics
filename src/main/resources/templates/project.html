@@ -83,15 +83,21 @@
                 <!-- END Footer -->
             </div>
             <!-- END Inner Container -->
-            <div id="modalWindow">
-			    <p id="message"></p>
-			    <button id="yes" class="k-button">Yes</button>
-			    <button id="no" class="k-button">No</button>
-			</div>
+            <div id="windowParent">
+            </div>
             
             <script  th:inline="javascript">
             /*<![CDATA[*/
                 function updateArchiveStatus(projectId, isArchive){
+            		$("#windowParent").append('<div id="modalWindow"> <p id="message"></p><button id="yes" class="k-button">Yes</button><button id="no" class="k-button">No</button></div>');
+                	var wnd = $("#modalWindow").kendoWindow({
+                        title: "",
+                        modal: true,
+                        visible: false,
+                        resizable: false,
+                        width: 300
+                    }).data("kendoWindow");
+            		
                 	var msg = 'Are you sure you want to mark Project as Active?';
                 	var title = 'Mark Project Active';
                		if(isArchive){
@@ -114,14 +120,25 @@
                     			}
                     		});
                          wnd.close();
+                         wnd.destroy();
                      });
                   
                      $("#no").click(function () {
                          wnd.close();
+                         wnd.destroy();
                      });
 				}
             
                 function confirmDelete(projectId){
+                	$("#windowParent").append('<div id="modalWindow"> <p id="message"></p><button id="yes" class="k-button">Yes</button><button id="no" class="k-button">No</button></div>');
+                	var wnd = $("#modalWindow").kendoWindow({
+                        title: "",
+                        modal: true,
+                        visible: false,
+                        resizable: false,
+                        width: 300
+                    }).data("kendoWindow");
+                	
                     $("#message").html('Are you sure you want to Delete project? Deleting a project will delete all its experiments too.');
                     wnd.title("Delete Project");
                     wnd.center().open();
@@ -138,22 +155,15 @@
                    			}
                    		});
                         wnd.close();
+                        wnd.destroy();
                     });
                  
                     $("#no").click(function () {
-                        wnd.close();
+                    	wnd.close();
+                        wnd.destroy();
                     });
                 }
                 $(document).ready(function () {
-                	
-                	wnd = $("#modalWindow").kendoWindow({
-                        title: "",
-                        modal: true,
-                        visible: false,
-                        resizable: false,
-                        width: 300
-                    }).data("kendoWindow");
-                	
                 	
                 	function getDatasource(readURL){
                 		var transportForGrid = {

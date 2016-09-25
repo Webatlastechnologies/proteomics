@@ -83,16 +83,21 @@
 			th:replace="fragments/footer :: footer"></div>
 		<!-- END Footer -->
 	</div>
-	<div id="modalWindow">
-	    <p id="message"></p>
-	    <button id="yes" class="k-button">Yes</button>
-	    <button id="no" class="k-button">No</button>
+	<div id="windowParent">
 	</div>
 	<!-- END Inner Container -->
 
 	<script th:inline="javascript">
             /*<![CDATA[*/
                 function updateArchiveStatus(experimentId, isArchive){
+                	$("#windowParent").append('<div id="modalWindow"> <p id="message"></p><button id="yes" class="k-button">Yes</button><button id="no" class="k-button">No</button></div>');
+                	var wnd = $("#modalWindow").kendoWindow({
+                        title: "",
+                        modal: true,
+                        visible: false,
+                        resizable: false,
+                        width: 300
+                    }).data("kendoWindow");
             		var msg = 'Are you sure you want to mark Experiment as Active?';
             		var title = 'Mark Experiment Active';
             		if(isArchive){
@@ -115,15 +120,24 @@
                    			}
                    		});
                         wnd.close();
+                        wnd.destroy();
                     });
                  
                     $("#no").click(function () {
                         wnd.close();
+                        wnd.destroy();
                     });
 				}
             
                 function deleteExperiment(experimentId){
-                	
+                	$("#windowParent").append('<div id="modalWindow"> <p id="message"></p><button id="yes" class="k-button">Yes</button><button id="no" class="k-button">No</button></div>');
+                	var wnd = $("#modalWindow").kendoWindow({
+                        title: "",
+                        modal: true,
+                        visible: false,
+                        resizable: false,
+                        width: 300
+                    }).data("kendoWindow");
                 	 $("#message").html('Are you sure you want to Delete Experiment?');
                 	 wnd.title("Delete Experiment");
                      wnd.center().open();
@@ -140,20 +154,15 @@
                     			}
                     		});
                          wnd.close();
+                         wnd.destroy();
                      });
                   
                      $("#no").click(function () {
                          wnd.close();
+                         wnd.destroy();
                      });
 				}
                 $(document).ready(function () {
-                	wnd = $("#modalWindow").kendoWindow({
-                        title: "",
-                        modal: true,
-                        visible: false,
-                        resizable: false,
-                        width: 300
-                    }).data("kendoWindow");
                 	
                 	function getDatasource(readURL){
                 		var transportForGrid = {

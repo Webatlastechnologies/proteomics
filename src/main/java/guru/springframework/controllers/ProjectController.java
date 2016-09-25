@@ -89,9 +89,17 @@ public class ProjectController {
 		
 		for(Project p : sharedProjects){
 			if(p.getArchiveStatus() != null && p.getArchiveStatus().equalsIgnoreCase(archiveStatus)){
-				if(!allProjects.contains(p)){
+				boolean projectAdded = false;
+				for(Project op : allProjects){
+					if(op.getProject_id() == p.getProject_id()){
+						projectAdded = true;
+						break;
+					}
+				}
+				if(!projectAdded){
 					allProjects.add(p);
 				}
+				
 			}
 		}
 		
