@@ -76,7 +76,7 @@
                                         <div class="edit-btn">
                                      
                                                 <button type="submit" class="btn btn-success">Submit</button>
-                                                <button type="button" class="btn btn-default">cancel</button>
+                                                <a href="project" type="button" class="btn btn-default">cancel</a>
                                                 
                                             
                                         </div>
@@ -99,7 +99,8 @@
                                             <td th:text="${user.firstName}">Mark</td>
                                             <td th:text="${user.lastName}">Otto</td>
                                             <td th:text="${user.username}">@mdo</td>
-                                          <!--  <td th:href="@{'/deleteSharing?project_id=' + ${project.project_id} + '&username=' + ${user.username} }" >delete</td> -->
+                                            <td >  <a th:href="@{revokeProject(project_id=${project.project_id},username=${user.username})}">delete</a></td>
+                                            <!-- ?project_id=${project.project_id}&username=${user.username}  -->
                                         </tr>
                                     </tbody>
                                 </table>

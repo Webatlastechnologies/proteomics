@@ -115,6 +115,20 @@ public class ProjectController {
 		 return "shareporject";
 		}
 	 
+	 @RequestMapping(value = "/revokeProject", method = RequestMethod.GET)
+		public String projectRevoking(@RequestParam long project_id,@RequestParam String username, Model model) {
+		 Project project=projectRepository.findOne(project_id);
+		 Set<User> sharedUsers = project.getUsers();
+		 User u=userRepository.findByUsername(username);
+		 if(u!=null){
+			 sharedUsers.remove(u);
+		 }
+		 projectRepository.save(project);
+		 model.addAttribute("project",project);
+		 model.addAttribute("sharedUsers",sharedUsers);
+		 return "shareporject";
+		}
+	 
 	 
 	 
 }
