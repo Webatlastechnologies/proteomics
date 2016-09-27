@@ -361,7 +361,7 @@
 	            		fileNamesArr.set(file.name,fileName);
 	            		up.settings.multipart_params = {
 	           	            filename: fileName,
-	           	         	foldername: "'"+[[${experiment.folderPath}]] +"/"+ "active'"
+	           	         	foldername: [[${experiment.folderPath}]] +"/"+ "active"
 	           	        };
 	            	},
 	            	FileUploaded: function(up, file, info) {
