@@ -219,7 +219,7 @@
 		}
 		function createKendoPanelBar(id){
             var initPanelBar = function () {
-                $("#"+id).kendoPanelBar({ expandMode: "single"});
+                $("#"+id).kendoPanelBar();
             };
 
             initPanelBar();
@@ -270,7 +270,7 @@
 	            	BeforeUpload: function(up, file) {
 	            		up.settings.multipart_params = {
 	           	            filename: file.name,
-	           	         	foldername: "'"+[[${experiment.folderPath}]] +"/"+ "active'"
+	           	         	foldername: [[${experiment.folderPath}]] +"/"+ "active"
 	           	        };
 	            	},
 	            	FileUploaded: function(up, file, info) {

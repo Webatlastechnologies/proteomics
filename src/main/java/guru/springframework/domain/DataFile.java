@@ -37,6 +37,8 @@ public class DataFile {
 	@JsonIgnore
 	private DtaFileDetails dtaFileDetails;
 	
+	private String uploadedBy;
+	
 	public long getData_file_id() {
 		return data_file_id;
 	}
@@ -91,5 +93,13 @@ public class DataFile {
 
 	public void setDtaFile(boolean dtaFile) {
 		this.dtaFile = dtaFile;
+	}
+	
+	public String getUploadedBy() {
+		return uploadedBy;
+	}
+
+	public void setUploadedBy(String uploadedBy) {
+		this.uploadedBy = uploadedBy;
 	}
 }

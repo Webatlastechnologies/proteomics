@@ -39,6 +39,7 @@ import guru.springframework.repositories.ExperimentRepository;
 import guru.springframework.repositories.InstrumentRepository;
 import guru.springframework.repositories.ProjectRepository;
 import guru.springframework.services.StorageService;
+import guru.springframework.services.UserDetailService;
 import guru.springframework.util.ResultReader;
 
 @Controller
@@ -64,6 +65,9 @@ public class ExperimentController {
 	
 	@Autowired
 	ResultReader resultReader;
+	
+	@Autowired
+	UserDetailService userDetailService;
 	
     @ModelAttribute("loginuser")
     public String loginuser(){
@@ -168,6 +172,7 @@ public class ExperimentController {
 		String filePath = storageService.getDefaultFilePath().toString() + File.separator + fileName;
 		File file = new File(filePath);
 		
+		dataFile.setUploadedBy(userDetailService.getLoggedInUser().getUsername());
 		if(isDtaFile){
 			if(file.exists() && file.isFile()){
 				DtaFileDetails dtaFileDetails = resultReader.reader(file);

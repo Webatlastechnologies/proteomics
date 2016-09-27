@@ -42,7 +42,7 @@ public class DtaFileDetails {
 	@JoinColumn(name = "data_file_id")
 	@JsonIgnore
 	private DataFile dataFile;
-
+	
 	public long getFile_id() {
 		return file_id;
 	}

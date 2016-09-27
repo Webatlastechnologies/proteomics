@@ -47,6 +47,7 @@ import guru.springframework.repositories.SourceRepository;
 import guru.springframework.repositories.UserRepository;
 import guru.springframework.services.S3StorageService;
 import guru.springframework.services.StorageService;
+import guru.springframework.services.UserDetailService;
 import guru.springframework.util.FastaReader;
 
 @Controller
@@ -75,6 +76,9 @@ public class LabDatabaseController {
 	
 	@Autowired
 	S3StorageService s3StorageService;
+	
+	@Autowired
+	UserDetailService userDetailService;
 	
 	@RequestMapping(value = "/database", method = RequestMethod.GET)
 	public String getDetails() {
@@ -306,5 +310,17 @@ public class LabDatabaseController {
 		String minutes = calendar.get(Calendar.MINUTE) + "";
 		String seconds = calendar.get(Calendar.SECOND) + "";
 		return year + "-" + month + "-"+ dateStr + " "+ hours + ":" + minutes + ":" + seconds + ".0";
+	}
+	
+	@ModelAttribute("databaseFileFolderPath")
+	public String getFolderPath() {
+		User user = userDetailService.getLoggedInUser();
+		if(user != null && user.getUsername() != null){
+			Lab lab = user.getLab();
+			if(lab != null && lab.getLabName() != null ){
+				return lab.getLabName() + S3StorageService.SUFFIX + user.getUsername() + S3StorageService.SUFFIX + S3StorageService.DATABASE_FOLDER;
+			}
+		}
+		return "databases";
 	}
 }

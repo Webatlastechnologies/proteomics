@@ -151,7 +151,7 @@
                                       enctype="multipart/form-data" class="form-horizontal">
                                     <input type="hidden" name="upload_file_name" value="" id="upload_file_name"></input>
                                     <input type="hidden" name="file_size" value="" id="file_size"></input>
-
+									<input type="hidden" th:value="${databaseFileFolderPath}" id="database_file_folder_path"></input>
 
                                     <div class="panel panel-primary">
                                         <div class="panel-heading" style="background-color: #76b3ef;">
@@ -422,7 +422,7 @@
                     	BeforeUpload: function(up, file) {
                     		up.settings.multipart_params = {
                    	            filename: file.name,
-                   	         	foldername: "databases"
+                   	         	foldername: $("#database_file_folder_path").val()
                    	        };
                     	},
                     	FileUploaded: function(up, file, info) {

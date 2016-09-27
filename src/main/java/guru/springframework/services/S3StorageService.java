@@ -39,6 +39,11 @@ public class S3StorageService {
     private AmazonS3 s3Client;
     
     public static final String SUFFIX = "/";
+    
+    public static final String DATABASE_FOLDER = "databases";
+    
+    public static final String EXPERIMENT_FOLDER = "experiments";
+    
     private List<PartETag> partETags = new ArrayList<PartETag>();
     private String existingBucketName;
     

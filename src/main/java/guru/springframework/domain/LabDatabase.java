@@ -16,6 +16,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import guru.springframework.services.S3StorageService;
+
 @Entity
 public class LabDatabase {
 
@@ -89,7 +91,7 @@ public class LabDatabase {
 	
 	@Transient
 	private String uploadDateStr;
-
+	
 	public Lab getLab() {
 		return lab;
 	}
@@ -225,4 +227,5 @@ public class LabDatabase {
 	public void setSizeInKb(double sizeInKb) {
 		this.sizeInKb = sizeInKb;
 	}
+	
 }

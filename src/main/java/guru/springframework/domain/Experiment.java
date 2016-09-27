@@ -134,9 +134,9 @@ public class Experiment {
 	public String getFolderPath() {
 		if(project != null && project.getUser() != null && project.getUser().getLab() !=null){
 			if(!StringUtils.isEmpty(project.getProjectName()) && !StringUtils.isEmpty(project.getUser().getUsername()) && !StringUtils.isEmpty(project.getUser().getLab().getLabName())){
-				return project.getUser().getLab().getLabName() + S3StorageService.SUFFIX + project.getUser().getUsername() + S3StorageService.SUFFIX  + project.getProjectName() + S3StorageService.SUFFIX  + String.valueOf(experiment_id);
+				return project.getUser().getLab().getLabName() + S3StorageService.SUFFIX + project.getUser().getUsername() + S3StorageService.SUFFIX  + project.getProjectName() + S3StorageService.SUFFIX  + S3StorageService.EXPERIMENT_FOLDER + S3StorageService.SUFFIX + String.valueOf(experiment_id);
 			}
 		}
-		return "EMPTY";
+		return "experiments";
 	}
 }
