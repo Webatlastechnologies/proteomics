@@ -2,7 +2,6 @@
   <head xmlns:th="http://www.thymeleaf.org">
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width"></meta>
         <title>Admin Lab | Proteome Cloud</title>
-       <link href="../static/css/desktop.css" th:href="@{css/desktop.css}" rel="stylesheet"></link>
         <link href="../static/css/responsive.css" th:href="@{css/responsive.css}" rel="stylesheet"></link>
         <link rel="stylesheet" type="text/css" href="../static/css/font-awesome.min.css" th:href="@{css/font-awesome.min.css}"></link>
         <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
@@ -24,6 +23,7 @@
 	<link rel="stylesheet" href="css/kendo.common.min.css" />
     <link rel="stylesheet" href="css/kendo.default.min.css"/>
     <link rel="stylesheet" href="css/kendo.default.mobile.min.css" />
+    <link href="../static/css/desktop.css" th:href="@{css/desktop.css}" rel="stylesheet"></link>
     <script src="js/kendo.all.min.js" ></script>
     
     </head>
@@ -129,15 +129,15 @@
                         height: 550,
                         toolbar: ["create", "save", "cancel"],
                         columns: [
-                            { field: "lab_id", title: "Lab id"},
-                            { field: "labUrl", title: "Lab URL"},
-                            { field: "labName", title: "Lab Name"},
-                            { field: "requestorEmail", title: "Requestor Email"},
-                            { field: "labHeadFirstName", title: "Head first name"},
-                            { field: "labHeadLastName", title: "Head last name"},
-                            { field: "labHeadEmail", title: "Head Email"},
-                            { field: "approved", title: "Approved"},
-                            { command: "destroy", title: "&nbsp;", width: 150 }],
+                            { field: "lab_id", title: "Lab id", headerAttributes : {"class" : "db-custom-table-header"}},
+                            { field: "labUrl", title: "Lab URL", headerAttributes : {"class" : "db-custom-table-header"}},
+                            { field: "labName", title: "Lab Name", headerAttributes : {"class" : "db-custom-table-header"}},
+                            { field: "requestorEmail", title: "Requestor Email", headerAttributes : {"class" : "db-custom-table-header"}},
+                            { field: "labHeadFirstName", title: "Head first name", headerAttributes : {"class" : "db-custom-table-header"}},
+                            { field: "labHeadLastName", title: "Head last name", headerAttributes : {"class" : "db-custom-table-header"}},
+                            { field: "labHeadEmail", title: "Head Email", headerAttributes : {"class" : "db-custom-table-header"}},
+                            { field: "approved", title: "Approved", headerAttributes : {"class" : "db-custom-table-header"}},
+                            { command: "destroy", title: "&nbsp;", width: 150, headerAttributes : {"class" : "db-custom-table-header"} }],
                         editable: true
                     });
                 });
