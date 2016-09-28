@@ -52,6 +52,10 @@
 				</div>
 			</div>
 			
+			<div id="upload-widget-container">
+			    <div id="upload-widget"></div>
+			</div>
+			
 			<div class="row">
 				<div class="col-md-12 push">
 				Active Experiments
@@ -62,61 +66,51 @@
 					<div class="panel panel-default">
 					  <!-- Table -->
 					  <table class="table" id="experimentDetails">
-					    <tbody>
-					    <tr>
-					        <td>Project name</td>
-					        <td th:text="${experiment.project.projectName}"></td>
-					    </tr>
-					    <tr>
-					        <td>Sample name</td>
-					        <td th:text="${experiment.sampleName}"></td>
-					    </tr>
-					    <tr>
-					        <td>Created date</td>
-					        <td th:text="${experiment.createDate}"></td>
-					    </tr>
-					    <tr>
-					        <td>Sample description</td>
-					        <td th:text="${experiment.sampleDescription}"></td>
-					    </tr>
-					    <tr>
-					        <td>Experiment description</td>
-					        <td th:text="${experiment.description}"></td>
-					    </tr>
-					  </tbody></table>
+						    <tbody>
+							    <tr>
+							        <td>Project name</td>
+							        <td th:text="${experiment.project.projectName}"></td>
+							    </tr>
+							    <tr>
+							        <td>Sample name</td>
+							        <td th:text="${experiment.sampleName}"></td>
+							    </tr>
+							    <tr>
+							        <td>Created date</td>
+							        <td th:text="${experiment.createDate}"></td>
+							    </tr>
+							    <tr>
+							        <td>Sample description</td>
+							        <td th:text="${experiment.sampleDescription}"></td>
+							    </tr>
+							    <tr>
+							        <td>Experiment description</td>
+							        <td th:text="${experiment.description}"></td>
+							    </tr>
+						  </tbody>
+					  </table>
 					</div>
 				</div>
 			</div>
 			
-			<ul id="panelbar">
-                <li>
-                	Upload Spectral Files
-					<div class="alert alert-info" role="alert">
-	                   Note : Please make sure ms1 and ms2 file size is not zero.
-              		</div>
-              		<div id="spectralUploader">
-              		</div>
-		              		
-                </li>
-                <li>
-                	Upload DTA Files
-					<div id="dtaUploader">
-	              	</div>
-                </li>
-            </ul>
-            <ul id="spectralFilesSection">
-            	<li>
-                	Spectral Files
-                	<div id="spectralFileGrid">
-                	</div>
-                </li>
-                <li>
-                	DTA File Details
-                	<div id="dtaFileDetailsGrid">
-                	</div>
-                </li>
-            </ul>
-			
+			<div class="row">
+				<div class="col-md-6 push">
+				<a href="#" onclick="createUploadDialog('spectral');">Upload Spectral Files</a>
+				</div>
+			</div>
+			Spectral Files
+            <div id="spectralFileGrid"></div>
+            <div class="row">
+				<div class="col-md-6 push">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6 push">
+					<a href="#" onclick="createUploadDialog('DTA');">Upload DTA Files</a>
+				</div>
+			</div>
+			DTA File Details
+            <div id="dtaFileDetailsGrid"></div>
 		</div>
 		<!-- END Page Content -->
 		<!-- Footer -->
@@ -127,7 +121,37 @@
 	<!-- END Inner Container -->
 
 	<script th:inline="javascript">
+	var uploader = null;
+	
+	function createUploadDialog(fileType){
+		var title = '';
+		if(fileType === 'spectral'){
+			title = 'Upload Spectral Files';
+		}else{
+			title = 'Upload DTA Files';
+		}
+		$( "#upload-widget-container" ).dialog({
+			modal: true,
+            width: 600,
+            title: title,
+            my: "top",
+            at: "top",
+            of: window
+            
+         });
 		
+		$( "#upload-widget-container" ).dialog( "open" );
+		if(uploader){
+			$("#upload-widget").plupload('destroy');
+		}
+		if(fileType === 'spectral'){
+			uploader = createSpectralFileUploader();
+		}else {
+			uploader = createDTAFileUploader();
+		}
+		
+	}
+	
 	function createDtaFilesGrid(){
 		
 		var dataSource = new kendo.data.DataSource({
@@ -173,7 +197,8 @@
                 { field: "peptiedFdrs", title: "Peptide FDR", headerAttributes : {"class" : "db-custom-table-header"}},
                 { field: "spectrumFdrs", title: "Spectrun FDR", headerAttributes : {"class" : "db-custom-table-header"}},
                 { field: "fileParameters", title: "File Parameters", headerAttributes : {"class" : "db-custom-table-header"}},
-                { field: "description", title: "Description", headerAttributes : {"class" : "db-custom-table-header"}}
+                { field: "description", title: "Description", headerAttributes : {"class" : "db-custom-table-header"}},
+                { title: "Download File" ,template:'#=name#<a><span class="glyphicon glyphicon-download-alt"></span></a>', headerAttributes : {"class" : "db-custom-table-header"} }
                 ],
             editable: false
         });
@@ -211,8 +236,9 @@
                 height: 250,
                 columns: [
                     { field: "fileName", title: "Spectral File Name", headerAttributes : {"class" : "db-custom-table-header"}},
-                    { field: "filePath", title: "File Path", headerAttributes : {"class" : "db-custom-table-header"}},
                     { field: "fileSize", title: "File Size", headerAttributes : {"class" : "db-custom-table-header"}},
+                    { field: "uploadedBy", title: "Uploaded By", headerAttributes : {"class" : "db-custom-table-header"}},
+                    { title: "Download File" ,template:'#=fileName#<a><span class="glyphicon glyphicon-download-alt"></span></a>', headerAttributes : {"class" : "db-custom-table-header"} }
                     ],
                 editable: false
             });
@@ -226,7 +252,7 @@
 		}
 		function createSpectralFileUploader() {
 			var fileNamesArr = [];
-	    	var uploader = $("#spectralUploader").plupload({
+	    	var uploader = $("#upload-widget").plupload({
 	            // General settings
 	            runtimes : 'html5,flash,silverlight,html4',
 	            url : "/fileUpload/upload",
@@ -302,12 +328,13 @@
 	                    
 	                }
 	            }
+	            
 	        });
-	
+	    	return uploader;
 	    }
 		function createDTAFileUploader() {
 			var fileNamesArr = new Map();
-	    	var uploader = $("#dtaUploader").plupload({
+	    	var uploader = $("#upload-widget").plupload({
 	            // General settings
 	            runtimes : 'html5,flash,silverlight,html4',
 	            url : "/fileUpload/upload",
@@ -395,15 +422,11 @@
 	                }
 	            }
 	        });
-	
+	    	 return uploader;
 	    }
 		$(function(){
-			createSpectralFileUploader();
-			createDTAFileUploader();
-			createKendoPanelBar('panelbar');
 			createSpectralFilesGrid();
 			createDtaFilesGrid();
-			createKendoPanelBar('spectralFilesSection');
 		}) ;  
      </script>
 </body>
