@@ -224,6 +224,7 @@ public class ExperimentController {
 			for(DataFile dataFile : dataFiles){
 				DtaFileDetails dtaFileDetails = dataFile.getDtaFileDetails();
 				if(dtaFileDetails != null){
+					dtaFileDetails.setUploadedBy(dataFile.getUploadedBy());
 					dtaFileList.add(dtaFileDetails);
 				}
 				

@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -37,6 +38,9 @@ public class DtaFileDetails {
 	private double spectrumFdrs;
 	
 	private String fileParameters;
+	
+	@Transient
+	private String uploadedBy;
 	
 	@OneToOne(mappedBy="dtaFileDetails")
 	@JoinColumn(name = "data_file_id")
@@ -129,5 +133,13 @@ public class DtaFileDetails {
 
 	public void setDataFile(DataFile dataFile) {
 		this.dataFile = dataFile;
+	}
+
+	public String getUploadedBy() {
+		return uploadedBy;
+	}
+
+	public void setUploadedBy(String uploadedBy) {
+		this.uploadedBy = uploadedBy;
 	}
 }
