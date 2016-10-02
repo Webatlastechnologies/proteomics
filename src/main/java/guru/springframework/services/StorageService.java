@@ -18,6 +18,8 @@ public interface StorageService {
     
     Path createDirectory(String directoryName) throws IOException;
     
+    void createDirectory(Path directoryPath) throws IOException;
+    
     boolean fileExists(String fileOrDirectoryName);
     
     void delete(String fileOrDirectoryName)  throws IOException;

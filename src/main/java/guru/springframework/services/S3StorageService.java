@@ -44,6 +44,8 @@ public class S3StorageService {
     
     public static final String EXPERIMENT_FOLDER = "experiments";
     
+    public static final String PROJECT_FOLDER = "project";
+    
     private List<PartETag> partETags = new ArrayList<PartETag>();
     private String existingBucketName;
     

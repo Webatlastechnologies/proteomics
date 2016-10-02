@@ -69,7 +69,11 @@ public class FileSystemStorageService implements StorageService {
 		Path filePath = this.rootLocation.resolve(directoryName);
 		return Files.createDirectories(filePath);
 	}
-
+	
+	@Override
+	public void createDirectory(Path directoryPath) throws IOException {
+		Files.createDirectories(directoryPath);
+	}
 	@Override
 	public boolean fileExists(String fileOrDirectoryName) {
 		return Files.exists(this.rootLocation.resolve(fileOrDirectoryName));

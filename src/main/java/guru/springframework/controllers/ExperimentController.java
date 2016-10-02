@@ -2,6 +2,7 @@ package guru.springframework.controllers;
 
 import java.io.File;
 import java.security.Principal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -208,6 +209,10 @@ public class ExperimentController {
 			for(DataFile dataFile : dataFiles){
 				DtaFileDetails dtaFileDetails = dataFile.getDtaFileDetails();
 				if(dtaFileDetails == null){
+					double fileSize = dataFile.getFileSize();
+					DecimalFormat df = new DecimalFormat("#.##");      
+					fileSize = Double.valueOf(df.format(fileSize));	
+					dataFile.setFileSize(fileSize);
 					dataFileList.add(dataFile);
 				}
 				
