@@ -205,7 +205,7 @@
                             { title: "Archive",template:'<a href="javascript:updateArchiveStatus(#=experiment_id#,true);"><span class="glyphicon glyphicon-eye-open"></span></a>', headerAttributes : {"class" : "db-custom-table-header"}},
                             { title: "Edit" ,template:'<a href="/viewAddNewExperiment?experiment_id=#:experiment_id#"><i class="glyphicon glyphicon-edit"></i></a>', headerAttributes : {"class" : "db-custom-table-header"} },
                             { title: "Delete" ,template:'<a href="javascript:deleteExperiment(#=experiment_id#)"><i class="glyphicon glyphicon-trash"></i></a>', headerAttributes : {"class" : "db-custom-table-header"} },
-                            { title: "Download" ,template:'<a><span class="glyphicon glyphicon-download-alt"></span></a>', headerAttributes : {"class" : "db-custom-table-header"} }
+                            { title: "Download" ,template:'<a href="downloadExperimentFiles?experiment_id=#:experiment_id#"><span class="glyphicon glyphicon-download-alt"></span></a>', headerAttributes : {"class" : "db-custom-table-header"} }
                             ],
                         editable: false
                     });
@@ -228,7 +228,7 @@
                             { title: "Mark",template:'<a href="javascript:updateArchiveStatus(#=experiment_id#,false);"><span class="glyphicon glyphicon-eye-open"></span></a>', headerAttributes : {"class" : "db-custom-table-header"}},
                             { title: "Edit" ,template:'<a href="/viewAddNewExperiment?experiment_id=#:experiment_id#"><i class="glyphicon glyphicon-edit"></i></a>', headerAttributes : {"class" : "db-custom-table-header"} },
                             { title: "Delete" ,template:'<a href="javascript:deleteExperiment(#=experiment_id#)"><i class="glyphicon glyphicon-trash"></i></a>', headerAttributes : {"class" : "db-custom-table-header"} },
-                            { title: "Download" ,template:'<a><span class="glyphicon glyphicon-download-alt"></span></a>', headerAttributes : {"class" : "db-custom-table-header"} }
+                            { title: "Download" ,template:'<a href="downloadExperimentFiles?experiment_id=#:experiment_id#"><span class="glyphicon glyphicon-download-alt"></span></a>', headerAttributes : {"class" : "db-custom-table-header"} }
                             ],
                         editable: false
                     });
