@@ -17,6 +17,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.AbortMultipartUploadRequest;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.CompleteMultipartUploadRequest;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.InitiateMultipartUploadRequest;
 import com.amazonaws.services.s3.model.InitiateMultipartUploadResult;
@@ -132,6 +133,13 @@ public class S3StorageService {
 	                  existingBucketName, key, initResponse.getUploadId()));
 	    }	
 	}
+	
+	public void deleteFile(String fileName, String folderName){
+		String bucketName = existingBucketName;
+		String key = folderName +SUFFIX + fileName;	
+		s3Client.deleteObject(new DeleteObjectRequest(bucketName, key));
+	}
+	
 	public void createFolder(String folderName) {
 		if(!s3Client.doesObjectExist(existingBucketName, folderName)){
 			ObjectMetadata metadata = new ObjectMetadata();

@@ -108,6 +108,8 @@
 			th:replace="fragments/footer :: footer"></div>
 		<!-- END Footer -->
 	</div>
+	<div id="windowParent">
+    </div>
 	<!-- END Inner Container -->
 
 	<script th:inline="javascript">
@@ -190,12 +192,42 @@
                 { field: "description", title: "Description", headerAttributes : {"class" : "db-custom-table-header"}},
                 { field: "uploadedBy", title: "Uploaded By", headerAttributes : {"class" : "db-custom-table-header"}},
                 { title: "Download" ,template:'#=name#<a href="downloadDataFile?file_id=#:file_id#"><span class="glyphicon glyphicon-download-alt"></span></a>', headerAttributes : {"class" : "db-custom-table-header"} },
-                { title: "Delete" ,template:'<a><i class="glyphicon glyphicon-trash"></i></a>', headerAttributes : {"class" : "db-custom-table-header"} },
+                { title: "Delete" ,template:'<a href="javascript:deleteDTAFile(#=file_id#)"><i class="glyphicon glyphicon-trash"></i></a>', headerAttributes : {"class" : "db-custom-table-header"} },
                 ],
             editable: false
         });
 	}
 	
+	 function deleteDTAFile(file_id){
+      	$("#windowParent").append('<div id="modalWindow"> <p id="message"></p><button id="yes" class="k-button">Yes</button><button id="no" class="k-button">No</button></div>');
+      	var wnd = $("#modalWindow").kendoWindow({
+              title: "",
+              modal: true,
+              visible: false,
+              resizable: false,
+              width: 300
+          }).data("kendoWindow");
+      	 $("#message").html('Are you sure you want to Delete DTA File?');
+      	 wnd.title("Delete DTA File");
+           wnd.center().open();
+           $("#yes").click(function () {
+          		$.ajax({
+          			url:'deleteDataFile?file_id='+file_id,
+          			method: 'POST',
+          			success : function(response){
+          				$('#dtaFileDetailsGrid').data('kendoGrid').dataSource.read();
+							$('#dtaFileDetailsGrid').data('kendoGrid').refresh();
+          			}
+          		});
+               wnd.close();
+               wnd.destroy();
+           });
+        
+           $("#no").click(function () {
+               wnd.close();
+               wnd.destroy();
+           });
+		}
 		function createSpectralFilesGrid(){
 			
 			var dataSource = new kendo.data.DataSource({
@@ -231,11 +263,43 @@
                     { field: "fileSize", title: "File Size (KB)", headerAttributes : {"class" : "db-custom-table-header"}},
                     { field: "uploadedBy", title: "Uploaded By", headerAttributes : {"class" : "db-custom-table-header"}},
                     { title: "Download" ,template:'#=fileName#<a href="downloadDataFile?data_file_id=#:data_file_id#"><span class="glyphicon glyphicon-download-alt"></span></a>', headerAttributes : {"class" : "db-custom-table-header"} },
-                    { title: "Delete" ,template:'<a><i class="glyphicon glyphicon-trash"></i></a>', headerAttributes : {"class" : "db-custom-table-header"} }
+                    { title: "Delete" ,template:'<a href="javascript:deleteSpectralFile(#=data_file_id#)"><i class="glyphicon glyphicon-trash"></i></a>', headerAttributes : {"class" : "db-custom-table-header"} }
                     ],
                 editable: false
             });
 		}
+		
+		 function deleteSpectralFile(data_file_id){
+         	$("#windowParent").append('<div id="modalWindow"> <p id="message"></p><button id="yes" class="k-button">Yes</button><button id="no" class="k-button">No</button></div>');
+         	var wnd = $("#modalWindow").kendoWindow({
+                 title: "",
+                 modal: true,
+                 visible: false,
+                 resizable: false,
+                 width: 300
+             }).data("kendoWindow");
+         	 $("#message").html('Are you sure you want to Delete Spectral File?');
+         	 wnd.title("Delete Spectral File");
+              wnd.center().open();
+              $("#yes").click(function () {
+             		$.ajax({
+             			url:'deleteDataFile?data_file_id='+data_file_id,
+             			method: 'POST',
+             			success : function(response){
+             				$('#spectralFileGrid').data('kendoGrid').dataSource.read();
+							$('#spectralFileGrid').data('kendoGrid').refresh();
+             			}
+             		});
+                  wnd.close();
+                  wnd.destroy();
+              });
+           
+              $("#no").click(function () {
+                  wnd.close();
+                  wnd.destroy();
+              });
+		}
+		
 		function createKendoPanelBar(id){
             var initPanelBar = function () {
                 $("#"+id).kendoPanelBar();

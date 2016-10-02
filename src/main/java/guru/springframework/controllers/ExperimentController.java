@@ -39,6 +39,7 @@ import guru.springframework.repositories.DtaFileDetailsRepository;
 import guru.springframework.repositories.ExperimentRepository;
 import guru.springframework.repositories.InstrumentRepository;
 import guru.springframework.repositories.ProjectRepository;
+import guru.springframework.services.S3StorageService;
 import guru.springframework.services.StorageService;
 import guru.springframework.services.UserDetailService;
 import guru.springframework.util.ResultReader;
@@ -69,6 +70,9 @@ public class ExperimentController {
 	
 	@Autowired
 	UserDetailService userDetailService;
+	
+	@Autowired
+	S3StorageService s3StorageService;
 	
     @ModelAttribute("loginuser")
     public String loginuser(){
@@ -239,5 +243,33 @@ public class ExperimentController {
 			}
 		}
 		return dtaFileList;
+	}
+	
+	@RequestMapping(value="/deleteDataFile", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<Void> deleteDataFile(@RequestParam(name = "data_file_id", required = false) String data_file_id,
+			@RequestParam(name = "file_id", required = false) String dta_file_id){
+		DataFile dataFile = null;
+		if (!StringUtils.isEmpty(data_file_id)) {
+			dataFile = dataFileRepository.findOne(Long.parseLong(data_file_id));
+		} else if (!StringUtils.isEmpty(dta_file_id)) {
+			DtaFileDetails dtaFileDetails = dtaFileDetailsRepository.findOne(Long.parseLong(dta_file_id));
+			if (dtaFileDetails != null) {
+				dataFile = dtaFileDetails.getDataFile();
+			}
+		}
+		if (dataFile != null) {
+			String actualFileName = "";
+			String folderName = dataFile.getFilePath();
+			if (folderName.contains("/")) {
+				actualFileName = folderName.substring(folderName.lastIndexOf("/") + 1);
+				folderName = folderName.substring(0, folderName.lastIndexOf("/"));
+			}else{
+				actualFileName = dataFile.getFileName();
+			}
+			s3StorageService.deleteFile(actualFileName, folderName);
+			dataFileRepository.delete(dataFile);
+		}
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 }
