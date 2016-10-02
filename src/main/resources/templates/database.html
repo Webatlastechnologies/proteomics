@@ -304,7 +304,8 @@
 								headerAttributes : {
 									"class" : "db-custom-table-header",
 								},
-								template : '<a href="downloadDatabaseFile/#:filePath#">#:filePath#</a>'
+								template : '<a href="downloadDatabaseFiles?database_id=#:database_id#">#:filePath#</a>',
+								encoded : true
 							},
 							{
 								field : "uploadedBy",
