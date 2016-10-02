@@ -68,11 +68,13 @@ public class FileDownloadController {
 		}
 		if(dataFile != null){
 			String fileName = dataFile.getFileName();
+			String actualFileName = "";
 			String folderName = dataFile.getFilePath();
 			if(folderName.contains("/")){
+				actualFileName = folderName.substring(folderName.lastIndexOf("/")+1);
 				folderName = folderName.substring(0, folderName.lastIndexOf("/"));
 			}
-			return downloadDirectlyFromS3(fileName, folderName, fileName);
+			return downloadDirectlyFromS3(actualFileName, folderName, fileName);
 		}
 		throw new Exception("Unable to find request database file.");
 	}

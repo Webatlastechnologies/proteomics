@@ -160,17 +160,19 @@ public class ExperimentController {
 	
 	@RequestMapping(value = "/addDataFiles", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<Void> addDataFiles(@RequestParam long experiment_id, @ModelAttribute DataFile dataFile, BindingResult errors){
+	public ResponseEntity<Void> addDataFiles(@RequestParam long experiment_id, @ModelAttribute DataFile dataFile, BindingResult errors) throws Exception{
 		boolean isDtaFile = dataFile.isDtaFile();
 		Experiment experiment = experimentRepository.findOne(experiment_id);
 		dataFile.setExperiment(experiment);
 		
-		String fileName = dataFile.getFileName();
-		if(fileName.contains("/")){
-			fileName = fileName.substring(fileName.lastIndexOf("/") + 1);
+		String filePath = dataFile.getFilePath();
+		String actualFileName = "";
+		if(filePath.contains("/")){
+			actualFileName = filePath.substring(filePath.lastIndexOf("/") + 1);
 		}
-		String filePath = storageService.getDefaultFilePath().toString() + File.separator + fileName;
-		File file = new File(filePath);
+		String localFilePath = storageService.getDefaultFilePath().toString() + File.separator + actualFileName;
+		String fileName = dataFile.getFileName();
+		File file = new File(localFilePath);
 		
 		dataFile.setUploadedBy(userDetailService.getLoggedInUser().getUsername());
 		if(isDtaFile){
@@ -191,6 +193,7 @@ public class ExperimentController {
 		}
 		
 		dataFile = dataFileRepository.save(dataFile);
+		storageService.delete(file);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 	
