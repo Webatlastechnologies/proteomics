@@ -24,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import guru.springframework.domain.DataFile;
 import guru.springframework.domain.Experiment;
+import guru.springframework.domain.Lab;
 import guru.springframework.domain.Project;
 import guru.springframework.domain.ProjectStatus;
 import guru.springframework.domain.User;
@@ -86,10 +87,34 @@ public class ProjectController {
 		Set<Project> ownedProjects = userDetailService.getLoggedInUser().getProjects();
 		Set<Project> ownedProjectWithStatus = new HashSet<Project>();
 		for(Project p:sharedProjects){
+			User projectUser = p.getUser();
+			User user = new User();
+			user.setUser_id(projectUser.getUser_id());
+			user.setUsername(projectUser.getUsername());
+			
+			Lab lab = new Lab();
+			lab.setLab_id(projectUser.getLab().getLab_id());
+			lab.setLabName(projectUser.getLab().getLabName());
+			
+			user.setLab(lab);
+			p.setUser(user);
 			p.setProjectOwner(p.getUser().getUser_id());
 		}
 		for(Project p:ownedProjects){
 			if(p.getArchiveStatus() != null && p.getArchiveStatus().equalsIgnoreCase(archiveStatus)){
+				
+				User projectUser = p.getUser();
+				User user = new User();
+				user.setUser_id(projectUser.getUser_id());
+				user.setUsername(projectUser.getUsername());
+				
+				Lab lab = new Lab();
+				lab.setLab_id(projectUser.getLab().getLab_id());
+				lab.setLabName(projectUser.getLab().getLabName());
+				
+				user.setLab(lab);
+				p.setUser(user);
+				
 				p.setProjectOwner(p.getUser().getUser_id());
 				p.setNoOfSharedUsers(p.getUsers().size());
 				ownedProjectWithStatus.add(p);
