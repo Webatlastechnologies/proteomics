@@ -272,4 +272,11 @@ public class ExperimentController {
 		}
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
+	
+	@RequestMapping(value="/updateDescriptionAndFileName", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<DtaFileDetails> updateDescriptionAndFileName(@ModelAttribute DtaFileDetails dtaFileDetails, BindingResult bindingResult){
+		dtaFileDetails = dtaFileDetailsRepository.save(dtaFileDetails);
+		return new ResponseEntity<DtaFileDetails>(dtaFileDetails, HttpStatus.OK);
+	}
 }

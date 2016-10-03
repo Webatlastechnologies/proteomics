@@ -153,6 +153,11 @@
                     dataType: "json",
                     type: "get"
                 },
+                update: {
+                    url: "/updateDescriptionAndFileName",
+                    dataType: "json",
+                    type:"post"
+                }
             },
             batch: false,
             pageSize:50,
@@ -161,15 +166,16 @@
                 model: {
                     id: "file_id",
                     fields: {
-                    	name: { type :"text" },
-                    	date: { type :"text" },
-                    	proteinIds: { type :"int" },
-                    	peptideIds: { type :"int" },
-                    	proteinFdrs: { type :"number" },
-                    	peptiedFdrs: { type :"int" },
-                    	spectrumFdrs: { type :"int" },
-                    	fileParameters: { type :"text" },
-                    	description:{ type :"text" }
+                    	name: { type :"text", editable: true },
+                    	date: { type :"text", editable: false },
+                    	proteinIds: { type :"int", editable: false },
+                    	peptideIds: { type :"int", editable: false },
+                    	proteinFdrs: { type :"number" , editable: false},
+                    	peptiedFdrs: { type :"int", editable: false },
+                    	spectrumFdrs: { type :"int", editable: false },
+                    	fileParameters: { type :"text", editable: false },
+                    	description:{ type :"text", editable: true },
+                    	uploadedBy:{ type :"text", editable: false }
                     }
                 }
             }
@@ -193,8 +199,9 @@
                 { field: "uploadedBy", title: "Uploaded By", headerAttributes : {"class" : "db-custom-table-header"}},
                 { title: "Download" ,template:'#=name#<a href="downloadDataFile?file_id=#:file_id#"><span class="glyphicon glyphicon-download-alt"></span></a>', headerAttributes : {"class" : "db-custom-table-header"} },
                 { title: "Delete" ,template:'<a href="javascript:deleteDTAFile(#=file_id#)"><i class="glyphicon glyphicon-trash"></i></a>', headerAttributes : {"class" : "db-custom-table-header"} },
+                { command: ["edit"], title: "&nbsp;", width: "100px" }
                 ],
-            editable: false
+            editable: "inline"
         });
 	}
 	
