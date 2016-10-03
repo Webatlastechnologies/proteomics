@@ -100,7 +100,23 @@ public class ExperimentController {
 	
 	 @RequestMapping(value = "/experiment/delete", method = RequestMethod.POST)
 	    public @ResponseBody String update(@RequestParam long experiment_id) {
-		 Experiment experiment=experimentRepository.findOne(experiment_id);
+			 Experiment experiment=experimentRepository.findOne(experiment_id);
+			 if(experiment.getDataFiles() != null){
+				 for(DataFile dataFile : experiment.getDataFiles()){
+					 if (dataFile != null) {
+						String actualFileName = "";
+						String folderName = dataFile.getFilePath();
+						if (folderName.contains("/")) {
+							actualFileName = folderName.substring(folderName.lastIndexOf("/") + 1);
+							folderName = folderName.substring(0, folderName.lastIndexOf("/"));
+						}else{
+							actualFileName = dataFile.getFileName();
+						}
+						s3StorageService.deleteFile(actualFileName, folderName);
+						dataFileRepository.delete(dataFile);
+					}
+				 }
+			 }
 		 	experimentRepository.delete(experiment);
 	        return "";
 	    }

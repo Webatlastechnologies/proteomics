@@ -132,7 +132,28 @@ public class ProjectController {
 
 	 @RequestMapping(value = "/project/delete", method = {RequestMethod.GET,RequestMethod.POST})
 	    public @ResponseBody String update(@RequestParam long project_id) {
-		 Project project=projectRepository.findOne(project_id);
+		 	Project project=projectRepository.findOne(project_id);
+		 	if(project.getExperiments() != null){
+		 		for(Experiment experiment : project.getExperiments()){
+					 if(experiment.getDataFiles() != null){
+						 for(DataFile dataFile : experiment.getDataFiles()){
+							 if (dataFile != null) {
+								String actualFileName = "";
+								String folderName = dataFile.getFilePath();
+								if (folderName.contains("/")) {
+									actualFileName = folderName.substring(folderName.lastIndexOf("/") + 1);
+									folderName = folderName.substring(0, folderName.lastIndexOf("/"));
+								}else{
+									actualFileName = dataFile.getFileName();
+								}
+								s3StorageService.deleteFile(actualFileName, folderName);
+								dataFileRepository.delete(dataFile);
+							}
+						 }
+					 }
+			 	}
+		 	}
+		 	
 		 	projectRepository.delete(project);
 	        return "";
 	    }
