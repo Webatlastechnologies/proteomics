@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,12 +22,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import guru.springframework.domain.DataFile;
+import guru.springframework.domain.Experiment;
 import guru.springframework.domain.Project;
 import guru.springframework.domain.ProjectStatus;
 import guru.springframework.domain.User;
+import guru.springframework.repositories.DataFileRepository;
 import guru.springframework.repositories.ExperimentRepository;
 import guru.springframework.repositories.ProjectRepository;
 import guru.springframework.repositories.UserRepository;
+import guru.springframework.services.S3StorageService;
 import guru.springframework.services.UserDetailService;
 
 @Controller
@@ -43,6 +48,12 @@ public class ProjectController {
 	
 	@Autowired
 	ExperimentRepository experimentRepository;
+	
+	@Autowired
+	S3StorageService s3StorageService;
+	
+	@Autowired
+	DataFileRepository dataFileRepository;
 	
 	@ModelAttribute("login_user_id")
 	public long getLoginUser(){
@@ -188,6 +199,38 @@ public class ProjectController {
 			archiveStatus = ProjectStatus.Archive.name();
 		}
 		Project project = projectRepository.findOne(project_id);
+		Set<Experiment> experimentList = project.getExperiments();	
+		if(experimentList != null){
+			for(Experiment experiment : experimentList){
+				Set<DataFile> dataFileList = experiment.getDataFiles();	
+				if(dataFileList != null){
+					for(DataFile dataFile : dataFileList){
+						String actualFileName = "";
+						String folderName = dataFile.getFilePath();
+						if (folderName.contains("/")) {
+							actualFileName = folderName.substring(folderName.lastIndexOf("/") + 1);
+							folderName = folderName.substring(0, folderName.lastIndexOf("/"));
+						} else {
+							actualFileName = dataFile.getFileName();
+						}
+						String destinationFolderName = null;
+						if(isArchive && folderName.contains(S3StorageService.ACTIVE_FOLDER)){
+							destinationFolderName = folderName.replace(S3StorageService.ACTIVE_FOLDER, S3StorageService.ARCHIVE_FOLDER);
+						}else if(!isArchive && folderName.contains(S3StorageService.ARCHIVE_FOLDER)){
+							destinationFolderName = folderName.replace(S3StorageService.ARCHIVE_FOLDER, S3StorageService.ACTIVE_FOLDER);
+						}
+						if(!StringUtils.isEmpty(destinationFolderName)){
+							s3StorageService.createFolder(destinationFolderName);
+							s3StorageService.copyFile(actualFileName, folderName, destinationFolderName);
+							s3StorageService.deleteFile(actualFileName, folderName);
+							dataFile.setFilePath(destinationFolderName + S3StorageService.SUFFIX + actualFileName);
+							dataFileRepository.save(dataFile);
+						}
+						
+					}
+				}
+			}
+		}
 		int value = projectRepository.setIsArchiveFor(archiveStatus, project_id);
 		if(value > 0){
 			experimentRepository.setIsArchiveForProject(isArchive, project);

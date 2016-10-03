@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -153,6 +154,34 @@ public class ExperimentController {
 	@RequestMapping(value = "/updateArchiveStatus", method = RequestMethod.POST)
 	@ResponseBody
 	public int updateArchiveStatus(@RequestParam long experiment_id, @RequestParam boolean isArchive){
+		Experiment experiment = experimentRepository.findOne(experiment_id);
+		Set<DataFile> dataFileList = experiment.getDataFiles();
+		if(dataFileList != null){
+			for(DataFile dataFile : dataFileList){
+				String actualFileName = "";
+				String folderName = dataFile.getFilePath();
+				if (folderName.contains("/")) {
+					actualFileName = folderName.substring(folderName.lastIndexOf("/") + 1);
+					folderName = folderName.substring(0, folderName.lastIndexOf("/"));
+				} else {
+					actualFileName = dataFile.getFileName();
+				}
+				String destinationFolderName = null;
+				if(isArchive && folderName.contains(S3StorageService.ACTIVE_FOLDER)){
+					destinationFolderName = folderName.replace(S3StorageService.ACTIVE_FOLDER, S3StorageService.ARCHIVE_FOLDER);
+				}else if(!isArchive && folderName.contains(S3StorageService.ARCHIVE_FOLDER)){
+					destinationFolderName = folderName.replace(S3StorageService.ARCHIVE_FOLDER, S3StorageService.ACTIVE_FOLDER);
+				}
+				if(!StringUtils.isEmpty(destinationFolderName)){
+					s3StorageService.createFolder(destinationFolderName);
+					s3StorageService.copyFile(actualFileName, folderName, destinationFolderName);
+					s3StorageService.deleteFile(actualFileName, folderName);
+					dataFile.setFilePath(destinationFolderName + S3StorageService.SUFFIX + actualFileName);
+					dataFileRepository.save(dataFile);
+				}
+				
+			}
+		}
 		return experimentRepository.setIsArchiveFor(isArchive, experiment_id);
 	}
 	

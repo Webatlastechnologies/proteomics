@@ -17,6 +17,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.AbortMultipartUploadRequest;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.CompleteMultipartUploadRequest;
+import com.amazonaws.services.s3.model.CopyObjectRequest;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.InitiateMultipartUploadRequest;
@@ -46,6 +47,10 @@ public class S3StorageService {
     public static final String EXPERIMENT_FOLDER = "experiments";
     
     public static final String PROJECT_FOLDER = "project";
+    
+    public static final String ACTIVE_FOLDER = "active";
+    
+    public static final String ARCHIVE_FOLDER = "archive";
     
     private List<PartETag> partETags = new ArrayList<PartETag>();
     private String existingBucketName;
@@ -140,6 +145,13 @@ public class S3StorageService {
 		s3Client.deleteObject(new DeleteObjectRequest(bucketName, key));
 	}
 	
+	public void copyFile(String fileName, String sourceFolderName, String destinationFolderName){
+		String bucketName = existingBucketName;
+		String key = sourceFolderName +SUFFIX + fileName;	
+		String destinationKey = destinationFolderName + SUFFIX + fileName;
+		s3Client.copyObject(new CopyObjectRequest(
+        		bucketName, key, bucketName, destinationKey));
+	}
 	public void createFolder(String folderName) {
 		if(!s3Client.doesObjectExist(existingBucketName, folderName)){
 			ObjectMetadata metadata = new ObjectMetadata();
@@ -149,5 +161,9 @@ public class S3StorageService {
 					folderName + SUFFIX, emptyContent, metadata);
 			s3Client.putObject(putObjectRequest);
 		}
-	}	
+	}
+	
+	public boolean doesFolderExists(String folderName){
+		return s3Client.doesObjectExist(existingBucketName, folderName);
+	}
 }
