@@ -60,6 +60,7 @@ public class User {
 	private Set<Project> projects;
 	
 	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "users")
+	@JsonIgnore
 	public Set<Project> sharedProjects;
 	
 	public Lab getLab() {
