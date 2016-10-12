@@ -186,6 +186,7 @@
                                     	},
                                     	canDelete: { type :"text",editable:false },
                                     	noOfSharedUsers: { type :"number",editable:false },
+                                    	loggedInUserId : { type :"number",editable:false }
                                     }
                                 }
                             }
@@ -197,7 +198,7 @@
                 	var readURLArchive = "project" + '/read?isArchive=true';
                     
                 	var dataSource = getDatasource(readURL);
-					
+                	
                     $("#grid").kendoGrid({
                         dataSource: dataSource,
                         pageable: true,
@@ -213,7 +214,7 @@
 									{ field: "description", title: "Description", headerAttributes : {"class" : "db-custom-table-header"} },
 									{ title: "Archive",template:'<a href="javascript:updateArchiveStatus(#=project_id#,true);"><span class="glyphicon glyphicon-eye-open"></span></a>', headerAttributes : {"class" : "db-custom-table-header"}},
 									{ title: "Delete" ,template:'<a href="javascript:confirmDelete(#=project_id#)"><i class="glyphicon glyphicon-trash"></i></a>', headerAttributes : {"class" : "db-custom-table-header"} },
-									{  title: "Share" ,template:'<a href="shareProject?project_id=#:project_id#"><i class="fa fa-share"></i> #:noOfSharedUsers#</a>', headerAttributes : {"class" : "db-custom-table-header"} },
+									{  title: "Share" ,template:'# if (projectOwner == loggedInUserId) {#<a href="shareProject?project_id=#:project_id#"><i class="fa fa-share"></i> #:noOfSharedUsers#</a>#} #', headerAttributes : {"class" : "db-custom-table-header"} },
 									{ title: "Download" ,template:'<a href="downloadProjectFiles?project_id=#:project_id#"><span class="glyphicon glyphicon-download-alt"></span></a>', headerAttributes : {"class" : "db-custom-table-header"} }
                             ],
                         editable: false

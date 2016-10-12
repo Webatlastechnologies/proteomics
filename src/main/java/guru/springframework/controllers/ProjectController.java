@@ -99,6 +99,8 @@ public class ProjectController {
 			user.setLab(lab);
 			p.setUser(user);
 			p.setProjectOwner(p.getUser().getUser_id());
+			
+			p.setLoggedInUserId(userDetailService.getLoggedInUser().getUser_id());
 		}
 		for(Project p:ownedProjects){
 			if(p.getArchiveStatus() != null && p.getArchiveStatus().equalsIgnoreCase(archiveStatus)){
@@ -118,6 +120,8 @@ public class ProjectController {
 				p.setProjectOwner(p.getUser().getUser_id());
 				p.setNoOfSharedUsers(p.getUsers().size());
 				ownedProjectWithStatus.add(p);
+				
+				p.setLoggedInUserId(userDetailService.getLoggedInUser().getUser_id());
 			}
 		}
 		List<Project> allProjects=new ArrayList<>();

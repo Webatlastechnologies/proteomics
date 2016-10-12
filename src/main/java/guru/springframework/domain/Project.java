@@ -53,6 +53,9 @@ public class Project {
 	private boolean canDelete;
 	
 	private int noOfSharedUsers;
+	
+	@Transient
+	private long loggedInUserId;
 	 
 	public User getUser() {
 		return user;
@@ -151,5 +154,13 @@ public class Project {
 	public int hashCode() {
 		Long value  = new Long(project_id);
 		return value.hashCode();
+	}
+
+	public long getLoggedInUserId() {
+		return loggedInUserId;
+	}
+
+	public void setLoggedInUserId(long loggedInUserId) {
+		this.loggedInUserId = loggedInUserId;
 	}
 }
