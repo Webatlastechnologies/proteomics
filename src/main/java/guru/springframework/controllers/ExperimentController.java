@@ -117,6 +117,8 @@ public class ExperimentController {
 					}
 				 }
 			 }
+			String experimentPath = experiment.getProject().getUser().getLab().getLabName() + S3StorageService.SUFFIX + experiment.getProject().getUser().getUsername() + S3StorageService.SUFFIX  + experiment.getProject().getProjectName() + S3StorageService.SUFFIX + S3StorageService.EXPERIMENT_FOLDER + S3StorageService.SUFFIX + experiment.getExperiment_id();
+			s3StorageService.deleteFolder(experimentPath);
 		 	experimentRepository.delete(experiment);
 	        return "";
 	    }

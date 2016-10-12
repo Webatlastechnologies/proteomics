@@ -26,6 +26,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PartETag;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.amazonaws.services.s3.model.UploadPartRequest;
 
 import guru.springframework.util.StorageProperties;
@@ -143,6 +144,26 @@ public class S3StorageService {
 		String bucketName = existingBucketName;
 		String key = folderName +SUFFIX + fileName;	
 		s3Client.deleteObject(new DeleteObjectRequest(bucketName, key));
+	}
+	
+	public void deleteFolder(String folderPath){
+		String bucketName = existingBucketName;
+		for (S3ObjectSummary file : s3Client.listObjects(bucketName, folderPath).getObjectSummaries()){
+			s3Client.deleteObject(bucketName, file.getKey());
+		}
+		if(folderPath.contains("/")){
+			String parentFolderPath = folderPath.substring(0, folderPath.lastIndexOf("/"));
+			for (S3ObjectSummary file : s3Client.listObjects(bucketName, parentFolderPath).getObjectSummaries()){
+				String key = file.getKey();
+				key = key.endsWith(SUFFIX) ? key.substring(0,  key.lastIndexOf(SUFFIX)) : key;
+				if(key.equals(folderPath)){
+					s3Client.deleteObject(bucketName, file.getKey());
+					break;
+				}
+			}
+		}else{
+			s3Client.deleteObject(bucketName, folderPath);
+		}
 	}
 	
 	public void copyFile(String fileName, String sourceFolderName, String destinationFolderName){

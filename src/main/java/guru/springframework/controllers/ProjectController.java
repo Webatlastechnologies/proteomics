@@ -163,6 +163,7 @@ public class ProjectController {
 	    public @ResponseBody String update(@RequestParam long project_id) {
 		 	Project project=projectRepository.findOne(project_id);
 		 	if(project.getExperiments() != null){
+		 		String experimentFolderName = project.getUser().getLab().getLabName() + S3StorageService.SUFFIX + project.getUser().getUsername() + S3StorageService.SUFFIX  + project.getProjectName() + S3StorageService.SUFFIX  + S3StorageService.EXPERIMENT_FOLDER;
 		 		for(Experiment experiment : project.getExperiments()){
 					 if(experiment.getDataFiles() != null){
 						 for(DataFile dataFile : experiment.getDataFiles()){
@@ -180,9 +181,12 @@ public class ProjectController {
 							}
 						 }
 					 }
+					 experimentFolderName = experimentFolderName + S3StorageService.SUFFIX + experiment.getExperiment_id();
+					 s3StorageService.deleteFolder(experimentFolderName);
 			 	}
 		 	}
-		 	
+		 	String projectPath = project.getUser().getLab().getLabName() + S3StorageService.SUFFIX + project.getUser().getUsername() + S3StorageService.SUFFIX  + project.getProjectName();
+		 	s3StorageService.deleteFolder(projectPath);
 		 	projectRepository.delete(project);
 	        return "";
 	    }
