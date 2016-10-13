@@ -1,5 +1,6 @@
 package guru.springframework.services;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -114,14 +115,22 @@ public class FileSystemStorageService implements StorageService {
 	@Override
 	public void createFile(Path filePath, InputStream inputStream) throws IOException {
 		OutputStream outputStream = null;
+		BufferedInputStream bufferedInputStream = null;
 		try {
 			outputStream = Files.newOutputStream(filePath, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
-			byte[] bytes = new byte[inputStream.available()];
-			inputStream.read(bytes);
-			outputStream.write(bytes, 0, bytes.length);
+			byte[] bytes = new byte[1000];
+			
+			bufferedInputStream = new BufferedInputStream(inputStream);
+			
+			while(bufferedInputStream.read(bytes) != -1){
+				outputStream.write(bytes);
+				outputStream.flush();
+				bytes = new byte[1000];
+			}
 		} finally {
 			inputStream.close();
 			outputStream.close();
+			bufferedInputStream.close();
 		}
 	}
 
